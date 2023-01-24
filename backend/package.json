@@ -1,0 +1,33 @@
+{
+    "name": "bloglist",
+    "version": "1.0.0",
+    "description": "bloglist app for full-stack open ",
+    "main": "index.js",
+    "scripts": {
+        "start": "NODE_ENV=production node index.js",
+        "dev": "NODE_ENV=development nodemon index.js",
+        "test": "NODE_ENV=test jest --verbose --runInBand --forceExit",
+        "lint": "eslint .",
+        "start:test": "NODE_ENV=test node index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "eslint": "^8.31.0",
+        "jest": "^29.3.1",
+        "nodemon": "^2.0.20",
+        "supertest": "^6.3.3"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^6.8.3",
+        "mongoose-unique-validator": "^3.1.0"
+    },
+    "jest": {
+        "testEnvironment": "node"
+    }
+}
