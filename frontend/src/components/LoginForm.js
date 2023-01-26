@@ -1,45 +1,20 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import blogService from "../services/blogs";
-
-import { displayNotification } from "../reducers/notificationReducer";
-import { loginUser } from "../reducers/userReducer";
-import { fetchBlogs } from "../reducers/blogsReducer";
-import { fetchUsers } from "../reducers/usersReducer";
+import useLogin from "../hooks/useLogin";
 
 const LoginForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
     const notification = useSelector(state => state.notification);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+
+    const [isSubmitting, userService] = useLogin();
 
     const handleLogin = async e => {
         e.preventDefault();
-        setIsSubmitting(true);
-        const statusObj = await dispatch(loginUser(username, password));
-        if (statusObj.success) {
-            window.localStorage.clear();
-            window.localStorage.setItem(
-                "loggedInUser",
-                JSON.stringify(statusObj.loggedInUser)
-            );
-            blogService.setToken(statusObj.loggedInUser.token);
-            await dispatch(fetchBlogs());
-            await dispatch(fetchUsers());
-            setUsername("");
-            setIsSubmitting(false);
-            setPassword("");
-            navigate("/");
-        } else {
-            dispatch(displayNotification(statusObj.message, "error", 4));
-            setIsSubmitting(false);
-        }
+        await userService.login(username, password);
     };
 
     return (

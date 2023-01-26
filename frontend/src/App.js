@@ -11,14 +11,14 @@ import Blog from "./components/Blog";
 import Navbar from "./components/Navbar";
 import SignupForm from "./components/SignupForm";
 
-import blogService from "./services/blogs";
-import usersService from "./services/users";
+import useData from "./hooks/useData";
 
 import { setBlogs } from "./reducers/blogsReducer";
 import { setUser } from "./reducers/userReducer";
 import { setUsers } from "./reducers/usersReducer";
 
 import "./App.css";
+import { setNotification } from "./reducers/notificationReducer";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -31,14 +31,28 @@ const App = () => {
         [...state.blogs].sort((a, b) => b.likes - a.likes)
     );
 
+    const blogService = useData("/api/blogs");
+    const usersService = useData("/api/users");
+
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
-        if (loggedUserJSON) {
+        const fetchAppData = async () => {
             const user = JSON.parse(loggedUserJSON);
             dispatch(setUser(user));
-            blogService.setToken(user.token);
-            blogService.getAll().then(blogs => dispatch(setBlogs(blogs)));
-            usersService.getAll().then(users => dispatch(setUsers(users)));
+
+            blogService.setServiceToken(user.token);
+            usersService.setServiceToken(user.token);
+            try {
+                const blogs = await blogService.getAll();
+                const users = await usersService.getAll();
+                dispatch(setBlogs(blogs));
+                dispatch(setUsers(users));
+            } catch (error) {
+                setNotification(error.response.data.error, "error", 4);
+            }
+        };
+        if (loggedUserJSON) {
+            fetchAppData();
         }
     }, []);
 

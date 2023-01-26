@@ -1,29 +1,36 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { postComment } from "../reducers/blogsReducer";
+import { addComment } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 
-const CommentForm = ({ blogId }) => {
+import useData from "../hooks/useData";
+
+const CommentForm = ({ blogId, token }) => {
     const [comment, setComment] = useState("");
     const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
+    const commentService = useData(`/api/blogs/${blogId}/comments`, token);
     const dispatch = useDispatch();
 
-    const addComment = async e => {
+    const postComment = async e => {
         e.preventDefault();
         setIsSubmittingComment(true);
-        const statusObj = await dispatch(postComment(blogId, comment));
-        if (statusObj.success) {
+
+        try {
+            const newComment = await commentService.create({ comment });
+            dispatch(addComment({ blogId, comment: newComment }));
             dispatch(displayNotification("Comment Added", "success", 2));
             setComment("");
-        } else {
-            dispatch(displayNotification(statusObj.message, "error", 4));
+        } catch (error) {
+            dispatch(
+                displayNotification(error.response.data.error, "error", 4)
+            );
         }
         setIsSubmittingComment(false);
     };
     return (
         <div>
-            <form onSubmit={addComment} className="box">
+            <form onSubmit={postComment} className="box">
                 <div className="columns">
                     <div className="column is-three-quarters">
                         <input

@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useLoggedInUser } from "../hooks";
+import useLoggedInUser from "../hooks/useLoggedInUser";
 import BlogList from "./BlogList";
 import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";

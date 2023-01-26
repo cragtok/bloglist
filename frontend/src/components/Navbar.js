@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { logoutUser } from "../reducers/userReducer";
+import { setUser } from "../reducers/userReducer";
 import { setBlogs } from "../reducers/blogsReducer";
 
-import blogService from "../services/blogs";
 import { setUsers } from "../reducers/usersReducer";
-import { useLoggedInUser } from "../hooks";
+import useLoggedInUser from "../hooks/useLoggedInUser";
 
 const styles = {
     navbarStart: {
@@ -27,9 +26,8 @@ const Navbar = () => {
     const { user, isLoggedIn } = useLoggedInUser();
 
     const handleLogout = () => {
-        dispatch(logoutUser());
+        dispatch(setUser(null));
         window.localStorage.removeItem("loggedInUser");
-        blogService.setToken(null);
         dispatch(setBlogs([]));
         dispatch(setUsers([]));
         navigate("/");

@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useLoggedInUser } from "../hooks";
 
-import { deleteBlog, likeBlog, unlikeBlog } from "../reducers/blogsReducer";
+import { removeBlog, updateBlog } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import {
     removeUserBlog,
     likeUserBlog,
     unlikeUserBlog,
 } from "../reducers/usersReducer";
+
+import useData from "../hooks/useData";
+import useLoggedInUser from "../hooks/useLoggedInUser";
 
 import CommentForm from "./CommentForm";
 import Togglable from "./Togglable";
@@ -24,60 +26,76 @@ const Blog = () => {
     const [isSubmittingDelete, setIsSubmittingDelete] = useState(false);
 
     const loggedInUser = useLoggedInUser();
-
-    const handleLike = async action => {
-        setIsSubmittingLike(true);
-
-        let statusObj;
-        if (action === "like") {
-            statusObj = await dispatch(likeBlog(blog));
-        }
-        if (action === "unlike") {
-            statusObj = await dispatch(unlikeBlog(blog));
-        }
-
-        if (statusObj.success) {
-            if (action === "like") {
-                dispatch(
-                    likeUserBlog({ userId: blog.user.id, blogId: blog.id })
-                );
-            } else {
-                dispatch(
-                    unlikeUserBlog({ userId: blog.user.id, blogId: blog.id })
-                );
-            }
-            dispatch(
-                displayNotification(
-                    `Blog post ${blog.title} ${
-                        action === "like" ? "liked" : "unliked"
-                    }`,
-                    "success",
-                    4
-                )
-            );
-        } else {
-            dispatch(displayNotification(statusObj.message, "error", 4));
-        }
-        setIsSubmittingLike(false);
-    };
+    const blogService = useData("/api/blogs");
 
     const handleRemove = async () => {
         if (!window.confirm("Are you sure?")) {
             return;
         }
-        setIsSubmittingDelete(true);
-        const statusObj = await dispatch(deleteBlog(blog.id));
-        if (statusObj.success) {
-            dispatch(displayNotification("Blog post deleted", "success", 4));
+
+        try {
+            setIsSubmittingDelete(true);
+            blogService.setServiceToken(loggedInUser.user.token);
+            await blogService.remove(blog.id);
+            dispatch(removeBlog(blog.id));
             dispatch(removeUserBlog({ blogId: blog.id, userId: blog.user.id }));
-            navigate("/");
+            dispatch(displayNotification("Blog post deleted", "success", 4));
             setIsSubmittingDelete(false);
-        } else {
-            dispatch(displayNotification(statusObj.message, "error", 4));
+            navigate("/");
+        } catch (error) {
+            dispatch(
+                displayNotification(error.response.data.error, "error", 4)
+            );
             setIsSubmittingDelete(false);
         }
     };
 
+    const handleLike = async action => {
+        setIsSubmittingLike(true);
+
+        try {
+            blogService.setServiceToken(loggedInUser.user.token);
+            const updatedBlog = await blogService.update({
+                ...blog,
+                user: blog.user.id,
+                likes: blog.likes - 1,
+                action,
+            });
+            dispatch(updateBlog(updatedBlog));
+
+            if (action === "like") {
+                dispatch(
+                    likeUserBlog({
+                        userId: updatedBlog.user.id,
+                        blogId: updatedBlog.id,
+                    })
+                );
+            } else {
+                dispatch(
+                    unlikeUserBlog({
+                        userId: updatedBlog.user.id,
+                        blogId: updatedBlog.id,
+                    })
+                );
+            }
+            dispatch(
+                displayNotification(
+                    `Blog post ${blog.title} ${action}d`,
+                    "success",
+                    4
+                )
+            );
+        } catch (error) {
+            dispatch(
+                displayNotification(error.response.data.error, "error", 4)
+            );
+        }
+        setIsSubmittingLike(false);
+    };
+
+    if (!loggedInUser.user) {
+        return <p>Loading...</p>;
+    }
     if (!blog) {
         return <p>Blog not found</p>;
     }
@@ -146,7 +164,10 @@ const Blog = () => {
             <div>
                 <h3 className="title is-3 mt-3">Comments</h3>
                 <Togglable buttonLabel="Add Comment">
-                    <CommentForm blogId={blog.id} />
+                    <CommentForm
+                        blogId={blog.id}
+                        token={loggedInUser.user.token}
+                    />
                 </Togglable>
 
                 <br />

@@ -182,7 +182,7 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
         }
         blog.comments = blog.comments.concat(comment);
         await blog.save();
-        response.status(201).json({ comment });
+        response.status(201).json(comment);
     } catch (error) {
         next(error);
     }

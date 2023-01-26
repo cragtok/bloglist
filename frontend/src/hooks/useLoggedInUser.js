@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-export const useLoggedInUser = () => {
+const useLoggedInUser = () => {
     const user = useSelector(state => state.user);
 
     const isLoggedIn = () => {
@@ -8,3 +8,5 @@ export const useLoggedInUser = () => {
     };
     return { user, isLoggedIn };
 };
+
+export default useLoggedInUser;

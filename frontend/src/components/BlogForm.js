@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createBlog } from "../reducers/blogsReducer";
+import { addBlog } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import { addUserBlog } from "../reducers/usersReducer";
+
+import useData from "../hooks/useData";
+import useLoggedInUser from "../hooks/useLoggedInUser";
 
 const BlogForm = ({ toggleVisibility }) => {
     const [title, setTitle] = useState("");
@@ -15,15 +18,20 @@ const BlogForm = ({ toggleVisibility }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const addBlog = async e => {
+    const loggedInUser = useLoggedInUser();
+
+    const blogService = useData("/api/blogs", loggedInUser.user.token);
+
+    const createBlog = async e => {
         e.preventDefault();
         setIsSubmitting(true);
-        const statusObj = await dispatch(createBlog({ title, author, url }));
-        if (statusObj.success) {
+        try {
+            const newBlog = await blogService.create({ title, author, url });
+            dispatch(addBlog(newBlog));
             setTitle("");
             setAuthor("");
             setUrl("");
-            dispatch(addUserBlog(statusObj.newBlog));
+            dispatch(addUserBlog(newBlog));
             dispatch(
                 displayNotification(
                     `a new blog post ${title} by ${author} added`,
@@ -32,14 +40,16 @@ const BlogForm = ({ toggleVisibility }) => {
                 )
             );
             toggleVisibility();
-            navigate(`/blogs/${statusObj.newBlog.id}`);
-        } else {
-            dispatch(displayNotification(statusObj.message, "error", 4));
+            navigate(`/blogs/${newBlog.id}`);
+        } catch (error) {
+            dispatch(
+                displayNotification(error.response.data.error, "error", 4)
+            );
         }
         setIsSubmitting(false);
     };
     return (
-        <form className="box mt-2" onSubmit={addBlog}>
+        <form className="box mt-2" onSubmit={createBlog}>
             <div className="mt-4">
                 <label className="label"> Title: </label>
                 <div>

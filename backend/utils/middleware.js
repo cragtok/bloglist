@@ -30,6 +30,11 @@ const errorHandler = (error, request, response, next) => {
 };
 
 const userExtractor = async (request, response, next) => {
+    if (request.url === "/api/users" && request.method === "POST") {
+        next();
+        return;
+    }
+
     const authorization = request.get("authorization");
     if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
         const token = authorization.substring(7);

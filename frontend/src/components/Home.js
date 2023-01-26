@@ -4,7 +4,7 @@ import BlogList from "./BlogList";
 import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
 
-import { useLoggedInUser } from "../hooks";
+import useLoggedInUser from "../hooks/useLoggedInUser";
 
 const Home = ({ blogs }) => {
     const blogFormRef = useRef();

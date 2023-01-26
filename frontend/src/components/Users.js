@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { useLoggedInUser } from "../hooks";
+import useLoggedInUser from "../hooks/useLoggedInUser";
 
 const Users = ({ users }) => {
     const loggedInUser = useLoggedInUser();

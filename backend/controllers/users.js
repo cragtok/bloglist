@@ -3,6 +3,12 @@ const usersRouter = require("express").Router();
 const User = require("../models/user");
 
 usersRouter.get("/", async (request, response) => {
+    const user = request.user;
+
+    if (!user) {
+        return response.status(401).json({ error: "token missing or invalid" });
+    }
+
     const users = await User.find({}).populate("blogs", {
         author: 1,
         title: 1,
@@ -14,6 +20,12 @@ usersRouter.get("/", async (request, response) => {
 });
 
 usersRouter.get("/:id", async (request, response, next) => {
+    const user = request.user;
+
+    if (!user) {
+        return response.status(401).json({ error: "token missing or invalid" });
+    }
+
     try {
         const user = await User.findById(request.params.id).populate("blogs", {
             author: 1,
