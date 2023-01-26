@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import useLogin from "../hooks/useLogin";
 
-const LoginForm = () => {
+const LoginAndSignupForm = () => {
     const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
     const [password, setPassword] = useState("");
 
+    const location = useLocation();
     const notification = useSelector(state => state.notification);
 
     const [isSubmitting, userService] = useLogin();
@@ -17,10 +19,21 @@ const LoginForm = () => {
         await userService.login(username, password);
     };
 
+    const handleRegister = async e => {
+        e.preventDefault();
+        await userService.register(username, name, password);
+    };
+
     return (
         <div>
             <h2 className="title is-2">Log in to application</h2>
-            <form onSubmit={handleLogin}>
+            <form
+                onSubmit={
+                    location.pathname === "/login"
+                        ? handleLogin
+                        : handleRegister
+                }
+            >
                 <div>
                     <label className="label">Username:</label>
                     <input
@@ -35,6 +48,26 @@ const LoginForm = () => {
                     />
                 </div>
                 <br />
+                {location.pathname === "/register" && (
+                    <>
+                        <div>
+                            <label className="label">Name:</label>
+                            <input
+                                className={`input${
+                                    notification.type === "error"
+                                        ? " is-danger"
+                                        : ""
+                                }`}
+                                id="login-name"
+                                type="text"
+                                name="name"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                            />
+                        </div>
+                        <br />
+                    </>
+                )}
                 <div>
                     <label className="label">Password:</label>
                     <input
@@ -56,10 +89,21 @@ const LoginForm = () => {
                     }`}
                     disabled={isSubmitting}
                 >
-                    Login
+                    {location.pathname === "/register" ? "Register" : "Sign In"}
                 </button>
-                <Link to="/register">
-                    <button className="button ml-3">Register</button>
+
+                <Link
+                    to={
+                        location.pathname === "/register"
+                            ? "/login"
+                            : "/register"
+                    }
+                >
+                    <button className="button ml-3">
+                        {location.pathname === "/login"
+                            ? "Register"
+                            : "Sign In"}
+                    </button>
                 </Link>
             </form>
             <br />
@@ -67,4 +111,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default LoginAndSignupForm;

@@ -5,11 +5,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/Home";
 import Notification from "./components/Notification";
 import Users from "./components/Users";
-import LoginForm from "./components/LoginForm";
+import LoginAndSignupForm from "./components/LoginAndSignupForm";
 import User from "./components/User";
 import Blog from "./components/Blog";
 import Navbar from "./components/Navbar";
-import SignupForm from "./components/SignupForm";
 
 import useData from "./hooks/useData";
 
@@ -110,7 +109,7 @@ const App = () => {
                         isLoggedIn() ? (
                             <Navigate replace to="/" />
                         ) : (
-                            <LoginForm />
+                            <LoginAndSignupForm />
                         )
                     }
                 />
@@ -120,7 +119,7 @@ const App = () => {
                         isLoggedIn() ? (
                             <Navigate replace to="/" />
                         ) : (
-                            <SignupForm />
+                            <LoginAndSignupForm />
                         )
                     }
                 />
