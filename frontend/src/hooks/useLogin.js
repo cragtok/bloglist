@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setBlogs } from "../reducers/blogsReducer";
-import { setUsers } from "../reducers/usersReducer";
+// import { setUsers } from "../reducers/usersReducer";
 import { setUser } from "../reducers/userReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import useData from "./useData";
@@ -48,9 +48,9 @@ const useLogin = () => {
             blogService.setServiceToken(loggedInUser.token);
             userService.setServiceToken(loggedInUser.token);
             const blogs = await blogService.getAll();
-            const users = await userService.getAll();
+            //            const users = await userService.getAll();
             dispatch(setBlogs(blogs));
-            dispatch(setUsers(users));
+            //           dispatch(setUsers(users));
             setIsSubmitting(false);
             navigate("/");
         } catch (error) {

@@ -14,7 +14,7 @@ import useData from "./hooks/useData";
 
 import { setBlogs } from "./reducers/blogsReducer";
 import { setUser } from "./reducers/userReducer";
-import { setUsers } from "./reducers/usersReducer";
+// import { setUsers } from "./reducers/usersReducer";
 
 import "./App.css";
 import { setNotification } from "./reducers/notificationReducer";
@@ -23,15 +23,11 @@ const App = () => {
     const dispatch = useDispatch();
 
     const notification = useSelector(state => state.notification);
-    const users = useSelector(state =>
-        [...state.users].sort((a, b) => b.blogs.length - a.blogs.length)
-    );
     const blogs = useSelector(state =>
         [...state.blogs].sort((a, b) => b.likes - a.likes)
     );
 
     const blogService = useData("/api/blogs");
-    const usersService = useData("/api/users");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -40,12 +36,11 @@ const App = () => {
             dispatch(setUser(user));
 
             blogService.setServiceToken(user.token);
-            usersService.setServiceToken(user.token);
             try {
                 const blogs = await blogService.getAll();
-                const users = await usersService.getAll();
+                //        const users = await usersService.getAll();
                 dispatch(setBlogs(blogs));
-                dispatch(setUsers(users));
+                //       dispatch(setUsers(users));
             } catch (error) {
                 setNotification(error.response.data.error, "error", 4);
             }
@@ -87,7 +82,7 @@ const App = () => {
                     path="/users"
                     element={
                         isLoggedIn() ? (
-                            <Users users={users} />
+                            <Users />
                         ) : (
                             <Navigate replace to="/login" />
                         )
