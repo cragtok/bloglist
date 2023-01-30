@@ -26,7 +26,7 @@ const Users = () => {
         }
     }, []);
 
-    if (!users) {
+    if (!users.length) {
         return <p>No users...</p>;
     }
     return (

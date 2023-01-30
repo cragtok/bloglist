@@ -1,16 +1,15 @@
 import React, { useRef } from "react";
+import { useSelector } from "react-redux";
 
 import BlogList from "./BlogList";
 import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
 
-import useLoggedInUser from "../hooks/useLoggedInUser";
-
 const Home = ({ blogs }) => {
     const blogFormRef = useRef();
 
-    const loggedInUser = useLoggedInUser();
-    if (!loggedInUser.isLoggedIn()) {
+    const user = useSelector(state => state.user);
+    if (!user) {
         return null;
     }
 

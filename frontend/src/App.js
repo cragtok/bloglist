@@ -38,9 +38,7 @@ const App = () => {
             blogService.setServiceToken(user.token);
             try {
                 const blogs = await blogService.getAll();
-                //        const users = await usersService.getAll();
                 dispatch(setBlogs(blogs));
-                //       dispatch(setUsers(users));
             } catch (error) {
                 setNotification(error.response.data.error, "error", 4);
             }

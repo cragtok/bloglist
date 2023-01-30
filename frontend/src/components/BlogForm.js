@@ -6,7 +6,6 @@ import { displayNotification } from "../reducers/notificationReducer";
 import { addUserBlog } from "../reducers/usersReducer";
 
 import useData from "../hooks/useData";
-import useLoggedInUser from "../hooks/useLoggedInUser";
 
 const BlogForm = ({ toggleVisibility }) => {
     const [title, setTitle] = useState("");
@@ -14,13 +13,13 @@ const BlogForm = ({ toggleVisibility }) => {
     const [url, setUrl] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const notification = useSelector(state => state.notification);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const loggedInUser = useLoggedInUser();
+    const loggedInUser = useSelector(state => state.user);
+    const notification = useSelector(state => state.notification);
 
-    const blogService = useData("/api/blogs", loggedInUser.user.token);
+    const blogService = useData("/api/blogs", loggedInUser.token);
 
     const createBlog = async e => {
         e.preventDefault();

@@ -11,7 +11,6 @@ import {
 } from "../reducers/usersReducer";
 
 import useData from "../hooks/useData";
-import useLoggedInUser from "../hooks/useLoggedInUser";
 
 import CommentForm from "./CommentForm";
 import Togglable from "./Togglable";
@@ -25,7 +24,7 @@ const Blog = () => {
     const [isSubmittingLike, setIsSubmittingLike] = useState(false);
     const [isSubmittingDelete, setIsSubmittingDelete] = useState(false);
 
-    const loggedInUser = useLoggedInUser();
+    const loggedInUser = useSelector(state => state.user);
     const blogService = useData("/api/blogs");
 
     const handleRemove = async () => {
@@ -35,7 +34,7 @@ const Blog = () => {
 
         try {
             setIsSubmittingDelete(true);
-            blogService.setServiceToken(loggedInUser.user.token);
+            blogService.setServiceToken(loggedInUser.token);
             await blogService.remove(blog.id);
             dispatch(removeBlog(blog.id));
             dispatch(removeUserBlog({ blogId: blog.id, userId: blog.user.id }));
@@ -54,7 +53,7 @@ const Blog = () => {
         setIsSubmittingLike(true);
 
         try {
-            blogService.setServiceToken(loggedInUser.user.token);
+            blogService.setServiceToken(loggedInUser.token);
             const updatedBlog = await blogService.update({
                 ...blog,
                 user: blog.user.id,
@@ -93,16 +92,16 @@ const Blog = () => {
         setIsSubmittingLike(false);
     };
 
-    if (!loggedInUser.user) {
+    if (!loggedInUser) {
         return <p>Loading...</p>;
     }
     if (!blog) {
         return <p>Blog not found</p>;
     }
 
-    const showDeleteButton = blog.user.id === loggedInUser.user.id;
+    const showDeleteButton = blog.user.id === loggedInUser.id;
 
-    const hasLikedBlog = blog.userLikes.find(id => id === loggedInUser.user.id);
+    const hasLikedBlog = blog.userLikes.find(id => id === loggedInUser.id);
     return (
         <div>
             <div className="card">
@@ -164,10 +163,7 @@ const Blog = () => {
             <div>
                 <h3 className="title is-3 mt-3">Comments</h3>
                 <Togglable buttonLabel="Add Comment">
-                    <CommentForm
-                        blogId={blog.id}
-                        token={loggedInUser.user.token}
-                    />
+                    <CommentForm blogId={blog.id} token={loggedInUser.token} />
                 </Togglable>
 
                 <br />

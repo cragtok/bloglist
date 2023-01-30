@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { setUser } from "../reducers/userReducer";
 import { setBlogs } from "../reducers/blogsReducer";
 
 import { setUsers } from "../reducers/usersReducer";
-import useLoggedInUser from "../hooks/useLoggedInUser";
 
 const styles = {
     navbarStart: {
@@ -23,7 +22,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const { user, isLoggedIn } = useLoggedInUser();
+    const user = useSelector(state => state.user);
 
     const handleLogout = () => {
         dispatch(setUser(null));
@@ -33,7 +32,7 @@ const Navbar = () => {
         navigate("/");
     };
 
-    if (!isLoggedIn()) {
+    if (!user) {
         return null;
     }
     return (
