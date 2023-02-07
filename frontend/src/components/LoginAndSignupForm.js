@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeNotification } from "../reducers/notificationReducer";
-import { setLoadingState } from "../reducers/loadingReducer";
 
 import useLoginAndRegister from "../hooks/useLoginAndRegister";
 
@@ -11,29 +10,20 @@ const LoginAndSignupForm = () => {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
 
-    const navigate = useNavigate();
     const location = useLocation();
     const notification = useSelector(state => state.notification);
 
-    const { isLoading } = useSelector(state => state.loading);
-
-    const loginAndRegisterService = useLoginAndRegister();
+    const [isLoading, loginAndRegisterService] = useLoginAndRegister();
     const dispatch = useDispatch();
 
     const handleLogin = async e => {
         e.preventDefault();
-        dispatch(setLoadingState(true));
         await loginAndRegisterService.login(username, password);
-        dispatch(setLoadingState(false));
-        navigate("/");
     };
 
     const handleRegister = async e => {
         e.preventDefault();
-        dispatch(setLoadingState(true));
         await loginAndRegisterService.register(username, name, password);
-        dispatch(setLoadingState(false));
-        navigate("/");
     };
 
     return (
