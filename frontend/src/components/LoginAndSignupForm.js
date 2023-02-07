@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removeNotification } from "../reducers/notificationReducer";
 
 import useLogin from "../hooks/useLogin";
 
@@ -13,6 +14,7 @@ const LoginAndSignupForm = () => {
     const notification = useSelector(state => state.notification);
 
     const [isSubmitting, userService] = useLogin();
+    const dispatch = useDispatch();
 
     const handleLogin = async e => {
         e.preventDefault();
@@ -99,7 +101,14 @@ const LoginAndSignupForm = () => {
                             : "/register"
                     }
                 >
-                    <button className="button ml-3">
+                    <button
+                        className="button ml-3"
+                        onClick={() => {
+                            if (notification.type === "error") {
+                                dispatch(removeNotification());
+                            }
+                        }}
+                    >
                         {location.pathname === "/login"
                             ? "Register"
                             : "Sign In"}
