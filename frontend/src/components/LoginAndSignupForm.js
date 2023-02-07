@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeNotification } from "../reducers/notificationReducer";
 
-import useLogin from "../hooks/useLogin";
+import useLoginAndRegister from "../hooks/useLoginAndRegister";
 
 const LoginAndSignupForm = () => {
     const [username, setUsername] = useState("");
@@ -13,7 +13,7 @@ const LoginAndSignupForm = () => {
     const location = useLocation();
     const notification = useSelector(state => state.notification);
 
-    const [isSubmitting, userService] = useLogin();
+    const [isSubmitting, userService] = useLoginAndRegister();
     const dispatch = useDispatch();
 
     const handleLogin = async e => {

@@ -7,7 +7,7 @@ import { setUser } from "../reducers/userReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import useData from "./useData";
 
-const useLogin = () => {
+const useLoginAndRegister = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -64,4 +64,4 @@ const useLogin = () => {
     return [isSubmitting, { login, register }];
 };
 
-export default useLogin;
+export default useLoginAndRegister;
