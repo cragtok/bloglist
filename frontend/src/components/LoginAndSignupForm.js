@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeNotification } from "../reducers/notificationReducer";
+import { setLoadingState } from "../reducers/loadingReducer";
 
 import useLoginAndRegister from "../hooks/useLoginAndRegister";
 
@@ -10,20 +11,29 @@ const LoginAndSignupForm = () => {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate();
     const location = useLocation();
     const notification = useSelector(state => state.notification);
 
-    const [isSubmitting, userService] = useLoginAndRegister();
+    const { isLoading } = useSelector(state => state.loading);
+
+    const loginAndRegisterService = useLoginAndRegister();
     const dispatch = useDispatch();
 
     const handleLogin = async e => {
         e.preventDefault();
-        await userService.login(username, password);
+        dispatch(setLoadingState(true));
+        await loginAndRegisterService.login(username, password);
+        dispatch(setLoadingState(false));
+        navigate("/");
     };
 
     const handleRegister = async e => {
         e.preventDefault();
-        await userService.register(username, name, password);
+        dispatch(setLoadingState(true));
+        await loginAndRegisterService.register(username, name, password);
+        dispatch(setLoadingState(false));
+        navigate("/");
     };
 
     return (
@@ -87,9 +97,9 @@ const LoginAndSignupForm = () => {
                 <button
                     id="login-button"
                     className={`button is-primary${
-                        isSubmitting ? " is-loading" : ""
+                        isLoading ? " is-loading" : ""
                     }`}
-                    disabled={isSubmitting}
+                    disabled={isLoading}
                 >
                     {location.pathname === "/register" ? "Register" : "Sign In"}
                 </button>
