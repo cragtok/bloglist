@@ -18,6 +18,7 @@ import { setUser } from "./reducers/userReducer";
 
 import "./App.css";
 import { setNotification } from "./reducers/notificationReducer";
+import { setLoadingState } from "./reducers/loadingReducer";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -26,12 +27,11 @@ const App = () => {
     const blogs = useSelector(state =>
         [...state.blogs].sort((a, b) => b.likes - a.likes)
     );
-
     const blogService = useData("/api/blogs");
 
     useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         const fetchAppData = async () => {
+            dispatch(setLoadingState(true));
             const user = JSON.parse(loggedUserJSON);
             dispatch(setUser(user));
 
@@ -42,7 +42,9 @@ const App = () => {
             } catch (error) {
                 setNotification(error.response.data.error, "error", 4);
             }
+            dispatch(setLoadingState(false));
         };
+        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         if (loggedUserJSON) {
             fetchAppData();
         }
