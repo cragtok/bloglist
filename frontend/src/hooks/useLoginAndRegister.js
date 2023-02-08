@@ -48,10 +48,9 @@ const useLoginAndRegister = () => {
             );
             blogService.setServiceToken(loggedInUser.token);
             userService.setServiceToken(loggedInUser.token);
+            dispatch(displayNotification(`Welcome ${username}!`, "success", 4));
             const blogs = await blogService.getAll();
-            //            const users = await userService.getAll();
             dispatch(setBlogs(blogs));
-            //           dispatch(setUsers(users));
             navigate("/");
         } catch (error) {
             dispatch(
