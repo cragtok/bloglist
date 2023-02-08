@@ -9,6 +9,7 @@ import LoginAndSignupForm from "./components/LoginAndSignupForm";
 import User from "./components/User";
 import Blog from "./components/Blog";
 import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound";
 
 import useData from "./hooks/useData";
 
@@ -129,6 +130,7 @@ const App = () => {
                         )
                     }
                 />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </div>
     );
