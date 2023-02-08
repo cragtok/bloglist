@@ -63,21 +63,15 @@ const Blog = () => {
             });
             dispatch(updateBlog(updatedBlog));
 
-            if (action === "like") {
-                dispatch(
-                    likeUserBlog({
-                        userId: updatedBlog.user.id,
-                        blogId: updatedBlog.id,
-                    })
-                );
-            } else {
-                dispatch(
-                    unlikeUserBlog({
-                        userId: updatedBlog.user.id,
-                        blogId: updatedBlog.id,
-                    })
-                );
-            }
+            const updateObj = {
+                userId: updatedBlog.user.id,
+                blogId: updatedBlog.id,
+            };
+
+            action === "like"
+                ? dispatch(likeUserBlog(updateObj))
+                : dispatch(unlikeUserBlog(updateObj));
+
             dispatch(
                 displayNotification(
                     `Blog post ${blog.title} ${action}d`,
