@@ -6,6 +6,7 @@ import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
 import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
+import { setLoadingState } from "../reducers/loadingReducer";
 
 const User = () => {
     const id = useParams().id;
@@ -14,6 +15,8 @@ const User = () => {
     const dispatch = useDispatch();
 
     const usersService = useData("/api/users");
+
+    const { isLoading } = useSelector(state => state.loading);
 
     const users = useSelector(state =>
         [...state.users].sort((a, b) => b.blogs.length - a.blogs.length)
@@ -24,15 +27,22 @@ const User = () => {
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         const fn = async () => {
+            dispatch(setLoadingState(true));
             const loggedInUser = JSON.parse(loggedUserJSON);
             usersService.setServiceToken(loggedInUser.token);
             const fetchedUsers = await usersService.getAll();
             dispatch(setUsers(fetchedUsers));
+            dispatch(setLoadingState(false));
         };
+
         if (loggedUserJSON && users.length === 0) {
             fn();
         }
     }, []);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     if (!user) {
         return (
