@@ -17,7 +17,7 @@ const notificationSlice = createSlice({
             return {
                 type: action.payload.type,
                 message: action.payload.message,
-                timerRef: action.payload.time,
+                timerRef: action.payload.timerRef,
             };
         },
         removeNotification(state) {
