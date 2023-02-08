@@ -16,26 +16,17 @@ const LoginAndSignupForm = () => {
     const [isLoading, loginAndRegisterService] = useLoginAndRegister();
     const dispatch = useDispatch();
 
-    const handleLogin = async e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        await loginAndRegisterService.login(username, password);
-    };
-
-    const handleRegister = async e => {
-        e.preventDefault();
-        await loginAndRegisterService.register(username, name, password);
+        location.pathname === "/login"
+            ? await loginAndRegisterService.login(username, password)
+            : await loginAndRegisterService.register(username, name, password);
     };
 
     return (
         <div>
             <h2 className="title is-2">Log in to application</h2>
-            <form
-                onSubmit={
-                    location.pathname === "/login"
-                        ? handleLogin
-                        : handleRegister
-                }
-            >
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label className="label">Username:</label>
                     <input
