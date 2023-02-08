@@ -5,6 +5,7 @@ import { setUser } from "../reducers/userReducer";
 import { setBlogs } from "../reducers/blogsReducer";
 
 import { setUsers } from "../reducers/usersReducer";
+import { removeNotification } from "../reducers/notificationReducer";
 
 const styles = {
     navbarStart: {
@@ -26,6 +27,7 @@ const Navbar = () => {
 
     const handleLogout = () => {
         dispatch(setUser(null));
+        dispatch(removeNotification());
         window.localStorage.removeItem("loggedInUser");
         dispatch(setBlogs([]));
         dispatch(setUsers([]));
