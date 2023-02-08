@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
 import useData from "../hooks/useData";
 
+import { setLoadingState } from "../reducers/loadingReducer";
 import { setUsers } from "../reducers/usersReducer";
 
 const Users = () => {
@@ -10,23 +12,30 @@ const Users = () => {
     const users = useSelector(state =>
         [...state.users].sort((a, b) => b.blogs.length - a.blogs.length)
     );
+    const { isLoading } = useSelector(state => state.loading);
 
     const usersService = useData("/api/users");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         const fn = async () => {
+            dispatch(setLoadingState(true));
             const loggedInUser = JSON.parse(loggedUserJSON);
             usersService.setServiceToken(loggedInUser.token);
             const fetchedUsers = await usersService.getAll();
             dispatch(setUsers(fetchedUsers));
+            dispatch(setLoadingState(false));
         };
         if (loggedUserJSON && users.length === 0) {
             fn();
         }
     }, []);
 
-    if (!users.length) {
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
+
+    if (!isLoading && !users.length) {
         return <p>No users...</p>;
     }
     return (
