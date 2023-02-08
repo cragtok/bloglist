@@ -20,6 +20,7 @@ const Blog = () => {
     const id = useParams().id;
     const navigate = useNavigate();
     const blog = useSelector(state => state.blogs.find(blog => blog.id === id));
+    const { isLoading } = useSelector(state => state.loading);
 
     const [isSubmittingLike, setIsSubmittingLike] = useState(false);
     const [isSubmittingDelete, setIsSubmittingDelete] = useState(false);
@@ -92,9 +93,10 @@ const Blog = () => {
         setIsSubmittingLike(false);
     };
 
-    if (!loggedInUser) {
+    if (isLoading) {
         return <p>Loading...</p>;
     }
+
     if (!blog) {
         return <p>Blog not found</p>;
     }
