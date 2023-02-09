@@ -8,10 +8,15 @@ const blogStyle = {
     marginBottom: 10,
 };
 
-const BlogLink = ({ id, title, author }) => {
+const BlogLink = ({ id, title, author, createdAt }) => {
+    const blogDate = new Date(createdAt).toDateString().slice(4);
+    const blogTime = new Date(createdAt).toLocaleTimeString();
     return (
         <Link to={`/blogs/${id}`}>
             <div style={blogStyle}>
+                <p className="subtitle-6 is-italic">
+                    {blogDate} {blogTime}
+                </p>
                 {title} by {author}
             </div>
         </Link>

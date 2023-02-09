@@ -20,6 +20,7 @@ const BlogList = ({ blogs }) => {
                     id={blog.id}
                     title={blog.title}
                     author={blog.author}
+                    createdAt={blog.createdAt}
                 />
             ))}
         </div>
