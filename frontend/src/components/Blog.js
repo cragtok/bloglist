@@ -96,8 +96,10 @@ const Blog = () => {
     }
 
     const showDeleteButton = blog.user.id === loggedInUser.id;
-
     const hasLikedBlog = blog.userLikes.find(id => id === loggedInUser.id);
+    const blogDate = new Date(blog.createdAt).toDateString().slice(4);
+    const blogTime = new Date(blog.createdAt).toLocaleTimeString();
+
     return (
         <div>
             <div className="card">
@@ -105,6 +107,9 @@ const Blog = () => {
                     <div className="media">
                         <div className="media-content">
                             <p className="title is-3">{blog.title}</p>
+                            <p className="subtitle is-6 is-italic">
+                                {blogDate} {blogTime}
+                            </p>
                             <p className="subtitle is-6">
                                 added by{" "}
                                 <Link to={`/users/${blog.user.id}`}>
