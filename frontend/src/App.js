@@ -25,9 +25,7 @@ const App = () => {
     const dispatch = useDispatch();
 
     const notification = useSelector(state => state.notification);
-    const blogs = useSelector(state =>
-        [...state.blogs].sort((a, b) => b.likes - a.likes)
-    );
+    const blogs = useSelector(state => [...state.blogs]);
     const blogService = useData("/api/blogs");
 
     useEffect(() => {

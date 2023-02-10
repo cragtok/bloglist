@@ -17,6 +17,37 @@ const BlogList = ({ blogs }) => {
         return <div>No Blogs</div>;
     }
 
+    const sortFunc = (a, b) => {
+        const compareValues = (a, b) => {
+            if (a === b) {
+                return 0;
+            }
+
+            if (sortMethod === "ascending") {
+                return a > b ? 1 : -1;
+            }
+
+            if (sortMethod === "descending") {
+                return a > b ? -1 : 1;
+            }
+        };
+
+        if (!sortCategory) return 0;
+        if (sortCategory === "title")
+            return compareValues(a.title.toLowerCase(), b.title.toLowerCase());
+        if (sortCategory === "author")
+            return compareValues(
+                a.author.toLowerCase(),
+                b.author.toLowerCase()
+            );
+        if (sortCategory === "dateCreated")
+            return compareValues(a.createdAt, b.createdAt);
+        if (sortCategory === "numberOfLikes")
+            return compareValues(a.likes, b.likes);
+        if (sortCategory === "numberOfComments")
+            return compareValues(a.comments.length, b.comments.length);
+    };
+
     return (
         <div>
             <SortingForm
@@ -26,7 +57,7 @@ const BlogList = ({ blogs }) => {
                 setSortMethod={setSortMethod}
             />
 
-            {blogs.map(blog => (
+            {[...blogs].sort(sortFunc).map(blog => (
                 <BlogLink
                     key={blog.id}
                     id={blog.id}

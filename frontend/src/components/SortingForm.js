@@ -11,11 +11,12 @@ const SortingForm = ({
             <div className="title is-5">Sort Blogs </div>
             <div className="select is-primary mr-3">
                 <select
-                    e={sortCategory}
+                    value={sortCategory}
                     onChange={e => setSortCategory(e.target.value)}
                 >
                     <option value="">None</option>
-                    <option value="username">Username</option>
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
                     <option value="dateCreated">Date Created</option>
                     <option value="numberOfLikes">Number of Likes</option>
                     <option value="numberOfComments">Number of Comments</option>
