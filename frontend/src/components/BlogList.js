@@ -1,8 +1,13 @@
 import PropTypes from "prop-types";
 import BlogLink from "./BlogLink";
 import { useSelector } from "react-redux";
+import SortingForm from "./SortingForm";
+import { useState } from "react";
 const BlogList = ({ blogs }) => {
     const { isLoading } = useSelector(state => state.loading);
+
+    const [sortCategory, setSortCategory] = useState("");
+    const [sortMethod, setSortMethod] = useState("ascending");
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -14,6 +19,13 @@ const BlogList = ({ blogs }) => {
 
     return (
         <div>
+            <SortingForm
+                sortCategory={sortCategory}
+                setSortCategory={setSortCategory}
+                sortMethod={sortMethod}
+                setSortMethod={setSortMethod}
+            />
+
             {blogs.map(blog => (
                 <BlogLink
                     key={blog.id}
