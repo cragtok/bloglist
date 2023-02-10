@@ -12,7 +12,7 @@ const Home = ({ blogs }) => {
     const user = useSelector(state => state.user);
 
     const [sortCategory, setSortCategory] = useState("");
-    const [sortMethod, setSortMethod] = useState("ascending");
+    const [sortMethod, setSortMethod] = useState("descending");
 
     if (!user) {
         return null;
@@ -41,11 +41,10 @@ const Home = ({ blogs }) => {
                 a.author.toLowerCase(),
                 b.author.toLowerCase()
             );
-        if (sortCategory === "dateCreated")
+        if (sortCategory === "createdAt")
             return compareValues(a.createdAt, b.createdAt);
-        if (sortCategory === "numberOfLikes")
-            return compareValues(a.likes, b.likes);
-        if (sortCategory === "numberOfComments")
+        if (sortCategory === "likes") return compareValues(a.likes, b.likes);
+        if (sortCategory === "comments")
             return compareValues(a.comments.length, b.comments.length);
     };
 
@@ -75,7 +74,10 @@ const Home = ({ blogs }) => {
                     sortMethod={sortMethod}
                     setSortMethod={setSortMethod}
                 />
-                <BlogList blogs={[...blogs].sort(sortFunc)} />
+                <BlogList
+                    blogs={[...blogs].sort(sortFunc)}
+                    sortedField={sortCategory}
+                />
             </>
         </div>
     );

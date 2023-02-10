@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import BlogLink from "./BlogLink";
 import { useSelector } from "react-redux";
-const BlogList = ({ blogs }) => {
+const BlogList = ({ blogs, sortedField }) => {
     const { isLoading } = useSelector(state => state.loading);
 
     if (isLoading) {
@@ -12,6 +12,12 @@ const BlogList = ({ blogs }) => {
         return <div>No Blogs</div>;
     }
 
+    const getSortedField = blog => {
+        if (sortedField === "comments") {
+            return { field: "comments", value: blog.comments.length };
+        }
+        return { field: sortedField, value: blog[sortedField] };
+    };
     return (
         <div>
             {blogs.map(blog => (
@@ -21,6 +27,7 @@ const BlogList = ({ blogs }) => {
                     title={blog.title}
                     author={blog.author}
                     createdAt={blog.createdAt}
+                    sortedField={getSortedField(blog)}
                 />
             ))}
         </div>

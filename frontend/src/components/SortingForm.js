@@ -17,9 +17,9 @@ const SortingForm = ({
                     <option value="">None</option>
                     <option value="title">Title</option>
                     <option value="author">Author</option>
-                    <option value="dateCreated">Date Created</option>
-                    <option value="numberOfLikes">Number of Likes</option>
-                    <option value="numberOfComments">Number of Comments</option>
+                    <option value="createdAt">Date Created</option>
+                    <option value="likes">Number of Likes</option>
+                    <option value="comments">Number of Comments</option>
                 </select>
             </div>
             {sortCategory && (

@@ -8,16 +8,32 @@ const blogStyle = {
     marginBottom: 10,
 };
 
-const BlogLink = ({ id, title, author, createdAt }) => {
+const BlogLink = ({ id, title, author, createdAt, sortedField }) => {
     const blogDate = new Date(createdAt).toDateString().slice(4);
     const blogTime = new Date(createdAt).toLocaleTimeString();
+
+    const renderSortedColor = field =>
+        sortedField.field === field ? "has-text-success" : "";
+
     return (
         <Link to={`/blogs/${id}`}>
             <div style={blogStyle}>
-                <p className="subtitle-6 is-italic">
+                <p
+                    className={`subtitle-6 is-italic ${renderSortedColor(
+                        "createdAt"
+                    )}`}
+                >
                     {blogDate} {blogTime}
                 </p>
-                {title} by {author}
+                <span className={renderSortedColor("title")}>{title}</span> by{" "}
+                <span className={renderSortedColor("author")}>{author}</span>
+                {sortedField.field === "comments" ||
+                sortedField.field === "likes" ? (
+                    /* eslint-disable */
+                    <p className="has-text-success">
+                        {sortedField.field}: {sortedField.value}
+                    </p>
+                ) : null}
             </div>
         </Link>
     );
