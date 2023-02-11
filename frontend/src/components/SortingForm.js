@@ -23,15 +23,23 @@ const SortingForm = ({
                 </select>
             </div>
             {sortCategory && (
-                <div className="select is-dark">
-                    <select
-                        value={sortMethod}
-                        onChange={e => setSortMethod(e.target.value)}
+                <>
+                    <div className="select is-secondary mr-3">
+                        <select
+                            value={sortMethod}
+                            onChange={e => setSortMethod(e.target.value)}
+                        >
+                            <option value="ascending">Ascending</option>
+                            <option value="descending">Descending</option>
+                        </select>
+                    </div>
+                    <button
+                        onClick={() => setSortCategory("")}
+                        className="button"
                     >
-                        <option value="ascending">Ascending</option>
-                        <option value="descending">Descending</option>
-                    </select>
-                </div>
+                        Clear
+                    </button>
+                </>
             )}
         </div>
     );
