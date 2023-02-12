@@ -1,25 +1,32 @@
 import React from "react";
 
-const BlogSortingForm = ({
+const SortingForm = ({
     sortCategory,
     setSortCategory,
     sortMethod,
     setSortMethod,
+    sortFields,
+    title,
 }) => {
     return (
         <div className="mb-5">
-            <div className="title is-5">Sort Blogs </div>
+            <div className="title is-5">{title}</div>
             <div className="select is-primary mr-3">
                 <select
                     value={sortCategory}
                     onChange={e => setSortCategory(e.target.value)}
                 >
-                    <option value="">None</option>
-                    <option value="title">Title</option>
-                    <option value="author">Author</option>
-                    <option value="createdAt">Date Created</option>
-                    <option value="likes">Number of Likes</option>
-                    <option value="comments">Number of Comments</option>
+                    <option key="none" value="">
+                        None
+                    </option>
+                    {sortFields.map(sortField => (
+                        <option
+                            key={crypto.randomUUID()}
+                            value={sortField.value}
+                        >
+                            {sortField.name}
+                        </option>
+                    ))}
                 </select>
             </div>
             {sortCategory && (
@@ -45,4 +52,4 @@ const BlogSortingForm = ({
     );
 };
 
-export default BlogSortingForm;
+export default SortingForm;

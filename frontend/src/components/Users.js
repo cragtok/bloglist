@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import UsersSortingForm from "./UsersSortingForm";
+import SortingForm from "./SortingForm";
 import useData from "../hooks/useData";
 import useSortedData from "../hooks/useSortedData";
 
@@ -83,11 +83,18 @@ const Users = () => {
         <div>
             <h2 className="title is-2 mt-5">Users</h2>
             <br />
-            <UsersSortingForm
+            <SortingForm
                 sortCategory={sortCategory}
                 setSortCategory={setSortCategory}
                 sortMethod={sortMethod}
                 setSortMethod={setSortMethod}
+                title="Sort Users"
+                sortFields={[
+                    { name: "Username", value: "username" },
+                    { name: "Number of Blogs", value: "blogs" },
+                    { name: "Total Blog Likes", value: "totalLikes" },
+                    { name: "Totel Blog Comments", value: "totalComments" },
+                ]}
             />
             <table className="table is-striped is-bordered is-hoverable is-fullwidth">
                 <thead>

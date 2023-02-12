@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import BlogList from "./BlogList";
 import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
-import BlogSortingForm from "./BlogSortingForm";
+import SortingForm from "./SortingForm";
 
 import useSortedData from "../hooks/useSortedData";
 
@@ -50,11 +50,19 @@ const Home = ({ blogs }) => {
                     />
                 </Togglable>
                 <br />
-                <BlogSortingForm
+                <SortingForm
                     sortCategory={sortCategory}
                     setSortCategory={setSortCategory}
                     sortMethod={sortMethod}
                     setSortMethod={setSortMethod}
+                    title="Sort Blogs"
+                    sortFields={[
+                        { name: "Title", value: "title" },
+                        { name: "Author", value: "author" },
+                        { name: "Date Created", value: "createdAt" },
+                        { name: "Number of Likes", value: "likes" },
+                        { name: "Number of Comments", value: "comments" },
+                    ]}
                 />
                 <BlogList blogs={sortedData} sortedField={sortCategory} />
             </>
