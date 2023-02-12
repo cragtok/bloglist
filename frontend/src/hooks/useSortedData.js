@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useSortedData = initialData => {
+const useSortedData = (initialData = []) => {
     const [sortCategory, setSortCategory] = useState("");
     const [sortMethod, setSortMethod] = useState("descending");
     const [sortedData, setSortedData] = useState([...initialData]);
