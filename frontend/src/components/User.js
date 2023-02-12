@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import BlogList from "./BlogList";
 import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
-import SortingForm from "./SortingForm";
+import BlogSortingForm from "./BlogSortingForm";
 
 import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
@@ -108,7 +108,7 @@ const User = () => {
             )}
 
             <br />
-            <SortingForm
+            <BlogSortingForm
                 sortCategory={sortCategory}
                 setSortCategory={setSortCategory}
                 sortMethod={sortMethod}

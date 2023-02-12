@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import BlogList from "./BlogList";
 import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
-import SortingForm from "./SortingForm";
+import BlogSortingForm from "./BlogSortingForm";
 
 const Home = ({ blogs }) => {
     const blogFormRef = useRef();
@@ -68,7 +68,7 @@ const Home = ({ blogs }) => {
                     />
                 </Togglable>
                 <br />
-                <SortingForm
+                <BlogSortingForm
                     sortCategory={sortCategory}
                     setSortCategory={setSortCategory}
                     sortMethod={sortMethod}
