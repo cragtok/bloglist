@@ -26,6 +26,28 @@ const usersSlice = createSlice({
                 return user;
             });
         },
+        addUserComment(state, action) {
+            // payload: {userId, blogId, comment}
+            return state.map(user => {
+                if (user.id === action.payload.userId) {
+                    return {
+                        ...user,
+                        blogs: user.blogs.map(blog => {
+                            if (blog.id === action.payload.blogId) {
+                                return {
+                                    ...blog,
+                                    comments: blog.comments.concat(
+                                        action.payload.comment
+                                    ),
+                                };
+                            }
+                            return blog;
+                        }),
+                    };
+                }
+                return user;
+            });
+        },
         removeUserBlog(state, action) {
             // payload: {userId, blogId}
             return state.map(user => {
@@ -81,5 +103,6 @@ export const {
     removeUserBlog,
     likeUserBlog,
     unlikeUserBlog,
+    addUserComment,
 } = usersSlice.actions;
 export default usersSlice.reducer;

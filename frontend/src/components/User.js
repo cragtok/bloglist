@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import BlogList from "./BlogList";
 import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
+import SortingForm from "./SortingForm";
+
 import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
@@ -11,7 +13,6 @@ import { setLoadingState } from "../reducers/loadingReducer";
 const User = () => {
     const id = useParams().id;
     const blogFormRef = useRef();
-
     const dispatch = useDispatch();
 
     const usersService = useData("/api/users");
@@ -21,6 +22,9 @@ const User = () => {
     const users = useSelector(state =>
         [...state.users].sort((a, b) => b.blogs.length - a.blogs.length)
     );
+
+    const [sortCategory, setSortCategory] = useState("");
+    const [sortMethod, setSortMethod] = useState("descending");
 
     const user = users.filter(u => u.id === id)[0];
 
@@ -40,6 +44,35 @@ const User = () => {
         }
     }, []);
 
+    const sortFunc = (a, b) => {
+        const compareValues = (a, b) => {
+            if (a === b) {
+                return 0;
+            }
+
+            if (sortMethod === "ascending") {
+                return a > b ? 1 : -1;
+            }
+
+            if (sortMethod === "descending") {
+                return a > b ? -1 : 1;
+            }
+        };
+
+        if (!sortCategory) return 0;
+        if (sortCategory === "title")
+            return compareValues(a.title.toLowerCase(), b.title.toLowerCase());
+        if (sortCategory === "author")
+            return compareValues(
+                a.author.toLowerCase(),
+                b.author.toLowerCase()
+            );
+        if (sortCategory === "createdAt")
+            return compareValues(a.createdAt, b.createdAt);
+        if (sortCategory === "likes") return compareValues(a.likes, b.likes);
+        if (sortCategory === "comments")
+            return compareValues(a.comments.length, b.comments.length);
+    };
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -75,11 +108,19 @@ const User = () => {
             )}
 
             <br />
+            <SortingForm
+                sortCategory={sortCategory}
+                setSortCategory={setSortCategory}
+                sortMethod={sortMethod}
+                setSortMethod={setSortMethod}
+            />
+            <br />
             {user.blogs.length < 1 ? (
                 <p className="subtitle mt-3">No Blogs Added By User</p>
             ) : (
                 <BlogList
-                    blogs={[...user.blogs].sort((a, b) => b.likes - a.likes)}
+                    blogs={[...user.blogs].sort(sortFunc)}
+                    sortedField={sortCategory}
                 />
             )}
         </div>

@@ -164,7 +164,11 @@ const Blog = () => {
             <div>
                 <h3 className="title is-3 mt-3">Comments</h3>
                 <Togglable buttonLabel="Add Comment">
-                    <CommentForm blogId={blog.id} token={loggedInUser.token} />
+                    <CommentForm
+                        blogId={blog.id}
+                        userId={blog.user.id}
+                        token={loggedInUser.token}
+                    />
                 </Togglable>
 
                 <br />

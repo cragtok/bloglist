@@ -4,8 +4,9 @@ import { addComment } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 
 import useData from "../hooks/useData";
+import { addUserComment } from "../reducers/usersReducer";
 
-const CommentForm = ({ blogId, token }) => {
+const CommentForm = ({ blogId, userId, token }) => {
     const [comment, setComment] = useState("");
     const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
@@ -19,6 +20,7 @@ const CommentForm = ({ blogId, token }) => {
         try {
             const newComment = await commentService.create({ comment });
             dispatch(addComment({ blogId, comment: newComment }));
+            dispatch(addUserComment({ userId, blogId, comment: newComment }));
             dispatch(displayNotification("Comment Added", "success", 2));
             setComment("");
         } catch (error) {
