@@ -1,6 +1,6 @@
 import React from "react";
 
-const SortingForm = ({
+const BlogSortingForm = ({
     sortCategory,
     setSortCategory,
     sortMethod,
@@ -45,4 +45,4 @@ const SortingForm = ({
     );
 };
 
-export default SortingForm;
+export default BlogSortingForm;
