@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
 import BlogList from "./BlogList";
@@ -6,47 +6,29 @@ import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
 import BlogSortingForm from "./BlogSortingForm";
 
+import useSortedData from "../hooks/useSortedData";
+
 const Home = ({ blogs }) => {
     const blogFormRef = useRef();
 
     const user = useSelector(state => state.user);
 
-    const [sortCategory, setSortCategory] = useState("");
-    const [sortMethod, setSortMethod] = useState("descending");
+    const {
+        sortCategory,
+        sortMethod,
+        setSortCategory,
+        setSortMethod,
+        sortedData,
+        setSortedData,
+    } = useSortedData(blogs);
+
+    useEffect(() => {
+        setSortedData([...blogs]);
+    }, [blogs]);
 
     if (!user) {
         return null;
     }
-
-    const sortFunc = (a, b) => {
-        const compareValues = (a, b) => {
-            if (a === b) {
-                return 0;
-            }
-
-            if (sortMethod === "ascending") {
-                return a > b ? 1 : -1;
-            }
-
-            if (sortMethod === "descending") {
-                return a > b ? -1 : 1;
-            }
-        };
-
-        if (!sortCategory) return 0;
-        if (sortCategory === "title")
-            return compareValues(a.title.toLowerCase(), b.title.toLowerCase());
-        if (sortCategory === "author")
-            return compareValues(
-                a.author.toLowerCase(),
-                b.author.toLowerCase()
-            );
-        if (sortCategory === "createdAt")
-            return compareValues(a.createdAt, b.createdAt);
-        if (sortCategory === "likes") return compareValues(a.likes, b.likes);
-        if (sortCategory === "comments")
-            return compareValues(a.comments.length, b.comments.length);
-    };
 
     return (
         <div>
@@ -74,10 +56,7 @@ const Home = ({ blogs }) => {
                     sortMethod={sortMethod}
                     setSortMethod={setSortMethod}
                 />
-                <BlogList
-                    blogs={[...blogs].sort(sortFunc)}
-                    sortedField={sortCategory}
-                />
+                <BlogList blogs={sortedData} sortedField={sortCategory} />
             </>
         </div>
     );
