@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import BlogList from "./BlogList";
@@ -9,6 +9,7 @@ import BlogSortingForm from "./BlogSortingForm";
 import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
+import useSortedData from "../hooks/useSortedData";
 
 const User = () => {
     const id = useParams().id;
@@ -19,14 +20,16 @@ const User = () => {
 
     const { isLoading } = useSelector(state => state.loading);
 
-    const users = useSelector(state =>
-        [...state.users].sort((a, b) => b.blogs.length - a.blogs.length)
-    );
+    const user = useSelector(state => state.users.filter(u => u.id === id)[0]);
 
-    const [sortCategory, setSortCategory] = useState("");
-    const [sortMethod, setSortMethod] = useState("descending");
-
-    const user = users.filter(u => u.id === id)[0];
+    const {
+        sortCategory,
+        sortMethod,
+        setSortCategory,
+        setSortMethod,
+        sortedData,
+        setSortedData,
+    } = useSortedData();
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -36,53 +39,26 @@ const User = () => {
             usersService.setServiceToken(loggedInUser.token);
             const fetchedUsers = await usersService.getAll();
             dispatch(setUsers(fetchedUsers));
+            const foundUser = fetchedUsers.filter(u => u.id === id)[0];
+            if (foundUser) {
+                setSortedData(foundUser.blogs);
+            }
             dispatch(setLoadingState(false));
         };
 
-        if (loggedUserJSON && users.length === 0) {
+        if (loggedUserJSON && !user) {
             fn();
+        } else {
+            setSortedData(user.blogs);
         }
     }, []);
 
-    const sortFunc = (a, b) => {
-        const compareValues = (a, b) => {
-            if (a === b) {
-                return 0;
-            }
-
-            if (sortMethod === "ascending") {
-                return a > b ? 1 : -1;
-            }
-
-            if (sortMethod === "descending") {
-                return a > b ? -1 : 1;
-            }
-        };
-
-        if (!sortCategory) return 0;
-        if (sortCategory === "title")
-            return compareValues(a.title.toLowerCase(), b.title.toLowerCase());
-        if (sortCategory === "author")
-            return compareValues(
-                a.author.toLowerCase(),
-                b.author.toLowerCase()
-            );
-        if (sortCategory === "createdAt")
-            return compareValues(a.createdAt, b.createdAt);
-        if (sortCategory === "likes") return compareValues(a.likes, b.likes);
-        if (sortCategory === "comments")
-            return compareValues(a.comments.length, b.comments.length);
-    };
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
     if (!user) {
-        return (
-            <div>
-                <p>User not found</p>
-            </div>
-        );
+        return <div>User not found</div>;
     }
 
     return (
@@ -116,12 +92,9 @@ const User = () => {
             />
             <br />
             {user.blogs.length < 1 ? (
-                <p className="subtitle mt-3">No Blogs Added By User</p>
+                <p className="subtitle mt-3">No blogs added by user</p>
             ) : (
-                <BlogList
-                    blogs={[...user.blogs].sort(sortFunc)}
-                    sortedField={sortCategory}
-                />
+                <BlogList blogs={sortedData} sortedField={sortCategory} />
             )}
         </div>
     );
