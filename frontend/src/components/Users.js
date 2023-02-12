@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import UsersSortingForm from "./UsersSortingForm";
 import useData from "../hooks/useData";
+import useSortedData from "../hooks/useSortedData";
 
 import { setLoadingState } from "../reducers/loadingReducer";
 import { setUsers } from "../reducers/usersReducer";
@@ -29,8 +30,14 @@ const Users = () => {
 
     const usersService = useData("/api/users");
 
-    const [sortCategory, setSortCategory] = useState("");
-    const [sortMethod, setSortMethod] = useState("descending");
+    const {
+        sortCategory,
+        sortMethod,
+        setSortCategory,
+        setSortMethod,
+        sortedData,
+        setSortedData,
+    } = useSortedData();
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -40,10 +47,27 @@ const Users = () => {
             usersService.setServiceToken(loggedInUser.token);
             const fetchedUsers = await usersService.getAll();
             dispatch(setUsers(fetchedUsers));
+            setSortedData(
+                fetchedUsers.map(user => {
+                    return {
+                        ...user,
+                        totalBlogLikes: user.blogs.reduce(
+                            (acc, currValue) => acc + currValue.likes,
+                            0
+                        ),
+                        totalBlogComments: user.blogs.reduce(
+                            (acc, currValue) => acc + currValue.comments.length,
+                            0
+                        ),
+                    };
+                })
+            );
             dispatch(setLoadingState(false));
         };
         if (loggedUserJSON && users.length === 0) {
             fn();
+        } else {
+            setSortedData(users);
         }
     }, []);
 
@@ -54,36 +78,6 @@ const Users = () => {
     if (!isLoading && !users.length) {
         return <p>No users...</p>;
     }
-
-    const sortFunc = (a, b) => {
-        const compareValues = (a, b) => {
-            if (a === b) {
-                return 0;
-            }
-
-            if (sortMethod === "ascending") {
-                return a > b ? 1 : -1;
-            }
-
-            if (sortMethod === "descending") {
-                return a > b ? -1 : 1;
-            }
-        };
-        if (!sortCategory) return 0;
-        if (sortCategory === "username")
-            return compareValues(
-                a.username.toLowerCase(),
-                b.username.toLowerCase()
-            );
-        if (sortCategory === "blogs")
-            return compareValues(a.blogs.length, b.blogs.length);
-        if (sortCategory === "totalLikes") {
-            return compareValues(a.totalBlogLikes, b.totalBlogLikes);
-        }
-        if (sortCategory === "totalComments") {
-            return compareValues(a.totalBlogComments, b.totalBlogComments);
-        }
-    };
 
     return (
         <div>
@@ -129,7 +123,7 @@ const Users = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {[...users].sort(sortFunc).map(user => (
+                    {sortedData.map(user => (
                         <tr key={user.id}>
                             <td>
                                 <Link to={`/users/${user.id}`}>
