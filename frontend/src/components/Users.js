@@ -10,9 +10,21 @@ import { setUsers } from "../reducers/usersReducer";
 
 const Users = () => {
     const dispatch = useDispatch();
-    const users = useSelector(state =>
-        [...state.users].sort((a, b) => b.blogs.length - a.blogs.length)
-    );
+    const users = useSelector(state => {
+        return state.users.map(user => {
+            return {
+                ...user,
+                totalBlogLikes: user.blogs.reduce(
+                    (acc, currValue) => acc + currValue.likes,
+                    0
+                ),
+                totalBlogComments: user.blogs.reduce(
+                    (acc, currValue) => acc + currValue.comments.length,
+                    0
+                ),
+            };
+        });
+    });
     const { isLoading } = useSelector(state => state.loading);
 
     const usersService = useData("/api/users");
@@ -66,27 +78,12 @@ const Users = () => {
         if (sortCategory === "blogs")
             return compareValues(a.blogs.length, b.blogs.length);
         if (sortCategory === "totalLikes") {
-            return compareValues(
-                a.blogs.reduce((acc, currValue) => acc + currValue.likes, 0),
-                b.blogs.reduce((acc, currValue) => acc + currValue.likes, 0)
-            );
+            return compareValues(a.totalBlogLikes, b.totalBlogLikes);
         }
         if (sortCategory === "totalComments") {
-            return compareValues(
-                a.blogs.reduce(
-                    (acc, currValue) => acc + currValue.comments.length,
-                    0
-                ),
-                b.blogs.reduce(
-                    (acc, currValue) => acc + currValue.comments.length,
-                    0
-                )
-            );
+            return compareValues(a.totalBlogComments, b.totalBlogComments);
         }
     };
-
-    const renderSortedColor = field =>
-        sortCategory === field ? "has-text-success" : "";
 
     return (
         <div>
@@ -101,8 +98,24 @@ const Users = () => {
             <table className="table is-striped is-bordered is-hoverable is-fullwidth">
                 <thead>
                     <tr>
-                        <th className={renderSortedColor("username")}>User</th>
-                        <th className={renderSortedColor("blogs")}>Blogs</th>
+                        <th
+                            className={`${
+                                sortCategory === "username"
+                                    ? "has-text-success"
+                                    : ""
+                            }`}
+                        >
+                            User
+                        </th>
+                        <th
+                            className={`${
+                                sortCategory === "blogs"
+                                    ? "has-text-success"
+                                    : ""
+                            }`}
+                        >
+                            Blogs
+                        </th>
                         {sortCategory === "totalLikes" && (
                             <th className="has-text-success">
                                 Total Blog Likes
@@ -125,22 +138,10 @@ const Users = () => {
                             </td>
                             <td>{user.blogs.length}</td>
                             {sortCategory === "totalLikes" && (
-                                <td>
-                                    {user.blogs.reduce(
-                                        (acc, currValue) =>
-                                            acc + currValue.likes,
-                                        0
-                                    )}
-                                </td>
+                                <td>{user.totalBlogLikes}</td>
                             )}
                             {sortCategory === "totalComments" && (
-                                <td>
-                                    {user.blogs.reduce(
-                                        (acc, currValue) =>
-                                            acc + currValue.comments.length,
-                                        0
-                                    )}
-                                </td>
+                                <td>{user.totalBlogComments}</td>
                             )}
                         </tr>
                     ))}
