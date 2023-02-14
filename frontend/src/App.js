@@ -11,41 +11,27 @@ import Blog from "./components/Blog";
 import Navbar from "./components/Navbar";
 import NotFound from "./components/NotFound";
 
-import useData from "./hooks/useData";
-
-import { setBlogs } from "./reducers/blogsReducer";
 import { setUser } from "./reducers/userReducer";
 // import { setUsers } from "./reducers/usersReducer";
 
 import "./App.css";
-import { setNotification } from "./reducers/notificationReducer";
 import { setLoadingState } from "./reducers/loadingReducer";
 
 const App = () => {
     const dispatch = useDispatch();
 
     const notification = useSelector(state => state.notification);
-    const blogs = useSelector(state => [...state.blogs]);
-    const blogService = useData("/api/blogs");
 
     useEffect(() => {
-        const fetchAppData = async () => {
+        const setToken = async () => {
             dispatch(setLoadingState(true));
             const user = JSON.parse(loggedUserJSON);
             dispatch(setUser(user));
-
-            blogService.setServiceToken(user.token);
-            try {
-                const blogs = await blogService.getAll();
-                dispatch(setBlogs(blogs));
-            } catch (error) {
-                setNotification(error.response.data.error, "error", 4);
-            }
             dispatch(setLoadingState(false));
         };
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         if (loggedUserJSON) {
-            fetchAppData();
+            setToken();
         }
     }, []);
 
@@ -122,7 +108,7 @@ const App = () => {
                     path="/"
                     element={
                         isLoggedIn() ? (
-                            <Home blogs={blogs} />
+                            <Home />
                         ) : (
                             <Navigate replace to="/login" />
                         )

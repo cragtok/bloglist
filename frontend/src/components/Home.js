@@ -1,18 +1,26 @@
 import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import BlogList from "./BlogList";
 import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
 import SortingForm from "./SortingForm";
 
+import useData from "../hooks/useData";
 import useSortedData from "../hooks/useSortedData";
 
-const Home = ({ blogs }) => {
+import { setLoadingState } from "../reducers/loadingReducer";
+import { setBlogs } from "../reducers/blogsReducer";
+import { setNotification } from "../reducers/notificationReducer";
+
+const Home = () => {
     const blogFormRef = useRef();
 
-    const user = useSelector(state => state.user);
+    const dispatch = useDispatch();
+    const blogService = useData("/api/blogs");
 
+    const blogs = useSelector(state => state.blogs);
+    const { isLoading } = useSelector(state => state.loading);
     const {
         sortCategory,
         sortMethod,
@@ -23,13 +31,36 @@ const Home = ({ blogs }) => {
     } = useSortedData([], "home");
 
     useEffect(() => {
-        setSortedData([...blogs]);
-    }, [blogs]);
+        const fetchBlogs = async () => {
+            dispatch(setLoadingState(true));
+            const loggedInUser = JSON.parse(loggedUserJSON);
+            blogService.setServiceToken(loggedInUser.token);
+            try {
+                const blogs = await blogService.getAll();
+                dispatch(setBlogs(blogs));
+                setSortedData(blogs);
+            } catch (error) {
+                dispatch(
+                    setNotification(error.response.data.error, "error", 4)
+                );
+            }
+            dispatch(setLoadingState(false));
+        };
+        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
+        if (loggedUserJSON && !blogs.length) {
+            fetchBlogs();
+        } else {
+            setSortedData(blogs);
+        }
+    }, []);
 
-    if (!user) {
-        return null;
+    if (isLoading) {
+        return <div>Loading...</div>;
     }
 
+    if (!blogs.length) {
+        return <div>No Blogs</div>;
+    }
     return (
         <div>
             <>

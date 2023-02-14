@@ -10,14 +10,17 @@ const formSlice = createSlice({
     name: "form",
     initialState,
     reducers: {
+        resetFormState() {
+            return { ...initialState };
+        },
         setFormState(state, action) {
             // payload: {page, formState}
             return {
-                ...initialState,
+                ...state,
                 [action.payload.page]: { ...action.payload.formState },
             };
         },
     },
 });
-export const { setFormState } = formSlice.actions;
+export const { setFormState, resetFormState } = formSlice.actions;
 export default formSlice.reducer;

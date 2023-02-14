@@ -6,6 +6,7 @@ import { setBlogs } from "../reducers/blogsReducer";
 
 import { setUsers } from "../reducers/usersReducer";
 import { removeNotification } from "../reducers/notificationReducer";
+import { resetFormState } from "../reducers/formReducer";
 
 const styles = {
     navbarStart: {
@@ -31,6 +32,7 @@ const Navbar = () => {
         window.localStorage.removeItem("loggedInUser");
         dispatch(setBlogs([]));
         dispatch(setUsers([]));
+        dispatch(resetFormState());
         navigate("/");
     };
 
