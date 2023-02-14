@@ -23,15 +23,12 @@ const App = () => {
     const notification = useSelector(state => state.notification);
 
     useEffect(() => {
-        const setToken = async () => {
+        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
+        if (loggedUserJSON) {
             dispatch(setLoadingState(true));
             const user = JSON.parse(loggedUserJSON);
             dispatch(setUser(user));
             dispatch(setLoadingState(false));
-        };
-        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
-        if (loggedUserJSON) {
-            setToken();
         }
     }, []);
 
