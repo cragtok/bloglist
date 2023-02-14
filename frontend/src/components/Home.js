@@ -20,7 +20,7 @@ const Home = ({ blogs }) => {
         setSortMethod,
         sortedData,
         setSortedData,
-    } = useSortedData();
+    } = useSortedData([], "home");
 
     useEffect(() => {
         setSortedData([...blogs]);

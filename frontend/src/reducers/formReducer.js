@@ -19,5 +19,5 @@ const formSlice = createSlice({
         },
     },
 });
-export const { setLoadingState } = formSlice.actions;
+export const { setFormState } = formSlice.actions;
 export default formSlice.reducer;

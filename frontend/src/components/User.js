@@ -29,7 +29,7 @@ const User = () => {
         setSortMethod,
         sortedData,
         setSortedData,
-    } = useSortedData();
+    } = useSortedData([], "blogs");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");

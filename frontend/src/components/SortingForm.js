@@ -41,7 +41,10 @@ const SortingForm = ({
                         </select>
                     </div>
                     <button
-                        onClick={() => setSortCategory("")}
+                        onClick={() => {
+                            setSortCategory("");
+                            setSortMethod("");
+                        }}
                         className="button"
                     >
                         Clear

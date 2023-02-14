@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setFormState } from "../reducers/formReducer";
 
-const useSortedData = (initialData = []) => {
+const useSortedData = (initialData = [], page) => {
     const [sortCategory, setSortCategory] = useState("");
     const [sortMethod, setSortMethod] = useState("descending");
     const [sortedData, setSortedData] = useState([...initialData]);
+
+    const formData = useSelector(state => state.form[page]);
+    const dispatch = useDispatch();
 
     const compareValues = (a, b) => {
         if (a === b) {
@@ -51,7 +56,19 @@ const useSortedData = (initialData = []) => {
     };
 
     useEffect(() => {
+        if (formData.sortCategory && formData.sortMethod) {
+            setSortCategory(formData.sortCategory);
+            setSortMethod(formData.sortMethod);
+        }
+    }, []);
+
+    useEffect(() => {
         setSortedData([...sortedData].sort(sortFunction));
+        if (sortCategory && sortMethod) {
+            dispatch(
+                setFormState({ page, formState: { sortCategory, sortMethod } })
+            );
+        }
     }, [sortCategory, sortMethod]);
 
     return {
