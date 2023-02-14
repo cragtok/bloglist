@@ -23,13 +23,14 @@ const App = () => {
     const notification = useSelector(state => state.notification);
 
     useEffect(() => {
+        dispatch(setLoadingState(true));
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
+
         if (loggedUserJSON) {
-            dispatch(setLoadingState(true));
             const user = JSON.parse(loggedUserJSON);
             dispatch(setUser(user));
-            dispatch(setLoadingState(false));
         }
+        dispatch(setLoadingState(false));
     }, []);
 
     const isLoggedIn = () => {

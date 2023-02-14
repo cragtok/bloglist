@@ -1,6 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setBlogs } from "../reducers/blogsReducer";
-// import { setUsers } from "../reducers/usersReducer";
 import { setUser } from "../reducers/userReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
@@ -11,7 +9,6 @@ const useLoginAndRegister = () => {
     const dispatch = useDispatch();
 
     const userService = useData("/api/users");
-    const blogService = useData("/api/blogs");
     const loginService = useData("/api/login");
 
     const navigate = useNavigate();
@@ -46,11 +43,7 @@ const useLoginAndRegister = () => {
                 "loggedInUser",
                 JSON.stringify(loggedInUser)
             );
-            blogService.setServiceToken(loggedInUser.token);
-            userService.setServiceToken(loggedInUser.token);
             dispatch(displayNotification(`Welcome ${username}!`, "success", 4));
-            const blogs = await blogService.getAll();
-            dispatch(setBlogs(blogs));
             navigate("/");
         } catch (error) {
             dispatch(
