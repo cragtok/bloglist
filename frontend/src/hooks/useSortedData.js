@@ -6,6 +6,7 @@ const useSortedData = (initialData = [], page) => {
     const [sortCategory, setSortCategory] = useState("");
     const [sortMethod, setSortMethod] = useState("descending");
     const [sortedData, setSortedData] = useState([...initialData]);
+    const [firstRender, setFirstRender] = useState(true);
 
     const formData = useSelector(state => state.form[page]);
     const dispatch = useDispatch();
@@ -58,13 +59,16 @@ const useSortedData = (initialData = [], page) => {
     useEffect(() => {
         setSortCategory(formData.sortCategory);
         setSortMethod(formData.sortMethod);
+        setFirstRender(false);
     }, []);
 
     useEffect(() => {
         setSortedData([...sortedData].sort(sortFunction));
-        dispatch(
-            setFormState({ page, formState: { sortCategory, sortMethod } })
-        );
+        if (!firstRender) {
+            dispatch(
+                setFormState({ page, formState: { sortCategory, sortMethod } })
+            );
+        }
     }, [sortCategory, sortMethod]);
 
     return {
