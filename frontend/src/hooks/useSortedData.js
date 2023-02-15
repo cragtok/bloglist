@@ -25,10 +25,7 @@ const useSortedData = (initialData = [], page) => {
         }
     };
 
-    const sortFunction = (a, b) => {
-        if (!sortCategory) return 0;
-
-        // Sorting Blogs
+    const sortBlogFields = (a, b) => {
         if (sortCategory === "title")
             return compareValues(a.title.toLowerCase(), b.title.toLowerCase());
         if (sortCategory === "author")
@@ -41,7 +38,8 @@ const useSortedData = (initialData = [], page) => {
         if (sortCategory === "likes") return compareValues(a.likes, b.likes);
         if (sortCategory === "comments")
             return compareValues(a.comments.length, b.comments.length);
-        // Sorting Users
+    };
+    const sortUserFields = (a, b) => {
         if (sortCategory === "username")
             return compareValues(
                 a.username.toLowerCase(),
@@ -54,6 +52,10 @@ const useSortedData = (initialData = [], page) => {
 
         if (sortCategory === "totalComments")
             return compareValues(a.totalBlogComments, b.totalBlogComments);
+    };
+    const sortFunction = (a, b) => {
+        if (!sortCategory) return 0;
+        return page === "users" ? sortUserFields(a, b) : sortBlogFields(a, b);
     };
 
     useEffect(() => {
