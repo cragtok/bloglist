@@ -5,9 +5,21 @@ import { setFormState } from "../reducers/formReducer";
 const useSortedAndFilteredData = page => {
     const [sortCategory, setSortCategory] = useState("");
     const [sortMethod, setSortMethod] = useState("descending");
-    const [modifiedData, setModifiedData] = useState([]);
 
     const [firstRender, setFirstRender] = useState(true);
+
+    const [modifiedData, setModifiedData] = useState([]);
+
+    const [filterCategories, setFilterCategories] = useState({
+        author: "",
+        title: "",
+        url: "",
+        date: { from: null, to: null },
+        numComments: { from: null, to: null },
+        numLikes: { from: null, to: null },
+        likedBlogs: false,
+        commentedBlogs: false,
+    });
 
     const formData = useSelector(state => state.form[page]);
     const dispatch = useDispatch();
@@ -87,6 +99,8 @@ const useSortedAndFilteredData = page => {
         modifiedData,
         setModifiedData,
         resetForm,
+        filterCategories,
+        setFilterCategories,
     };
 };
 
