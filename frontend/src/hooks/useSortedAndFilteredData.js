@@ -10,16 +10,7 @@ const useSortedAndFilteredData = page => {
 
     const [modifiedData, setModifiedData] = useState([]);
 
-    const [filterCategories, setFilterCategories] = useState({
-        author: "",
-        title: "",
-        url: "",
-        date: { from: null, to: null },
-        numComments: { from: null, to: null },
-        numLikes: { from: null, to: null },
-        likedBlogs: false,
-        commentedBlogs: false,
-    });
+    const [filterCategories, setFilterCategories] = useState(null);
 
     const formData = useSelector(state => state.form[page]);
     const dispatch = useDispatch();
@@ -78,6 +69,7 @@ const useSortedAndFilteredData = page => {
     useEffect(() => {
         setSortCategory(formData.sortCategory);
         setSortMethod(formData.sortMethod);
+        setFilterCategories(formData.filterCategories);
         setModifiedData([...modifiedData].sort(sortFunction));
         setFirstRender(false);
     }, []);
@@ -86,10 +78,17 @@ const useSortedAndFilteredData = page => {
         if (!firstRender) {
             setModifiedData([...modifiedData].sort(sortFunction));
             dispatch(
-                setFormState({ page, formState: { sortCategory, sortMethod } })
+                setFormState({
+                    page,
+                    formState: {
+                        filterCategories,
+                        sortCategory,
+                        sortMethod,
+                    },
+                })
             );
         }
-    }, [sortCategory, sortMethod]);
+    }, [sortCategory, sortMethod, filterCategories]);
 
     return {
         sortCategory,
