@@ -1,9 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialFilters = {
+    author: "",
+    title: "",
+    url: "",
+    date: { from: null, to: null },
+    numComments: { from: null, to: null },
+    numLikes: { from: null, to: null },
+    likedBlogs: false,
+    commentedBlogs: false,
+};
+
 const initialState = {
-    home: { sortCategory: "", sortMethod: "descending" },
-    blogs: { sortCategory: "", sortMethod: "descending" },
-    users: { sortCategory: "", sortMethod: "descending" },
+    home: {
+        filterCategories: { ...initialFilters },
+        sortCategory: "",
+        sortMethod: "descending",
+    },
+    blogs: {
+        filterCategories: { ...initialFilters },
+        sortCategory: "",
+        sortMethod: "descending",
+    },
+    users: {
+        filterCategories: { ...initialFilters },
+        sortCategory: "",
+        sortMethod: "descending",
+    },
 };
 
 const formSlice = createSlice({
