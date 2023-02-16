@@ -28,6 +28,7 @@ const Home = () => {
         setSortMethod,
         sortedData,
         setSortedData,
+        resetForm,
     } = useSortedData("home");
 
     useEffect(() => {
@@ -87,6 +88,7 @@ const Home = () => {
                     sortMethod={sortMethod}
                     setSortMethod={setSortMethod}
                     title="Sort Blogs"
+                    resetForm={resetForm}
                     sortFields={[
                         { name: "Title", value: "title" },
                         { name: "Author", value: "author" },

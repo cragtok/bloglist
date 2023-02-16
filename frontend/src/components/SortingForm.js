@@ -7,6 +7,7 @@ const SortingForm = ({
     setSortMethod,
     sortFields,
     title,
+    resetForm,
 }) => {
     return (
         <div className="mb-5">
@@ -40,13 +41,7 @@ const SortingForm = ({
                             <option value="descending">Descending</option>
                         </select>
                     </div>
-                    <button
-                        onClick={() => {
-                            setSortCategory("");
-                            setSortMethod("descending");
-                        }}
-                        className="button"
-                    >
+                    <button onClick={resetForm} className="button">
                         Clear
                     </button>
                 </>

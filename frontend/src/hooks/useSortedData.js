@@ -11,6 +11,10 @@ const useSortedData = page => {
     const formData = useSelector(state => state.form[page]);
     const dispatch = useDispatch();
 
+    const resetForm = () => {
+        setSortCategory("");
+        setSortMethod("descending");
+    };
     const compareValues = (a, b) => {
         if (a === b) {
             return 0;
@@ -81,6 +85,7 @@ const useSortedData = page => {
         setSortMethod,
         sortedData,
         setSortedData,
+        resetForm,
     };
 };
 

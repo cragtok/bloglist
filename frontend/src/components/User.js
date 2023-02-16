@@ -29,6 +29,7 @@ const User = () => {
         setSortMethod,
         sortedData,
         setSortedData,
+        resetForm,
     } = useSortedData("blogs");
 
     useEffect(() => {
@@ -91,6 +92,7 @@ const User = () => {
                 sortMethod={sortMethod}
                 setSortMethod={setSortMethod}
                 title="Sort Blogs"
+                resetForm={resetForm}
                 sortFields={[
                     { name: "Title", value: "title" },
                     { name: "Author", value: "author" },
