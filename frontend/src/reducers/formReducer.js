@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    home: { sortCategory: "", sortMethod: "" },
-    blogs: { sortCategory: "", sortMethod: "" },
-    users: { sortCategory: "", sortMethod: "" },
+    home: { sortCategory: "", sortMethod: "descending" },
+    blogs: { sortCategory: "", sortMethod: "descending" },
+    users: { sortCategory: "", sortMethod: "descending" },
 };
 
 const formSlice = createSlice({
