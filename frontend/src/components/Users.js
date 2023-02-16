@@ -37,7 +37,7 @@ const Users = () => {
         setSortMethod,
         sortedData,
         setSortedData,
-    } = useSortedData([], "users");
+    } = useSortedData("users");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");

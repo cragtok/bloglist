@@ -28,7 +28,7 @@ const Home = () => {
         setSortMethod,
         sortedData,
         setSortedData,
-    } = useSortedData([], "home");
+    } = useSortedData("home");
 
     useEffect(() => {
         const fetchBlogs = async () => {

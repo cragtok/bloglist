@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFormState } from "../reducers/formReducer";
 
-const useSortedData = (initialData = [], page) => {
+const useSortedData = page => {
     const [sortCategory, setSortCategory] = useState("");
     const [sortMethod, setSortMethod] = useState("descending");
-    const [sortedData, setSortedData] = useState([...initialData]);
+    const [sortedData, setSortedData] = useState([]);
     const [firstRender, setFirstRender] = useState(true);
 
     const formData = useSelector(state => state.form[page]);
