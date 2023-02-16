@@ -61,12 +61,13 @@ const useSortedData = (initialData = [], page) => {
     useEffect(() => {
         setSortCategory(formData.sortCategory);
         setSortMethod(formData.sortMethod);
+        setSortedData([...sortedData].sort(sortFunction));
         setFirstRender(false);
     }, []);
 
     useEffect(() => {
-        setSortedData([...sortedData].sort(sortFunction));
         if (!firstRender) {
+            setSortedData([...sortedData].sort(sortFunction));
             dispatch(
                 setFormState({ page, formState: { sortCategory, sortMethod } })
             );

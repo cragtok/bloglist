@@ -95,7 +95,10 @@ const Home = () => {
                         { name: "Number of Comments", value: "comments" },
                     ]}
                 />
-                <BlogList blogs={sortedData} sortedField={sortCategory} />
+                <BlogList
+                    blogs={sortCategory ? sortedData : blogs}
+                    sortedField={sortCategory}
+                />
             </>
         </div>
     );

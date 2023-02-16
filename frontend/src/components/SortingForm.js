@@ -43,7 +43,7 @@ const SortingForm = ({
                     <button
                         onClick={() => {
                             setSortCategory("");
-                            setSortMethod("");
+                            setSortMethod("descending");
                         }}
                         className="button"
                     >

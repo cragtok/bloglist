@@ -103,7 +103,10 @@ const User = () => {
             {user.blogs.length < 1 ? (
                 <p className="subtitle mt-3">No blogs added by user</p>
             ) : (
-                <BlogList blogs={sortedData} sortedField={sortCategory} />
+                <BlogList
+                    blogs={sortCategory ? sortedData : user.blogs}
+                    sortedField={sortCategory}
+                />
             )}
         </div>
     );
