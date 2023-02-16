@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFormState } from "../reducers/formReducer";
 
-const useSortedData = page => {
+const useSortedAndFilteredData = page => {
     const [sortCategory, setSortCategory] = useState("");
     const [sortMethod, setSortMethod] = useState("descending");
     const [sortedData, setSortedData] = useState([]);
@@ -89,4 +89,4 @@ const useSortedData = page => {
     };
 };
 
-export default useSortedData;
+export default useSortedAndFilteredData;

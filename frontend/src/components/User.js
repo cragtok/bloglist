@@ -9,7 +9,7 @@ import SortingForm from "./SortingForm";
 import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
-import useSortedData from "../hooks/useSortedData";
+import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
 
 const User = () => {
     const id = useParams().id;
@@ -30,7 +30,7 @@ const User = () => {
         sortedData,
         setSortedData,
         resetForm,
-    } = useSortedData("blogs");
+    } = useSortedAndFilteredData("blogs");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import SortingForm from "./SortingForm";
 import useData from "../hooks/useData";
-import useSortedData from "../hooks/useSortedData";
+import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
 
 import { setLoadingState } from "../reducers/loadingReducer";
 import { setUsers } from "../reducers/usersReducer";
@@ -38,7 +38,7 @@ const Users = () => {
         sortedData,
         setSortedData,
         resetForm,
-    } = useSortedData("users");
+    } = useSortedAndFilteredData("users");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
