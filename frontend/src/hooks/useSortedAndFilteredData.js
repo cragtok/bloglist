@@ -5,7 +5,8 @@ import { setFormState } from "../reducers/formReducer";
 const useSortedAndFilteredData = page => {
     const [sortCategory, setSortCategory] = useState("");
     const [sortMethod, setSortMethod] = useState("descending");
-    const [sortedData, setSortedData] = useState([]);
+    const [modifiedData, setModifiedData] = useState([]);
+
     const [firstRender, setFirstRender] = useState(true);
 
     const formData = useSelector(state => state.form[page]);
@@ -65,13 +66,13 @@ const useSortedAndFilteredData = page => {
     useEffect(() => {
         setSortCategory(formData.sortCategory);
         setSortMethod(formData.sortMethod);
-        setSortedData([...sortedData].sort(sortFunction));
+        setModifiedData([...modifiedData].sort(sortFunction));
         setFirstRender(false);
     }, []);
 
     useEffect(() => {
         if (!firstRender) {
-            setSortedData([...sortedData].sort(sortFunction));
+            setModifiedData([...modifiedData].sort(sortFunction));
             dispatch(
                 setFormState({ page, formState: { sortCategory, sortMethod } })
             );
@@ -83,8 +84,8 @@ const useSortedAndFilteredData = page => {
         setSortCategory,
         sortMethod,
         setSortMethod,
-        sortedData,
-        setSortedData,
+        modifiedData,
+        setModifiedData,
         resetForm,
     };
 };

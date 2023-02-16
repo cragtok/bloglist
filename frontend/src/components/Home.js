@@ -27,8 +27,8 @@ const Home = () => {
         sortMethod,
         setSortCategory,
         setSortMethod,
-        sortedData,
-        setSortedData,
+        modifiedData,
+        setModifiedData,
         resetForm,
     } = useSortedAndFilteredData("home");
 
@@ -41,7 +41,7 @@ const Home = () => {
             try {
                 const blogs = await blogService.getAll();
                 dispatch(setBlogs(blogs));
-                setSortedData(blogs);
+                setModifiedData(blogs);
             } catch (error) {
                 dispatch(
                     setNotification(error.response.data.error, "error", 4)
@@ -52,7 +52,7 @@ const Home = () => {
         if (loggedUserJSON && !blogs.length) {
             fetchBlogs();
         } else {
-            setSortedData(blogs);
+            setModifiedData(blogs);
         }
     }, []);
 
@@ -100,7 +100,7 @@ const Home = () => {
                 />
                 <FilterForm title="Blogs" />
                 <BlogList
-                    blogs={sortCategory ? sortedData : blogs}
+                    blogs={sortCategory ? modifiedData : blogs}
                     sortedField={sortCategory}
                 />
             </>

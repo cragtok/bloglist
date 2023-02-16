@@ -35,8 +35,8 @@ const Users = () => {
         sortMethod,
         setSortCategory,
         setSortMethod,
-        sortedData,
-        setSortedData,
+        modifiedData,
+        setModifiedData,
         resetForm,
     } = useSortedAndFilteredData("users");
 
@@ -48,7 +48,7 @@ const Users = () => {
             usersService.setServiceToken(loggedInUser.token);
             const fetchedUsers = await usersService.getAll();
             dispatch(setUsers(fetchedUsers));
-            setSortedData(
+            setModifiedData(
                 fetchedUsers.map(user => {
                     return {
                         ...user,
@@ -68,7 +68,7 @@ const Users = () => {
         if (loggedUserJSON && users.length === 0) {
             fn();
         } else {
-            setSortedData(users);
+            setModifiedData(users);
         }
     }, []);
 
@@ -132,7 +132,7 @@ const Users = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {(sortCategory ? sortedData : users).map(user => (
+                    {(sortCategory ? modifiedData : users).map(user => (
                         <tr key={user.id}>
                             <td>
                                 <Link to={`/users/${user.id}`}>
