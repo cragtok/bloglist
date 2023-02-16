@@ -5,6 +5,7 @@ import BlogList from "./BlogList";
 import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
 import SortingForm from "./SortingForm";
+import FilterForm from "./FilterForm";
 
 import useData from "../hooks/useData";
 import useSortedData from "../hooks/useSortedData";
@@ -32,6 +33,7 @@ const Home = () => {
     } = useSortedData("home");
 
     useEffect(() => {
+        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         const fetchBlogs = async () => {
             dispatch(setLoadingState(true));
             const loggedInUser = JSON.parse(loggedUserJSON);
@@ -47,7 +49,6 @@ const Home = () => {
             }
             dispatch(setLoadingState(false));
         };
-        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         if (loggedUserJSON && !blogs.length) {
             fetchBlogs();
         } else {
@@ -97,6 +98,7 @@ const Home = () => {
                         { name: "Number of Comments", value: "comments" },
                     ]}
                 />
+                <FilterForm title="Blogs" />
                 <BlogList
                     blogs={sortCategory ? sortedData : blogs}
                     sortedField={sortCategory}
