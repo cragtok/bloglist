@@ -57,6 +57,12 @@ const User = () => {
         }
     }, []);
 
+    useEffect(() => {
+        if (sortCategory && !sortingFormRef.current.visible) {
+            sortingFormRef.current.setVisibility(true);
+        }
+    }, [sortCategory]);
+
     if (isLoading) {
         return <div>Loading...</div>;
     }
