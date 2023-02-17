@@ -170,7 +170,7 @@ const FilterForm = ({ formTitle, filterCategories, setFilterCategories }) => {
                 </div>
             </div>
             <div className="field mt-3">
-                <label className="label is-normal">
+                <label className="checkbox label is-normal">
                     <input
                         value={likedBlogs}
                         onChange={e =>
@@ -178,20 +178,21 @@ const FilterForm = ({ formTitle, filterCategories, setFilterCategories }) => {
                         }
                         name="blogs-liked"
                         type="checkbox"
+                        defaultChecked={likedBlogs}
                     />{" "}
                     Liked Blogs
                 </label>
             </div>
             <div className="field">
-                <label className="label is-normal">
+                <label className="checkbox label is-normal">
                     <input
                         value={commentedBlogs}
                         onChange={e =>
                             updateFormFields("commentedBlogs", e.target.checked)
                         }
                         name="blogs-commented"
-                        className="checkbox"
                         type="checkbox"
+                        defaultChecked={commentedBlogs}
                     />{" "}
                     Commented Blogs
                 </label>
