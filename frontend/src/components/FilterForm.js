@@ -1,6 +1,10 @@
 import React from "react";
 
 const FilterForm = ({ formTitle, filterCategories, setFilterCategories }) => {
+    if (!filterCategories) {
+        return null;
+    }
+
     const {
         author,
         title,
