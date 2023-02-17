@@ -30,6 +30,8 @@ const Home = () => {
         modifiedData,
         setModifiedData,
         resetForm,
+        filterCategories,
+        setFilterCategories,
     } = useSortedAndFilteredData("home");
 
     useEffect(() => {
@@ -98,7 +100,11 @@ const Home = () => {
                         { name: "Number of Comments", value: "comments" },
                     ]}
                 />
-                <FilterForm title="Blogs" />
+                <FilterForm
+                    formTitle="Blogs"
+                    filterCategories={filterCategories}
+                    setFilterCategories={setFilterCategories}
+                />
                 <BlogList
                     blogs={sortCategory ? modifiedData : blogs}
                     sortedField={sortCategory}

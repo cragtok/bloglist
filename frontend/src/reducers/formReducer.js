@@ -4,9 +4,9 @@ const initialFilters = {
     author: "",
     title: "",
     url: "",
-    date: { from: null, to: null },
-    numComments: { from: null, to: null },
-    numLikes: { from: null, to: null },
+    date: { from: "", to: "" },
+    numComments: { from: 0, to: 0 },
+    numLikes: { from: 0, to: 0 },
     likedBlogs: false,
     commentedBlogs: false,
 };
