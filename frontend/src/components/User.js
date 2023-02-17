@@ -5,6 +5,7 @@ import BlogList from "./BlogList";
 import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
 import SortingForm from "./SortingForm";
+import FilterForm from "./FilterForm";
 
 import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
@@ -16,6 +17,7 @@ const User = () => {
 
     const blogFormRef = useRef();
     const sortingFormRef = useRef();
+    const filterFormRef = useRef();
 
     const dispatch = useDispatch();
 
@@ -33,7 +35,31 @@ const User = () => {
         modifiedData,
         setModifiedData,
         resetForm,
+        filterCategories,
+        setFilterCategories,
     } = useSortedAndFilteredData("blogs");
+
+    useEffect(() => {
+        if (
+            filterCategories &&
+            filterFormRef.current &&
+            !filterFormRef.current.visible
+        ) {
+            filterFormRef.current.setVisibility(
+                filterCategories.author ||
+                    filterCategories.title ||
+                    filterCategories.url ||
+                    filterCategories.date.from ||
+                    filterCategories.date.to ||
+                    filterCategories.numComments.from ||
+                    filterCategories.numComments.to ||
+                    filterCategories.numLikes.from ||
+                    filterCategories.numLikes.to ||
+                    filterCategories.likedBlogs ||
+                    filterCategories.commentedBlogs
+            );
+        }
+    }, [filterCategories]);
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -108,6 +134,14 @@ const User = () => {
                         { name: "Number of Likes", value: "likes" },
                         { name: "Number of Comments", value: "comments" },
                     ]}
+                />
+            </Togglable>
+            <br />
+            <Togglable title="" ref={filterFormRef} buttonLabel="Filter Blogs">
+                <FilterForm
+                    formTitle="Blogs"
+                    filterCategories={filterCategories}
+                    setFilterCategories={setFilterCategories}
                 />
             </Togglable>
             <br />
