@@ -13,7 +13,10 @@ import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
 
 const User = () => {
     const id = useParams().id;
+
     const blogFormRef = useRef();
+    const sortingFormRef = useRef();
+
     const dispatch = useDispatch();
 
     const usersService = useData("/api/users");
@@ -83,24 +86,24 @@ const User = () => {
                     />
                 </Togglable>
             )}
-
             <br />
-
-            <SortingForm
-                sortCategory={sortCategory}
-                setSortCategory={setSortCategory}
-                sortMethod={sortMethod}
-                setSortMethod={setSortMethod}
-                title="Sort Blogs"
-                resetForm={resetForm}
-                sortFields={[
-                    { name: "Title", value: "title" },
-                    { name: "Author", value: "author" },
-                    { name: "Date Created", value: "createdAt" },
-                    { name: "Number of Likes", value: "likes" },
-                    { name: "Number of Comments", value: "comments" },
-                ]}
-            />
+            <Togglable title="" ref={sortingFormRef} buttonLabel="Sort Blogs">
+                <SortingForm
+                    sortCategory={sortCategory}
+                    setSortCategory={setSortCategory}
+                    sortMethod={sortMethod}
+                    setSortMethod={setSortMethod}
+                    title="Sort Blogs"
+                    resetForm={resetForm}
+                    sortFields={[
+                        { name: "Title", value: "title" },
+                        { name: "Author", value: "author" },
+                        { name: "Date Created", value: "createdAt" },
+                        { name: "Number of Likes", value: "likes" },
+                        { name: "Number of Comments", value: "comments" },
+                    ]}
+                />
+            </Togglable>
             <br />
             {user.blogs.length < 1 ? (
                 <p className="subtitle mt-3">No blogs added by user</p>

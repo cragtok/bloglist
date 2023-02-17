@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import SortingForm from "./SortingForm";
+import Togglable from "./Togglable";
+
 import useData from "../hooks/useData";
 import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
 
@@ -11,6 +13,8 @@ import { setUsers } from "../reducers/usersReducer";
 
 const Users = () => {
     const dispatch = useDispatch();
+    const sortingFormRef = useRef();
+
     const users = useSelector(state => {
         return state.users.map(user => {
             return {
@@ -84,20 +88,23 @@ const Users = () => {
         <div>
             <h2 className="title is-2 mt-5">Users</h2>
             <br />
-            <SortingForm
-                sortCategory={sortCategory}
-                setSortCategory={setSortCategory}
-                sortMethod={sortMethod}
-                setSortMethod={setSortMethod}
-                title="Sort Users"
-                resetForm={resetForm}
-                sortFields={[
-                    { name: "Username", value: "username" },
-                    { name: "Number of Blogs", value: "blogs" },
-                    { name: "Total Blog Likes", value: "totalLikes" },
-                    { name: "Totel Blog Comments", value: "totalComments" },
-                ]}
-            />
+            <Togglable title="" ref={sortingFormRef} buttonLabel="Sort Blogs">
+                <SortingForm
+                    sortCategory={sortCategory}
+                    setSortCategory={setSortCategory}
+                    sortMethod={sortMethod}
+                    setSortMethod={setSortMethod}
+                    title="Sort Users"
+                    resetForm={resetForm}
+                    sortFields={[
+                        { name: "Username", value: "username" },
+                        { name: "Number of Blogs", value: "blogs" },
+                        { name: "Total Blog Likes", value: "totalLikes" },
+                        { name: "Totel Blog Comments", value: "totalComments" },
+                    ]}
+                />
+            </Togglable>
+            <br />
             <table className="table is-striped is-bordered is-hoverable is-fullwidth">
                 <thead>
                     <tr>

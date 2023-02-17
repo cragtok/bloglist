@@ -16,6 +16,8 @@ import { setNotification } from "../reducers/notificationReducer";
 
 const Home = () => {
     const blogFormRef = useRef();
+    const sortingFormRef = useRef();
+    const filterFormRef = useRef();
 
     const dispatch = useDispatch();
     const blogService = useData("/api/blogs");
@@ -85,26 +87,41 @@ const Home = () => {
                     />
                 </Togglable>
                 <br />
-                <SortingForm
-                    sortCategory={sortCategory}
-                    setSortCategory={setSortCategory}
-                    sortMethod={sortMethod}
-                    setSortMethod={setSortMethod}
-                    title="Sort Blogs"
-                    resetForm={resetForm}
-                    sortFields={[
-                        { name: "Title", value: "title" },
-                        { name: "Author", value: "author" },
-                        { name: "Date Created", value: "createdAt" },
-                        { name: "Number of Likes", value: "likes" },
-                        { name: "Number of Comments", value: "comments" },
-                    ]}
-                />
-                <FilterForm
-                    formTitle="Blogs"
-                    filterCategories={filterCategories}
-                    setFilterCategories={setFilterCategories}
-                />
+
+                <Togglable
+                    title=""
+                    ref={sortingFormRef}
+                    buttonLabel="Sort Blogs"
+                >
+                    <SortingForm
+                        sortCategory={sortCategory}
+                        setSortCategory={setSortCategory}
+                        sortMethod={sortMethod}
+                        setSortMethod={setSortMethod}
+                        title="Sort Blogs"
+                        resetForm={resetForm}
+                        sortFields={[
+                            { name: "Title", value: "title" },
+                            { name: "Author", value: "author" },
+                            { name: "Date Created", value: "createdAt" },
+                            { name: "Number of Likes", value: "likes" },
+                            { name: "Number of Comments", value: "comments" },
+                        ]}
+                    />
+                </Togglable>
+                <br />
+                <Togglable
+                    title=""
+                    ref={filterFormRef}
+                    buttonLabel="Filter Blogs"
+                >
+                    <FilterForm
+                        formTitle="Blogs"
+                        filterCategories={filterCategories}
+                        setFilterCategories={setFilterCategories}
+                    />
+                </Togglable>
+                <br />
                 <BlogList
                     blogs={sortCategory ? modifiedData : blogs}
                     sortedField={sortCategory}
