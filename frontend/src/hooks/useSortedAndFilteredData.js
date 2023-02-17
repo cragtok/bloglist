@@ -69,7 +69,7 @@ const useSortedAndFilteredData = page => {
     useEffect(() => {
         setSortCategory(formData.sortCategory);
         setSortMethod(formData.sortMethod);
-        setFilterCategories(formData.filterCategories);
+        setFilterCategories({ ...formData.filterCategories });
         setModifiedData([...modifiedData].sort(sortFunction));
         setFirstRender(false);
     }, []);
