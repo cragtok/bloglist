@@ -1,6 +1,11 @@
 import React from "react";
 
-const FilterForm = ({ formTitle, filterCategories, setFilterCategories }) => {
+const FilterForm = ({
+    formTitle,
+    filterCategories,
+    setFilterCategories,
+    resetForm,
+}) => {
     if (!filterCategories) {
         return null;
     }
@@ -197,6 +202,10 @@ const FilterForm = ({ formTitle, filterCategories, setFilterCategories }) => {
                     Commented Blogs
                 </label>
             </div>
+            <br />
+            <button onClick={resetForm} className="button">
+                Clear Filters
+            </button>
         </div>
     );
 };

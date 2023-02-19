@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFormState } from "../reducers/formReducer";
+import { setFormState, initialFilters } from "../reducers/formReducer";
 
 const useSortedAndFilteredData = page => {
     const [sortCategory, setSortCategory] = useState("");
@@ -15,10 +15,15 @@ const useSortedAndFilteredData = page => {
     const formData = useSelector(state => state.form[page]);
     const dispatch = useDispatch();
 
-    const resetForm = () => {
+    const resetSortState = () => {
         setSortCategory("");
         setSortMethod("descending");
     };
+
+    const resetFilterState = () => {
+        setFilterCategories(initialFilters);
+    };
+
     const compareValues = (a, b) => {
         if (a === b) {
             return 0;
@@ -97,7 +102,8 @@ const useSortedAndFilteredData = page => {
         setSortMethod,
         modifiedData,
         setModifiedData,
-        resetForm,
+        resetSortState,
+        resetFilterState,
         filterCategories,
         setFilterCategories,
     };

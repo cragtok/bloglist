@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialFilters = {
+export const initialFilters = {
     author: "",
     title: "",
     url: "",

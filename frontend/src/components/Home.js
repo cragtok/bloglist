@@ -31,7 +31,8 @@ const Home = () => {
         setSortMethod,
         modifiedData,
         setModifiedData,
-        resetForm,
+        resetSortState,
+        resetFilterState,
         filterCategories,
         setFilterCategories,
     } = useSortedAndFilteredData("home");
@@ -127,7 +128,7 @@ const Home = () => {
                         sortMethod={sortMethod}
                         setSortMethod={setSortMethod}
                         title="Sort Blogs"
-                        resetForm={resetForm}
+                        resetForm={resetSortState}
                         sortFields={[
                             { name: "Title", value: "title" },
                             { name: "Author", value: "author" },
@@ -147,6 +148,7 @@ const Home = () => {
                         formTitle="Blogs"
                         filterCategories={filterCategories}
                         setFilterCategories={setFilterCategories}
+                        resetForm={resetFilterState}
                     />
                 </Togglable>
                 <br />
