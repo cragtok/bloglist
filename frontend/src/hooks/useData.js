@@ -13,6 +13,12 @@ const useData = (baseUrl, serviceToken = null) => {
         return response.data;
     };
 
+    const getOne = async id => {
+        const config = { headers: { Authorization: token } };
+        const response = await axios.get(`${baseUrl}/${id}`, config);
+        return response.data;
+    };
+
     const create = async newObject => {
         const config = { headers: { Authorization: token } };
         const response = await axios.post(baseUrl, newObject, config);
@@ -35,7 +41,14 @@ const useData = (baseUrl, serviceToken = null) => {
         return response.data;
     };
 
-    const services = { getAll, create, remove, update, setServiceToken };
+    const services = {
+        getAll,
+        create,
+        remove,
+        update,
+        setServiceToken,
+        getOne,
+    };
     return services;
 };
 
