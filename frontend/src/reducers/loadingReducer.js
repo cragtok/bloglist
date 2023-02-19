@@ -19,8 +19,15 @@ const loadingSlice = createSlice({
         setUsersFetched(state, action) {
             return { ...state, usersFetched: action.payload };
         },
+        resetLoadingState() {
+            return { ...initialState };
+        },
     },
 });
-export const { setLoadingState, setBlogsFetched, setUsersFetched } =
-    loadingSlice.actions;
+export const {
+    resetLoadingState,
+    setLoadingState,
+    setBlogsFetched,
+    setUsersFetched,
+} = loadingSlice.actions;
 export default loadingSlice.reducer;

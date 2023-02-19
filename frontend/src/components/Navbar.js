@@ -7,6 +7,7 @@ import { setBlogs } from "../reducers/blogsReducer";
 import { setUsers } from "../reducers/usersReducer";
 import { removeNotification } from "../reducers/notificationReducer";
 import { resetFormState } from "../reducers/formReducer";
+import { resetLoadingState } from "../reducers/loadingReducer";
 
 const styles = {
     navbarStart: {
@@ -33,6 +34,7 @@ const Navbar = () => {
         dispatch(setBlogs([]));
         dispatch(setUsers([]));
         dispatch(resetFormState());
+        dispatch(resetLoadingState());
         navigate("/");
     };
 
