@@ -8,7 +8,7 @@ import Togglable from "./Togglable";
 import useData from "../hooks/useData";
 import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
 
-import { setLoadingState } from "../reducers/loadingReducer";
+import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import { setUsers } from "../reducers/usersReducer";
 
 const Users = () => {
@@ -30,8 +30,7 @@ const Users = () => {
             };
         });
     });
-    const { isLoading } = useSelector(state => state.loading);
-
+    const { isLoading, usersFetched } = useSelector(state => state.loading);
     const usersService = useData("/api/users");
 
     const {
@@ -67,9 +66,10 @@ const Users = () => {
                     };
                 })
             );
+            dispatch(setUsersFetched(true));
             dispatch(setLoadingState(false));
         };
-        if (loggedUserJSON && users.length === 0) {
+        if (loggedUserJSON && !usersFetched) {
             fn();
         } else {
             setInitialData(users);
@@ -86,8 +86,8 @@ const Users = () => {
         return <p>Loading...</p>;
     }
 
-    if (!isLoading && !users.length) {
-        return <p>No users...</p>;
+    if (usersFetched && !users.length) {
+        return <p>No Users</p>;
     }
 
     return (

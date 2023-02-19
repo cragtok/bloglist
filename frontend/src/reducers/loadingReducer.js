@@ -17,7 +17,7 @@ const loadingSlice = createSlice({
             return { ...state, blogsFetched: action.payload };
         },
         setUsersFetched(state, action) {
-            return { ...state, blogsFetched: action.payload };
+            return { ...state, usersFetched: action.payload };
         },
     },
 });
