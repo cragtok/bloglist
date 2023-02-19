@@ -79,9 +79,6 @@ const Home = () => {
         return <div>Loading...</div>;
     }
 
-    if (blogsFetched && !blogs.length) {
-        return <div>No Blogs</div>;
-    }
     return (
         <div>
             <>
