@@ -58,7 +58,6 @@ const Blog = () => {
             const updatedBlog = await blogService.update({
                 ...blog,
                 user: blog.user.id,
-                likes: blog.likes - 1,
                 action,
             });
             dispatch(updateBlog(updatedBlog));
@@ -66,6 +65,7 @@ const Blog = () => {
             const updateObj = {
                 userId: updatedBlog.user.id,
                 blogId: updatedBlog.id,
+                likedUserId: loggedInUser.id,
             };
 
             action === "like"

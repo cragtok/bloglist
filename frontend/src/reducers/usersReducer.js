@@ -67,11 +67,18 @@ const usersSlice = createSlice({
                 if (user.id === action.payload.userId) {
                     return {
                         ...user,
-                        blogs: user.blogs.map(blog =>
-                            blog.id === action.payload.blogId
-                                ? { ...blog, likes: blog.likes + 1 }
-                                : blog
-                        ),
+                        blogs: user.blogs.map(blog => {
+                            if (blog.id === action.payload.blogId) {
+                                return {
+                                    ...blog,
+                                    likes: blog.likes + 1,
+                                    userLikes: blog.userLikes.concat(
+                                        action.payload.likedUserId
+                                    ),
+                                };
+                            }
+                            return blog;
+                        }),
                     };
                 }
                 return user;
@@ -82,11 +89,20 @@ const usersSlice = createSlice({
                 if (user.id === action.payload.userId) {
                     return {
                         ...user,
-                        blogs: user.blogs.map(blog =>
-                            blog.id === action.payload.blogId
-                                ? { ...blog, likes: blog.likes - 1 }
-                                : blog
-                        ),
+                        blogs: user.blogs.map(blog => {
+                            if (blog.id === action.payload.blogId) {
+                                return {
+                                    ...blog,
+                                    likes: blog.likes - 1,
+                                    userLikes: blog.userLikes.filter(
+                                        userLike =>
+                                            userLike !==
+                                            action.payload.likedUserId
+                                    ),
+                                };
+                            }
+                            return blog;
+                        }),
                     };
                 }
 
