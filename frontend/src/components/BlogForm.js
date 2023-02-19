@@ -19,12 +19,13 @@ const BlogForm = ({ toggleVisibility }) => {
     const loggedInUser = useSelector(state => state.user);
     const notification = useSelector(state => state.notification);
 
-    const blogService = useData("/api/blogs", loggedInUser.token);
+    const blogService = useData("/api/blogs");
 
     const createBlog = async e => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
+            blogService.setServiceToken(loggedInUser.token);
             const newBlog = await blogService.create({ title, author, url });
             dispatch(addBlog(newBlog));
             setTitle("");
