@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isLoading: false,
+    blogsFetched: false,
+    usersFetched: false,
 };
 
 const loadingSlice = createSlice({
@@ -9,9 +11,16 @@ const loadingSlice = createSlice({
     initialState,
     reducers: {
         setLoadingState(state, action) {
-            return { isLoading: action.payload };
+            return { ...state, isLoading: action.payload };
+        },
+        setBlogsFetched(state, action) {
+            return { ...state, blogsFetched: action.payload };
+        },
+        setUsersFetched(state, action) {
+            return { ...state, blogsFetched: action.payload };
         },
     },
 });
-export const { setLoadingState } = loadingSlice.actions;
+export const { setLoadingState, setBlogsFetched, setUsersFetched } =
+    loadingSlice.actions;
 export default loadingSlice.reducer;
