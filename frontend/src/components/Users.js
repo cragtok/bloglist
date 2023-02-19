@@ -40,8 +40,8 @@ const Users = () => {
         setSortCategory,
         setSortMethod,
         modifiedData,
-        setModifiedData,
         resetSortState,
+        setInitialData,
     } = useSortedAndFilteredData("users");
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const Users = () => {
             usersService.setServiceToken(loggedInUser.token);
             const fetchedUsers = await usersService.getAll();
             dispatch(setUsers(fetchedUsers));
-            setModifiedData(
+            setInitialData(
                 fetchedUsers.map(user => {
                     return {
                         ...user,
@@ -72,7 +72,7 @@ const Users = () => {
         if (loggedUserJSON && users.length === 0) {
             fn();
         } else {
-            setModifiedData(users);
+            setInitialData(users);
         }
     }, []);
 
@@ -94,7 +94,7 @@ const Users = () => {
         <div>
             <h2 className="title is-2 mt-5">Users</h2>
             <br />
-            <Togglable title="" ref={sortingFormRef} buttonLabel="Sort Blogs">
+            <Togglable title="" ref={sortingFormRef} buttonLabel="Sort Users">
                 <SortingForm
                     sortCategory={sortCategory}
                     setSortCategory={setSortCategory}

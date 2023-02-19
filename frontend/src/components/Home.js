@@ -30,12 +30,12 @@ const Home = () => {
         setSortCategory,
         setSortMethod,
         modifiedData,
-        setModifiedData,
         resetSortState,
         resetFilterState,
         filterCategories,
         setFilterCategories,
         filterCategoriesPresent,
+        setInitialData,
     } = useSortedAndFilteredData("home");
 
     useEffect(() => {
@@ -47,7 +47,7 @@ const Home = () => {
             try {
                 const blogs = await blogService.getAll();
                 dispatch(setBlogs(blogs));
-                setModifiedData(blogs);
+                setInitialData(blogs);
             } catch (error) {
                 dispatch(
                     setNotification(error.response.data.error, "error", 4)
@@ -58,7 +58,7 @@ const Home = () => {
         if (loggedUserJSON && !blogs.length) {
             fetchBlogs();
         } else {
-            setModifiedData(blogs);
+            setInitialData(blogs);
         }
     }, []);
 
@@ -137,10 +137,7 @@ const Home = () => {
                     />
                 </Togglable>
                 <br />
-                <BlogList
-                    blogs={sortCategory ? modifiedData : blogs}
-                    sortedField={sortCategory}
-                />
+                <BlogList blogs={modifiedData} sortedField={sortCategory} />
             </>
         </div>
     );

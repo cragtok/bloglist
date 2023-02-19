@@ -33,12 +33,12 @@ const User = () => {
         setSortCategory,
         setSortMethod,
         modifiedData,
-        setModifiedData,
         resetFilterState,
         resetSortState,
         filterCategories,
         setFilterCategories,
         filterCategoriesPresent,
+        setInitialData,
     } = useSortedAndFilteredData("blogs");
 
     useEffect(() => {
@@ -57,7 +57,7 @@ const User = () => {
             dispatch(setUsers(fetchedUsers));
             const foundUser = fetchedUsers.filter(u => u.id === id)[0];
             if (foundUser) {
-                setModifiedData(foundUser.blogs);
+                setInitialData(foundUser.blogs);
             }
             dispatch(setLoadingState(false));
         };
@@ -65,7 +65,7 @@ const User = () => {
         if (loggedUserJSON && !user) {
             fn();
         } else {
-            setModifiedData(user.blogs);
+            setInitialData(user.blogs);
         }
     }, []);
 
@@ -135,10 +135,7 @@ const User = () => {
             {user.blogs.length < 1 ? (
                 <p className="subtitle mt-3">No blogs added by user</p>
             ) : (
-                <BlogList
-                    blogs={sortCategory ? modifiedData : user.blogs}
-                    sortedField={sortCategory}
-                />
+                <BlogList blogs={modifiedData} sortedField={sortCategory} />
             )}
         </div>
     );

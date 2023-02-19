@@ -9,6 +9,7 @@ const useSortedAndFilteredData = page => {
     const [firstRender, setFirstRender] = useState(true);
 
     const [modifiedData, setModifiedData] = useState([]);
+    const [initialData, setInitialData] = useState([]);
 
     const [filterCategories, setFilterCategories] = useState(null);
 
@@ -88,17 +89,49 @@ const useSortedAndFilteredData = page => {
         return page === "users" ? sortUserFields(a, b) : sortBlogFields(a, b);
     };
 
+    const filterUserFields = data => {
+        data;
+        return true;
+    };
+
+    const filterBlogFields = data => {
+        const filterStringFields = data => {
+            return (
+                data.author.includes(filterCategories.author) &&
+                data.title.includes(filterCategories.title) &&
+                data.url.includes(filterCategories.url)
+            );
+        };
+        return filterStringFields(data);
+    };
+    const filterFunction = data => {
+        if (!filterCategoriesPresent(data)) {
+            return true;
+        }
+        return page === "users"
+            ? filterUserFields(data)
+            : filterBlogFields(data);
+    };
+
     useEffect(() => {
         setSortCategory(formData.sortCategory);
         setSortMethod(formData.sortMethod);
         setFilterCategories({ ...formData.filterCategories });
-        setModifiedData([...modifiedData].sort(sortFunction));
+        setModifiedData(initialData.filter(filterFunction).sort(sortFunction));
         setFirstRender(false);
     }, []);
 
     useEffect(() => {
+        if (!modifiedData.length) {
+            setModifiedData([...initialData]);
+        }
+    }, [initialData]);
+
+    useEffect(() => {
         if (!firstRender) {
-            setModifiedData([...modifiedData].sort(sortFunction));
+            setModifiedData(
+                initialData.filter(filterFunction).sort(sortFunction)
+            );
             dispatch(
                 setFormState({
                     page,
@@ -124,6 +157,7 @@ const useSortedAndFilteredData = page => {
         filterCategories,
         setFilterCategories,
         filterCategoriesPresent,
+        setInitialData,
     };
 };
 
