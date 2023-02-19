@@ -10,7 +10,7 @@ import FilterForm from "./FilterForm";
 import useData from "../hooks/useData";
 import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
 
-import { setLoadingState } from "../reducers/loadingReducer";
+import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
 import { setBlogs } from "../reducers/blogsReducer";
 import { setNotification } from "../reducers/notificationReducer";
 
@@ -23,7 +23,7 @@ const Home = () => {
     const blogService = useData("/api/blogs");
 
     const blogs = useSelector(state => state.blogs);
-    const { isLoading } = useSelector(state => state.loading);
+    const { isLoading, blogsFetched } = useSelector(state => state.loading);
     const {
         sortCategory,
         sortMethod,
@@ -47,6 +47,7 @@ const Home = () => {
             try {
                 const blogs = await blogService.getAll();
                 dispatch(setBlogs(blogs));
+                dispatch(setBlogsFetched(true));
                 setInitialData(blogs);
             } catch (error) {
                 dispatch(
@@ -55,7 +56,7 @@ const Home = () => {
             }
             dispatch(setLoadingState(false));
         };
-        if (loggedUserJSON && !blogs.length) {
+        if (loggedUserJSON && !blogsFetched) {
             fetchBlogs();
         } else {
             setInitialData(blogs);
@@ -78,7 +79,7 @@ const Home = () => {
         return <div>Loading...</div>;
     }
 
-    if (!blogs.length) {
+    if (blogsFetched && !blogs.length) {
         return <div>No Blogs</div>;
     }
     return (
