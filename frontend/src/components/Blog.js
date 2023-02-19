@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { removeBlog, updateBlog } from "../reducers/blogsReducer";
+import { addBlog, removeBlog, updateBlog } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
+import { setLoadingState } from "../reducers/loadingReducer";
+
 import {
     removeUserBlog,
     likeUserBlog,
@@ -27,6 +29,23 @@ const Blog = () => {
 
     const loggedInUser = useSelector(state => state.user);
     const blogService = useData("/api/blogs");
+
+    useEffect(() => {
+        const fn = async () => {
+            dispatch(setLoadingState(true));
+            const loggedInUser = JSON.parse(loggedUserJSON);
+            blogService.setServiceToken(loggedInUser.token);
+            const foundBlog = await blogService.getOne(id);
+            if (foundBlog) {
+                dispatch(addBlog(foundBlog));
+            }
+            dispatch(setLoadingState(false));
+        };
+        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
+        if (loggedUserJSON && !blog) {
+            fn();
+        }
+    }, []);
 
     const handleRemove = async () => {
         if (!window.confirm("Are you sure?")) {
@@ -91,7 +110,7 @@ const Blog = () => {
         return <p>Loading...</p>;
     }
 
-    if (!blog) {
+    if (!isLoading && !blog) {
         return <p>Blog not found</p>;
     }
 
