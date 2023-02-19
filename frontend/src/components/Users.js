@@ -30,7 +30,7 @@ const Users = () => {
             };
         });
     });
-    const { isLoading, usersFetched } = useSelector(state => state.loading);
+    const { usersFetched } = useSelector(state => state.loading);
     const usersService = useData("/api/users");
 
     const {
@@ -82,12 +82,8 @@ const Users = () => {
         }
     }, [sortCategory]);
 
-    if (isLoading) {
+    if (!usersFetched) {
         return <p>Loading...</p>;
-    }
-
-    if (usersFetched && !users.length) {
-        return <p>No Users</p>;
     }
 
     return (
@@ -111,58 +107,62 @@ const Users = () => {
                 />
             </Togglable>
             <br />
-            <table className="table is-striped is-bordered is-hoverable is-fullwidth">
-                <thead>
-                    <tr>
-                        <th
-                            className={`${
-                                sortCategory === "username"
-                                    ? "has-text-success"
-                                    : ""
-                            }`}
-                        >
-                            User
-                        </th>
-                        <th
-                            className={`${
-                                sortCategory === "blogs"
-                                    ? "has-text-success"
-                                    : ""
-                            }`}
-                        >
-                            Blogs
-                        </th>
-                        {sortCategory === "totalLikes" && (
-                            <th className="has-text-success">
-                                Total Blog Likes
+            {usersFetched && !users.length ? (
+                <p>No Users</p>
+            ) : (
+                <table className="table is-striped is-bordered is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th
+                                className={`${
+                                    sortCategory === "username"
+                                        ? "has-text-success"
+                                        : ""
+                                }`}
+                            >
+                                User
                             </th>
-                        )}
-                        {sortCategory === "totalComments" && (
-                            <th className="has-text-success">
-                                Total Blog Comments
+                            <th
+                                className={`${
+                                    sortCategory === "blogs"
+                                        ? "has-text-success"
+                                        : ""
+                                }`}
+                            >
+                                Blogs
                             </th>
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {(sortCategory ? modifiedData : users).map(user => (
-                        <tr key={user.id}>
-                            <td>
-                                <Link to={`/users/${user.id}`}>
-                                    {user.name}
-                                </Link>{" "}
-                            </td>
-                            <td>{user.blogs.length}</td>
                             {sortCategory === "totalLikes" && (
-                                <td>{user.totalBlogLikes}</td>
+                                <th className="has-text-success">
+                                    Total Blog Likes
+                                </th>
                             )}
                             {sortCategory === "totalComments" && (
-                                <td>{user.totalBlogComments}</td>
+                                <th className="has-text-success">
+                                    Total Blog Comments
+                                </th>
                             )}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {(sortCategory ? modifiedData : users).map(user => (
+                            <tr key={user.id}>
+                                <td>
+                                    <Link to={`/users/${user.id}`}>
+                                        {user.name}
+                                    </Link>{" "}
+                                </td>
+                                <td>{user.blogs.length}</td>
+                                {sortCategory === "totalLikes" && (
+                                    <td>{user.totalBlogLikes}</td>
+                                )}
+                                {sortCategory === "totalComments" && (
+                                    <td>{user.totalBlogComments}</td>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 };
