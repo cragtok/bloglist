@@ -41,7 +41,7 @@ const Users = () => {
         setSortMethod,
         modifiedData,
         setModifiedData,
-        resetForm,
+        resetSortState,
     } = useSortedAndFilteredData("users");
 
     useEffect(() => {
@@ -76,6 +76,12 @@ const Users = () => {
         }
     }, []);
 
+    useEffect(() => {
+        if (sortCategory && !sortingFormRef.current.visible) {
+            sortingFormRef.current.setVisibility(true);
+        }
+    }, [sortCategory]);
+
     if (isLoading) {
         return <p>Loading...</p>;
     }
@@ -95,7 +101,7 @@ const Users = () => {
                     sortMethod={sortMethod}
                     setSortMethod={setSortMethod}
                     title="Sort Users"
-                    resetForm={resetForm}
+                    resetForm={resetSortState}
                     sortFields={[
                         { name: "Username", value: "username" },
                         { name: "Number of Blogs", value: "blogs" },
