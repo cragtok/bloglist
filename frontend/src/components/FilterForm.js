@@ -63,7 +63,7 @@ const FilterForm = ({
                 <div className="field is-horizontal">
                     <div className="level field-body">
                         <label className="label is-small mr-2">Min:</label>
-                        <div className="field">
+                        <div className="field has-addons">
                             <input
                                 value={date.from}
                                 onChange={e =>
@@ -76,8 +76,23 @@ const FilterForm = ({
                                 type="date"
                                 name="date-from"
                             />
+                            {date.from && (
+                                <div className="control">
+                                    <a
+                                        onClick={() =>
+                                            updateFormFields("date", {
+                                                ...date,
+                                                from: "",
+                                            })
+                                        }
+                                        className="button is-primary"
+                                    >
+                                        Clear
+                                    </a>
+                                </div>
+                            )}
                         </div>
-                        <div className="field">
+                        <div className="field has-addons">
                             <input
                                 value={date.to}
                                 onChange={e =>
@@ -90,6 +105,21 @@ const FilterForm = ({
                                 type="date"
                                 name="date-to"
                             />
+                            {date.to && (
+                                <div className="control">
+                                    <a
+                                        onClick={() =>
+                                            updateFormFields("date", {
+                                                ...date,
+                                                to: "",
+                                            })
+                                        }
+                                        className="button is-primary"
+                                    >
+                                        Clear
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
