@@ -12,10 +12,7 @@ import Navbar from "./components/Navbar";
 import NotFound from "./components/NotFound";
 
 import { setUser } from "./reducers/userReducer";
-// import { setUsers } from "./reducers/usersReducer";
-
 import "./App.css";
-import { setLoadingState } from "./reducers/loadingReducer";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -23,14 +20,11 @@ const App = () => {
     const notification = useSelector(state => state.notification);
 
     useEffect(() => {
-        dispatch(setLoadingState(true));
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
-
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON);
             dispatch(setUser(user));
         }
-        dispatch(setLoadingState(false));
     }, []);
 
     const isLoggedIn = () => {

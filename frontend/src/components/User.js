@@ -9,7 +9,7 @@ import FilterForm from "./FilterForm";
 
 import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
-import { setLoadingState } from "../reducers/loadingReducer";
+import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
 
 const User = () => {
@@ -23,7 +23,7 @@ const User = () => {
 
     const usersService = useData("/api/users");
 
-    const { isLoading } = useSelector(state => state.loading);
+    const { isLoading, usersFetched } = useSelector(state => state.loading);
 
     const user = useSelector(state => state.users.filter(u => u.id === id)[0]);
 
@@ -59,10 +59,11 @@ const User = () => {
             if (foundUser) {
                 setInitialData(foundUser.blogs);
             }
+            dispatch(setUsersFetched(true));
             dispatch(setLoadingState(false));
         };
 
-        if (loggedUserJSON && !user) {
+        if (loggedUserJSON && !usersFetched) {
             fn();
         } else {
             setInitialData(user.blogs);
@@ -75,7 +76,7 @@ const User = () => {
         }
     }, [sortCategory]);
 
-    if (isLoading) {
+    if (isLoading || !usersFetched) {
         return <div>Loading...</div>;
     }
 

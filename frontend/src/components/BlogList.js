@@ -2,13 +2,13 @@ import PropTypes from "prop-types";
 import BlogLink from "./BlogLink";
 import { useSelector } from "react-redux";
 const BlogList = ({ blogs, sortedField }) => {
-    const { blogsFetched, isLoading } = useSelector(state => state.loading);
+    const { isLoading } = useSelector(state => state.loading);
 
-    if (!blogsFetched || isLoading) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (blogsFetched && !blogs.length) {
+    if (!blogs.length) {
         return <div>No Blogs</div>;
     }
 

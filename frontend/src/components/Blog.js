@@ -22,7 +22,7 @@ const Blog = () => {
     const id = useParams().id;
     const navigate = useNavigate();
     const blog = useSelector(state => state.blogs.find(blog => blog.id === id));
-    const { isLoading } = useSelector(state => state.loading);
+    const { isLoading, blogsFetched } = useSelector(state => state.loading);
 
     const [isSubmittingLike, setIsSubmittingLike] = useState(false);
     const [isSubmittingDelete, setIsSubmittingDelete] = useState(false);
@@ -31,18 +31,22 @@ const Blog = () => {
     const blogService = useData("/api/blogs");
 
     useEffect(() => {
+        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         const fn = async () => {
             dispatch(setLoadingState(true));
             const loggedInUser = JSON.parse(loggedUserJSON);
             blogService.setServiceToken(loggedInUser.token);
-            const foundBlog = await blogService.getOne(id);
-            if (foundBlog) {
-                dispatch(addBlog(foundBlog));
+            try {
+                const foundBlog = await blogService.getOne(id);
+                if (foundBlog) {
+                    dispatch(addBlog(foundBlog));
+                }
+            } catch (error) {
+                console.error(error);
             }
             dispatch(setLoadingState(false));
         };
-        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
-        if (loggedUserJSON && !blog) {
+        if (loggedUserJSON && !blog && !blogsFetched) {
             fn();
         }
     }, []);
@@ -110,7 +114,7 @@ const Blog = () => {
         return <p>Loading...</p>;
     }
 
-    if (!isLoading && !blog) {
+    if (!blog) {
         return <p>Blog not found</p>;
     }
 

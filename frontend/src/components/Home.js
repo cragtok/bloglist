@@ -75,7 +75,7 @@ const Home = () => {
         }
     }, [filterCategories]);
 
-    if (isLoading) {
+    if (isLoading || !blogsFetched) {
         return <div>Loading...</div>;
     }
 
