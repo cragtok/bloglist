@@ -14,6 +14,8 @@ const useSortedAndFilteredData = page => {
     const [filterCategories, setFilterCategories] = useState(null);
 
     const formData = useSelector(state => state.form[page]);
+    const user = useSelector(state => state.user);
+
     const dispatch = useDispatch();
 
     const filterCategoriesPresent = () => {
@@ -102,7 +104,12 @@ const useSortedAndFilteredData = page => {
                 data.url.includes(filterCategories.url)
             );
         };
-        return filterStringFields(data);
+
+        const filterLikedBlogs = data => {
+            return data.userLikes.indexOf(user.id) !== -1;
+        };
+
+        return filterStringFields(data) && filterLikedBlogs(data);
     };
     const filterFunction = data => {
         if (!filterCategoriesPresent(data)) {

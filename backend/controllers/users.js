@@ -16,6 +16,7 @@ usersRouter.get("/", async (request, response) => {
         url: 1,
         createdAt: 1,
         comments: 1,
+        userLikes: 1,
     });
 
     response.json(users);
@@ -36,6 +37,7 @@ usersRouter.get("/:id", async (request, response, next) => {
             url: 1,
             createdAt: 1,
             comments: 1,
+            userLikes: 1,
         });
 
         if (user) {
