@@ -15,6 +15,23 @@ const useSortedAndFilteredData = page => {
     const formData = useSelector(state => state.form[page]);
     const dispatch = useDispatch();
 
+    const filterCategoriesPresent = () => {
+        return (
+            filterCategories &&
+            (filterCategories.author ||
+                filterCategories.title ||
+                filterCategories.url ||
+                filterCategories.date.from ||
+                filterCategories.date.to ||
+                filterCategories.numComments.from ||
+                filterCategories.numComments.to ||
+                filterCategories.numLikes.from ||
+                filterCategories.numLikes.to ||
+                filterCategories.likedBlogs ||
+                filterCategories.commentedBlogs)
+        );
+    };
+
     const resetSortState = () => {
         setSortCategory("");
         setSortMethod("descending");
@@ -106,6 +123,7 @@ const useSortedAndFilteredData = page => {
         resetFilterState,
         filterCategories,
         setFilterCategories,
+        filterCategoriesPresent,
     };
 };
 

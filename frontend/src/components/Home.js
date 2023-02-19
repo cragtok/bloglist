@@ -35,6 +35,7 @@ const Home = () => {
         resetFilterState,
         filterCategories,
         setFilterCategories,
+        filterCategoriesPresent,
     } = useSortedAndFilteredData("home");
 
     useEffect(() => {
@@ -68,24 +69,8 @@ const Home = () => {
     }, [sortCategory]);
 
     useEffect(() => {
-        if (
-            filterCategories &&
-            filterFormRef.current &&
-            !filterFormRef.current.visible
-        ) {
-            filterFormRef.current.setVisibility(
-                filterCategories.author ||
-                    filterCategories.title ||
-                    filterCategories.url ||
-                    filterCategories.date.from ||
-                    filterCategories.date.to ||
-                    filterCategories.numComments.from ||
-                    filterCategories.numComments.to ||
-                    filterCategories.numLikes.from ||
-                    filterCategories.numLikes.to ||
-                    filterCategories.likedBlogs ||
-                    filterCategories.commentedBlogs
-            );
+        if (filterFormRef.current && !filterFormRef.current.visible) {
+            filterFormRef.current.setVisibility(filterCategoriesPresent());
         }
     }, [filterCategories]);
 
