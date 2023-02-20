@@ -1,38 +1,18 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addComment } from "../reducers/blogsReducer";
-import { displayNotification } from "../reducers/notificationReducer";
-
-import useData from "../hooks/useData";
-import { addUserComment } from "../reducers/usersReducer";
-
-const CommentForm = ({ blogId, userId, token }) => {
+const CommentForm = ({ postComment, isSubmittingComment }) => {
     const [comment, setComment] = useState("");
-    const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
-    const commentService = useData(`/api/blogs/${blogId}/comments`, token);
-    const dispatch = useDispatch();
-
-    const postComment = async e => {
-        e.preventDefault();
-        setIsSubmittingComment(true);
-
-        try {
-            const newComment = await commentService.create({ comment });
-            dispatch(addComment({ blogId, comment: newComment }));
-            dispatch(addUserComment({ userId, blogId, comment: newComment }));
-            dispatch(displayNotification("Comment Added", "success", 2));
-            setComment("");
-        } catch (error) {
-            dispatch(
-                displayNotification(error.response.data.error, "error", 4)
-            );
-        }
-        setIsSubmittingComment(false);
-    };
     return (
         <div>
-            <form onSubmit={postComment} className="box">
+            <form
+                onSubmit={async e => {
+                    e.preventDefault();
+                    if (await postComment(comment)) {
+                        setComment("");
+                    }
+                }}
+                className="box"
+            >
                 <div className="columns">
                     <div className="column is-three-quarters">
                         <input

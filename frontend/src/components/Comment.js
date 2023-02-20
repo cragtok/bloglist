@@ -1,6 +1,6 @@
 import React from "react";
 
-const Comment = ({ comment, displayDeleteButton }) => {
+const Comment = ({ comment, displayDeleteButton, handleDeleteComment }) => {
     const commentDate = new Date(comment.createdAt).toDateString().slice(4);
     const commentTime = new Date(comment.createdAt).toLocaleTimeString();
 
@@ -21,7 +21,10 @@ const Comment = ({ comment, displayDeleteButton }) => {
                 </p>
                 <p className="has-text-weight-normal">{comment.comment}</p>
                 {displayDeleteButton && (
-                    <button className="button is-small is-outlined is-danger mt-2 mr-2">
+                    <button
+                        className="button is-small is-outlined is-danger mt-2 mr-2"
+                        onClick={handleDeleteComment}
+                    >
                         Delete
                     </button>
                 )}

@@ -2,9 +2,15 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { addBlog, removeBlog, updateBlog } from "../reducers/blogsReducer";
+import {
+    addComment,
+    addBlog,
+    removeBlog,
+    updateBlog,
+} from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
+import { addUserComment } from "../reducers/usersReducer";
 
 import {
     removeUserBlog,
@@ -27,9 +33,11 @@ const Blog = () => {
 
     const [isSubmittingLike, setIsSubmittingLike] = useState(false);
     const [isSubmittingDelete, setIsSubmittingDelete] = useState(false);
+    const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
     const loggedInUser = useSelector(state => state.user);
     const blogService = useData("/api/blogs");
+    const commentService = useData(`/api/blogs/${id}/comments`);
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -109,6 +117,35 @@ const Blog = () => {
             );
         }
         setIsSubmittingLike(false);
+    };
+
+    const handleDeleteComment = commentid => {
+        console.log(commentid);
+    };
+
+    const handlePostComment = async comment => {
+        setIsSubmittingComment(true);
+        let success = false;
+        try {
+            commentService.setServiceToken(loggedInUser.token);
+            const newComment = await commentService.create({ comment });
+            dispatch(addComment({ blogId: id, comment: newComment }));
+            dispatch(
+                addUserComment({
+                    userId: loggedInUser.id,
+                    blogId: id,
+                    comment: newComment,
+                })
+            );
+            dispatch(displayNotification("Comment Added", "success", 2));
+            success = true;
+        } catch (error) {
+            dispatch(
+                displayNotification(error.response.data.error, "error", 4)
+            );
+        }
+        setIsSubmittingComment(false);
+        return success;
     };
 
     if (isLoading) {
@@ -192,6 +229,8 @@ const Blog = () => {
                         blogId={blog.id}
                         userId={blog.user.id}
                         token={loggedInUser.token}
+                        postComment={handlePostComment}
+                        isSubmittingComment={isSubmittingComment}
                     />
                 </Togglable>
 
@@ -206,6 +245,9 @@ const Blog = () => {
                                     comment.user.id === loggedInUser.id
                                 }
                                 comment={comment}
+                                handleDeleteComment={() =>
+                                    handleDeleteComment(comment.id)
+                                }
                             />
                         ))}
                 </div>
