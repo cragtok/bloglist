@@ -196,10 +196,19 @@ const Blog = () => {
                 </Togglable>
 
                 <br />
-                {blog.comments.length > 0 &&
-                    blog.comments.map(comment => (
-                        <Comment key={comment.id} comment={comment} />
-                    ))}
+                <div className="mb-5">
+                    {blog.comments.length > 0 &&
+                        blog.comments.map(comment => (
+                            <Comment
+                                key={comment.id}
+                                displayDeleteButton={
+                                    blog.user.id === loggedInUser.id ||
+                                    comment.user.id === loggedInUser.id
+                                }
+                                comment={comment}
+                            />
+                        ))}
+                </div>
             </div>
         </div>
     );
