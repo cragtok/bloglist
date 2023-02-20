@@ -14,7 +14,7 @@ const useSortedAndFilteredData = page => {
     const [filterCategories, setFilterCategories] = useState(null);
 
     const formData = useSelector(state => state.form[page]);
-    const user = useSelector(state => state.user);
+    //const user = useSelector(state => state.user);
 
     const dispatch = useDispatch();
 
@@ -97,19 +97,32 @@ const useSortedAndFilteredData = page => {
     };
 
     const filterBlogFields = data => {
-        const filterStringFields = data => {
-            return (
-                data.author.includes(filterCategories.author) &&
-                data.title.includes(filterCategories.title) &&
-                data.url.includes(filterCategories.url)
-            );
-        };
+        if (
+            filterCategories.author &&
+            !data.author.includes(filterCategories.author)
+        ) {
+            return false;
+        }
 
-        const filterLikedBlogs = data => {
-            return data.userLikes.indexOf(user.id) !== -1;
-        };
+        if (
+            filterCategories.title &&
+            !data.title.includes(filterCategories.title)
+        ) {
+            return false;
+        }
+        if (filterCategories.url && !data.url.includes(filterCategories.url)) {
+            return false;
+        }
 
-        return filterStringFields(data) && filterLikedBlogs(data);
+        /*
+        if (filterCategories.date.from) {
+            let fromDateObj = new Date(filterCategories.date.from);
+
+            data.createdAt
+        }
+        */
+
+        return true;
     };
     const filterFunction = data => {
         if (!filterCategoriesPresent(data)) {
