@@ -213,6 +213,10 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
 
         blog.comments = blog.comments.concat(newComment._id);
         await blog.save();
+        await newComment.populate("user", {
+            username: 1,
+            id: 1,
+        });
         response.status(201).json(newComment);
     } catch (error) {
         next(error);
