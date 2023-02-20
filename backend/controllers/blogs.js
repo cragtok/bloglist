@@ -9,10 +9,12 @@ blogsRouter.get("/", async (request, response) => {
             name: 1,
             userLikes: 1,
         })
-        .populate("comments", {
-            comment: 1,
-            user: 1,
-            createdAt: 1,
+        .populate({
+            path: "comments",
+            populate: {
+                path: "user",
+                select: { username: 1 },
+            },
         });
     response.json(blogs);
 });
@@ -25,10 +27,12 @@ blogsRouter.get("/:id", async (request, response, next) => {
                 name: 1,
                 userLikes: 1,
             })
-            .populate("comments", {
-                comment: 1,
-                user: 1,
-                createdAt: 1,
+            .populate({
+                path: "comments",
+                populate: {
+                    path: "user",
+                    select: { username: 1 },
+                },
             });
 
         if (blog) {
@@ -204,8 +208,9 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
         }
         const newComment = await new Comment({
             comment,
-            user: user.id,
+            user: user._id,
         }).save();
+
         blog.comments = blog.comments.concat(newComment._id);
         await blog.save();
         response.status(201).json(newComment);
