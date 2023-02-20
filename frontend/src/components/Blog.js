@@ -89,6 +89,7 @@ const Blog = () => {
             blogService.setServiceToken(loggedInUser.token);
             const updatedBlog = await blogService.update({
                 ...blog,
+                comments: blog.comments.map(comment => comment.id),
                 user: blog.user.id,
                 action,
             });
@@ -119,8 +120,9 @@ const Blog = () => {
         setIsSubmittingLike(false);
     };
 
-    const handleDeleteComment = commentid => {
-        console.log(commentid);
+    const handleDeleteComment = async commentid => {
+        commentService.setServiceToken(loggedInUser.token);
+        await commentService.remove(commentid);
     };
 
     const handlePostComment = async comment => {
