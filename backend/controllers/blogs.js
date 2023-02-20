@@ -1,22 +1,36 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
+const Comment = require("../models/comment");
 
 blogsRouter.get("/", async (request, response) => {
-    const blogs = await Blog.find({}).populate("user", {
-        username: 1,
-        name: 1,
-        userLikes: 1,
-    });
+    const blogs = await Blog.find({})
+        .populate("user", {
+            username: 1,
+            name: 1,
+            userLikes: 1,
+        })
+        .populate("comments", {
+            comment: 1,
+            user: 1,
+            createdAt: 1,
+        });
     response.json(blogs);
 });
 
 blogsRouter.get("/:id", async (request, response, next) => {
     try {
-        const blog = await Blog.findById(request.params.id).populate("user", {
-            username: 1,
-            name: 1,
-            userLikes: 1,
-        });
+        const blog = await Blog.findById(request.params.id)
+            .populate("user", {
+                username: 1,
+                name: 1,
+                userLikes: 1,
+            })
+            .populate("comments", {
+                comment: 1,
+                user: 1,
+                createdAt: 1,
+            });
+
         if (blog) {
             response.json(blog);
         } else {
@@ -48,6 +62,7 @@ blogsRouter.post("/", async (request, response, next) => {
             name: 1,
             userLikes: 1,
         });
+
         response.status(201).json(newBlog);
     } catch (error) {
         next(error);
@@ -138,6 +153,7 @@ blogsRouter.put("/:id", async (request, response, next) => {
             likes: updatedLikes,
             user: body.user,
             userLikes: updatedUserLikes,
+            comments: body.comments,
         };
 
         const updatedBlog = await Blog.findByIdAndUpdate(
@@ -148,12 +164,18 @@ blogsRouter.put("/:id", async (request, response, next) => {
                 runValidators: true,
                 context: "query",
             }
-        );
-        await updatedBlog.populate("user", {
-            username: 1,
-            name: 1,
-            userLikes: 1,
-        });
+        )
+            .populate("user", {
+                username: 1,
+                name: 1,
+                userLikes: 1,
+            })
+            .populate("comments", {
+                comment: 1,
+                user: 1,
+                createdAt: 1,
+            });
+
         response.json(updatedBlog);
     } catch (error) {
         next(error);
@@ -180,9 +202,13 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
         if (!blog) {
             return response.status(400).json({ error: "Blog not found" });
         }
-        blog.comments = blog.comments.concat(comment);
+        const newComment = await new Comment({
+            comment,
+            user: user.id,
+        }).save();
+        blog.comments = blog.comments.concat(newComment._id);
         await blog.save();
-        response.status(201).json(comment);
+        response.status(201).json(newComment);
     } catch (error) {
         next(error);
     }
