@@ -114,6 +114,7 @@ const useSortedAndFilteredData = page => {
             return false;
         }
 
+        // Created At filtering
         let dataCreatedAtDate = new Date(data.createdAt);
         if (
             filterCategories.date.from &&
@@ -132,10 +133,36 @@ const useSortedAndFilteredData = page => {
         }
 
         if (
-            (filterCategories.date.from &&
-                filterCategories.date.to &&
-                dataCreatedAtDate < new Date(filterCategories.date.from)) ||
-            dataCreatedAtDate > new Date(filterCategories.date.to)
+            filterCategories.date.from &&
+            filterCategories.date.to &&
+            (dataCreatedAtDate < new Date(filterCategories.date.from) ||
+                dataCreatedAtDate > new Date(filterCategories.date.to))
+        ) {
+            return false;
+        }
+
+        // Number of Comments Filtering
+        if (
+            filterCategories.numComments.from &&
+            !filterCategories.numComments.to &&
+            data.comments.length < filterCategories.numComments.from
+        ) {
+            return false;
+        }
+
+        if (
+            filterCategories.numComments.to &&
+            !filterCategories.numComments.from &&
+            data.comments.length > filterCategories.numComments.to
+        ) {
+            return false;
+        }
+
+        if (
+            filterCategories.numComments.from &&
+            filterCategories.numComments.to &&
+            (data.comments.length < filterCategories.numComments.from ||
+                data.comments.length > filterCategories.numComments.to)
         ) {
             return false;
         }
