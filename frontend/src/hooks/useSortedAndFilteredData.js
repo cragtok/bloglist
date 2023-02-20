@@ -14,7 +14,7 @@ const useSortedAndFilteredData = page => {
     const [filterCategories, setFilterCategories] = useState(null);
 
     const formData = useSelector(state => state.form[page]);
-    //const user = useSelector(state => state.user);
+    const loggedInUser = useSelector(state => state.user);
 
     const dispatch = useDispatch();
 
@@ -189,6 +189,13 @@ const useSortedAndFilteredData = page => {
             filterCategories.numLikes.to &&
             (data.likes < filterCategories.numLikes.from ||
                 data.likes > filterCategories.numLikes.to)
+        ) {
+            return false;
+        }
+
+        if (
+            filterCategories.likedBlogs &&
+            data.userLikes.indexOf(loggedInUser.id) === -1
         ) {
             return false;
         }
