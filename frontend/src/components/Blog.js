@@ -14,6 +14,7 @@ import {
 
 import useData from "../hooks/useData";
 
+import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 import Togglable from "./Togglable";
 
@@ -197,13 +198,7 @@ const Blog = () => {
                 <br />
                 {blog.comments.length > 0 &&
                     blog.comments.map(comment => (
-                        <div className="card mb-3" key={crypto.randomUUID()}>
-                            <div className="card-content">
-                                <div className="content has-text-weight-light">
-                                    {comment}
-                                </div>
-                            </div>
-                        </div>
+                        <Comment key={comment.id} comment={comment} />
                     ))}
             </div>
         </div>

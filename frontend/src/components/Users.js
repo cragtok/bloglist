@@ -148,7 +148,7 @@ const Users = () => {
                             <tr key={user.id}>
                                 <td>
                                     <Link to={`/users/${user.id}`}>
-                                        {user.name}
+                                        {user.username}
                                     </Link>{" "}
                                 </td>
                                 <td>{user.blogs.length}</td>
