@@ -7,16 +7,17 @@ import {
     addBlog,
     removeBlog,
     updateBlog,
+    removeComment,
 } from "../reducers/blogsReducer";
-import { displayNotification } from "../reducers/notificationReducer";
-import { setLoadingState } from "../reducers/loadingReducer";
-import { addUserComment } from "../reducers/usersReducer";
-
 import {
+    addUserComment,
+    removeUserComment,
     removeUserBlog,
     likeUserBlog,
     unlikeUserBlog,
 } from "../reducers/usersReducer";
+import { displayNotification } from "../reducers/notificationReducer";
+import { setLoadingState } from "../reducers/loadingReducer";
 
 import useData from "../hooks/useData";
 
@@ -34,6 +35,7 @@ const Blog = () => {
     const [isSubmittingLike, setIsSubmittingLike] = useState(false);
     const [isSubmittingDelete, setIsSubmittingDelete] = useState(false);
     const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+    const [isDeletingComment, setIsDeletingComment] = useState(false);
 
     const loggedInUser = useSelector(state => state.user);
     const blogService = useData("/api/blogs");
@@ -120,9 +122,26 @@ const Blog = () => {
         setIsSubmittingLike(false);
     };
 
-    const handleDeleteComment = async commentid => {
+    const handleDeleteComment = async commentId => {
         commentService.setServiceToken(loggedInUser.token);
-        await commentService.remove(commentid);
+        setIsDeletingComment(true);
+        try {
+            await commentService.remove(commentId);
+            dispatch(removeComment({ blogId: id, commentId }));
+            dispatch(
+                removeUserComment({
+                    userId: blog.user.id,
+                    blogId: id,
+                    commentId,
+                })
+            );
+            dispatch(displayNotification("Comment Deleted!", "success", 4));
+        } catch (error) {
+            dispatch(
+                displayNotification(error.response.data.error, "error", 4)
+            );
+        }
+        setIsDeletingComment(false);
     };
 
     const handlePostComment = async comment => {
@@ -136,7 +155,7 @@ const Blog = () => {
                 addUserComment({
                     userId: loggedInUser.id,
                     blogId: id,
-                    comment: newComment,
+                    comment: newComment.id,
                 })
             );
             dispatch(displayNotification("Comment Added", "success", 2));
@@ -250,6 +269,7 @@ const Blog = () => {
                                 handleDeleteComment={() =>
                                     handleDeleteComment(comment.id)
                                 }
+                                isDeletingComment={isDeletingComment}
                             />
                         ))}
                 </div>

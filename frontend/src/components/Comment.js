@@ -1,6 +1,11 @@
 import React from "react";
 
-const Comment = ({ comment, displayDeleteButton, handleDeleteComment }) => {
+const Comment = ({
+    comment,
+    displayDeleteButton,
+    handleDeleteComment,
+    isDeletingComment,
+}) => {
     const commentDate = new Date(comment.createdAt).toDateString().slice(4);
     const commentTime = new Date(comment.createdAt).toLocaleTimeString();
 
@@ -22,7 +27,10 @@ const Comment = ({ comment, displayDeleteButton, handleDeleteComment }) => {
                 <p className="has-text-weight-normal">{comment.comment}</p>
                 {displayDeleteButton && (
                     <button
-                        className="button is-small is-outlined is-danger mt-2 mr-2"
+                        disabled={isDeletingComment}
+                        className={`button is-small is-outlined is-danger mt-2 mr-2 ${
+                            isDeletingComment ? "is-loading" : ""
+                        }`}
                         onClick={handleDeleteComment}
                     >
                         Delete

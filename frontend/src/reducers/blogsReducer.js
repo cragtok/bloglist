@@ -31,9 +31,30 @@ const blogsSlice = createSlice({
                 return blog;
             });
         },
+        removeComment(state, action) {
+            return state.map(blog => {
+                if (blog.id === action.payload.blogId) {
+                    const updatedBlog = {
+                        ...blog,
+                        user: blog.user,
+                        comments: blog.comments.filter(
+                            comment => comment.id !== action.payload.commentId
+                        ),
+                    };
+                    return updatedBlog;
+                }
+                return blog;
+            });
+        },
     },
 });
 
-export const { setBlogs, addBlog, removeBlog, updateBlog, addComment } =
-    blogsSlice.actions;
+export const {
+    removeComment,
+    setBlogs,
+    addBlog,
+    removeBlog,
+    updateBlog,
+    addComment,
+} = blogsSlice.actions;
 export default blogsSlice.reducer;
