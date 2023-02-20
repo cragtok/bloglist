@@ -214,4 +214,51 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
     }
 });
 
+blogsRouter.delete(
+    "/:blogid/comments/:commentid",
+    async (request, response, next) => {
+        try {
+            const user = request.user;
+            if (!user) {
+                return response
+                    .status(401)
+                    .json({ error: "token missing or invalid" });
+            }
+
+            const blog = await Blog.findById(request.params.blogid);
+            if (!blog) {
+                return response.status(400).json({ error: "Blog not found" });
+            }
+
+            const comment = await Comment.findById(request.params.commentid);
+            if (!comment) {
+                return response
+                    .status(400)
+                    .json({ error: "Comment not found" });
+            }
+
+            // Comment can only be deleted by blog creator or comment author
+            if (
+                blog.user.toString() !== user._id.toString() &&
+                comment.user.toString() !== user._id.toString()
+            ) {
+                return response
+                    .status(401)
+                    .json({ error: "Authorization denied" });
+            }
+
+            blog.comments = blog.comments.filter(
+                id => id !== request.params.commentid
+            );
+
+            await blog.save();
+            await comment.delete();
+
+            response.status(204).end();
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 module.exports = blogsRouter;
