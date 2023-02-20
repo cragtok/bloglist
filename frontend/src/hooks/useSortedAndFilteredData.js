@@ -114,13 +114,31 @@ const useSortedAndFilteredData = page => {
             return false;
         }
 
-        /*
-        if (filterCategories.date.from) {
-            let fromDateObj = new Date(filterCategories.date.from);
-
-            data.createdAt
+        let dataCreatedAtDate = new Date(data.createdAt);
+        if (
+            filterCategories.date.from &&
+            !filterCategories.date.to &&
+            dataCreatedAtDate < new Date(filterCategories.date.from)
+        ) {
+            return false;
         }
-        */
+
+        if (
+            filterCategories.date.to &&
+            !filterCategories.date.from &&
+            dataCreatedAtDate > new Date(filterCategories.date.to)
+        ) {
+            return false;
+        }
+
+        if (
+            (filterCategories.date.from &&
+                filterCategories.date.to &&
+                dataCreatedAtDate < new Date(filterCategories.date.from)) ||
+            dataCreatedAtDate > new Date(filterCategories.date.to)
+        ) {
+            return false;
+        }
 
         return true;
     };
