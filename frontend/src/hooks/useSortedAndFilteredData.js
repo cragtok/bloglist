@@ -167,6 +167,32 @@ const useSortedAndFilteredData = page => {
             return false;
         }
 
+        // Number of Likes Filtering
+        if (
+            filterCategories.numLikes.from &&
+            !filterCategories.numLikes.to &&
+            data.likes < filterCategories.numLikes.from
+        ) {
+            return false;
+        }
+
+        if (
+            filterCategories.numLikes.to &&
+            !filterCategories.numLikes.from &&
+            data.likes > filterCategories.numLikes.to
+        ) {
+            return false;
+        }
+
+        if (
+            filterCategories.numLikes.from &&
+            filterCategories.numLikes.to &&
+            (data.likes < filterCategories.numLikes.from ||
+                data.likes > filterCategories.numLikes.to)
+        ) {
+            return false;
+        }
+
         return true;
     };
     const filterFunction = data => {
