@@ -193,9 +193,18 @@ const useSortedAndFilteredData = page => {
             return false;
         }
 
+        // Filter Liked Blogs
         if (
             filterCategories.likedBlogs &&
             data.userLikes.indexOf(loggedInUser.id) === -1
+        ) {
+            return false;
+        }
+
+        // Filter Commented Blogs
+        if (
+            filterCategories.commentedBlogs &&
+            !data.comments.find(comment => comment.user.id === loggedInUser.id)
         ) {
             return false;
         }
