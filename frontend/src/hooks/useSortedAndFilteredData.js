@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFormState, initialFilters } from "../reducers/formReducer";
+import {
+    filterStringField,
+    filterRangeField,
+    filterBooleanField,
+} from "../utils/filterFunctions";
 
 const useSortedAndFilteredData = page => {
     const [sortCategory, setSortCategory] = useState("");
@@ -95,31 +100,6 @@ const useSortedAndFilteredData = page => {
     };
 
     const filterBlogFields = data => {
-        const filterStringField = (stringField, string) =>
-            stringField ? string.includes(stringField) : true;
-
-        const filterRangeField = (rangeField, data) => {
-            if (rangeField.from && !rangeField.to && data < rangeField.from) {
-                return false;
-            }
-
-            if (rangeField.to && !rangeField.from && data > rangeField.to) {
-                return false;
-            }
-
-            if (
-                rangeField.from &&
-                rangeField.to &&
-                (data < rangeField.from || data > rangeField.to)
-            ) {
-                return false;
-            }
-            return true;
-        };
-
-        const filterBooleanField = (booleanField, array, condition) =>
-            booleanField ? array.find(condition) : true;
-
         return (
             filterStringField(filterCategories.author, data.author) &&
             filterStringField(filterCategories.title, data.title) &&
