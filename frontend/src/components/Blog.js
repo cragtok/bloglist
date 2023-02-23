@@ -115,7 +115,11 @@ const Blog = () => {
             );
         } catch (error) {
             dispatch(
-                displayNotification(error.response.data.error, "error", 4)
+                displayNotification(
+                    error.response.data.error || "Unknown Error",
+                    "error",
+                    4
+                )
             );
         }
         setIsSubmittingLike(false);
@@ -154,14 +158,18 @@ const Blog = () => {
                 addUserComment({
                     userId: loggedInUser.id,
                     blogId: id,
-                    comment: newComment.id,
+                    comment: newComment,
                 })
             );
             dispatch(displayNotification("Comment Added", "success", 2));
             success = true;
         } catch (error) {
             dispatch(
-                displayNotification(error.response.data.error, "error", 4)
+                displayNotification(
+                    error.response.data.error || "Unknown Error",
+                    "error",
+                    4
+                )
             );
         }
         setIsSubmittingComment(false);

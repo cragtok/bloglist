@@ -49,7 +49,7 @@ const usersSlice = createSlice({
             });
         },
         removeUserComment(state, action) {
-            // payload: {userId, blogId, comment}
+            // payload: {userId, blogId, commentId}
             return state.map(user => {
                 if (user.id === action.payload.userId) {
                     return {
@@ -60,10 +60,12 @@ const usersSlice = createSlice({
                                     ...blog,
                                     comments: blog.comments.filter(
                                         comment =>
-                                            comment !== action.payload.comment
+                                            comment.id !==
+                                            action.payload.commentId
                                     ),
                                 };
                             }
+                            return blog;
                         }),
                     };
                 }
