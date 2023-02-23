@@ -9,14 +9,23 @@ usersRouter.get("/", async (request, response) => {
         return response.status(401).json({ error: "token missing or invalid" });
     }
 
-    const users = await User.find({}).populate("blogs", {
-        author: 1,
-        title: 1,
-        likes: 1,
-        url: 1,
-        createdAt: 1,
-        comments: 1,
-        userLikes: 1,
+    const users = await User.find({}).populate({
+        path: "blogs",
+        select: {
+            author: 1,
+            title: 1,
+            likes: 1,
+            url: 1,
+            createdAt: 1,
+            userLikes: 1,
+        },
+        populate: {
+            path: "comments",
+            populate: {
+                path: "user",
+                select: { username: 1 },
+            },
+        },
     });
 
     response.json(users);
@@ -30,14 +39,23 @@ usersRouter.get("/:id", async (request, response, next) => {
     }
 
     try {
-        const user = await User.findById(request.params.id).populate("blogs", {
-            author: 1,
-            title: 1,
-            likes: 1,
-            url: 1,
-            createdAt: 1,
-            comments: 1,
-            userLikes: 1,
+        const user = await User.findById(request.params.id).populate({
+            path: "blogs",
+            select: {
+                author: 1,
+                title: 1,
+                likes: 1,
+                url: 1,
+                createdAt: 1,
+                userLikes: 1,
+            },
+            populate: {
+                path: "comments",
+                populate: {
+                    path: "user",
+                    select: { username: 1 },
+                },
+            },
         });
 
         if (user) {
