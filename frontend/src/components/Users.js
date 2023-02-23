@@ -101,8 +101,11 @@ const Users = () => {
                     sortFields={[
                         { name: "Username", value: "username" },
                         { name: "Number of Blogs", value: "blogs" },
-                        { name: "Total Blog Likes", value: "totalLikes" },
-                        { name: "Totel Blog Comments", value: "totalComments" },
+                        { name: "Total Blog Likes", value: "totalBlogLikes" },
+                        {
+                            name: "Totel Blog Comments",
+                            value: "totalBlogComments",
+                        },
                     ]}
                 />
             </Togglable>
@@ -131,12 +134,12 @@ const Users = () => {
                             >
                                 Blogs
                             </th>
-                            {sortCategory === "totalLikes" && (
+                            {sortCategory === "totalBlogLikes" && (
                                 <th className="has-text-success">
                                     Total Blog Likes
                                 </th>
                             )}
-                            {sortCategory === "totalComments" && (
+                            {sortCategory === "totalBlogComments" && (
                                 <th className="has-text-success">
                                     Total Blog Comments
                                 </th>
@@ -152,10 +155,10 @@ const Users = () => {
                                     </Link>{" "}
                                 </td>
                                 <td>{user.blogs.length}</td>
-                                {sortCategory === "totalLikes" && (
+                                {sortCategory === "totalBlogLikes" && (
                                     <td>{user.totalBlogLikes}</td>
                                 )}
-                                {sortCategory === "totalComments" && (
+                                {sortCategory === "totalBlogComments" && (
                                     <td>{user.totalBlogComments}</td>
                                 )}
                             </tr>

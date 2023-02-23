@@ -80,12 +80,10 @@ const useSortedAndFilteredData = page => {
             );
         if (sortCategory === "blogs")
             return compareValues(a.blogs.length, b.blogs.length);
-        if (sortCategory === "totalLikes")
-            return compareValues(a.totalBlogLikes, b.totalBlogLikes);
 
-        if (sortCategory === "totalComments")
-            return compareValues(a.totalBlogComments, b.totalBlogComments);
+        return compareValues(a[sortCategory], b[sortCategory]);
     };
+
     const sortFunction = (a, b) => {
         if (!sortCategory) return 0;
         return page === "users" ? sortUserFields(a, b) : sortBlogFields(a, b);
