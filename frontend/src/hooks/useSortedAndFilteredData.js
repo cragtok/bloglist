@@ -95,145 +95,62 @@ const useSortedAndFilteredData = page => {
     };
 
     const filterBlogFields = data => {
-        if (
-            filterCategories.author &&
-            !data.author.includes(filterCategories.author)
-        ) {
-            return false;
-        }
+        const filterStringField = (stringField, string) =>
+            stringField ? string.includes(stringField) : true;
 
-        if (
-            filterCategories.title &&
-            !data.title.includes(filterCategories.title)
-        ) {
-            return false;
-        }
-        if (filterCategories.url && !data.url.includes(filterCategories.url)) {
-            return false;
-        }
+        const filterRangeField = (rangeField, data) => {
+            if (rangeField.from && !rangeField.to && data < rangeField.from) {
+                return false;
+            }
 
-        // Created At filtering
-        let dataCreatedAtDate = new Date(data.createdAt);
-        if (
-            filterCategories.date.from &&
-            !filterCategories.date.to &&
-            dataCreatedAtDate < new Date(filterCategories.date.from)
-        ) {
-            return false;
-        }
+            if (rangeField.to && !rangeField.from && data > rangeField.to) {
+                return false;
+            }
 
-        if (
-            filterCategories.date.to &&
-            !filterCategories.date.from &&
-            dataCreatedAtDate > new Date(filterCategories.date.to)
-        ) {
-            return false;
-        }
+            if (
+                rangeField.from &&
+                rangeField.to &&
+                (data < rangeField.from || data > rangeField.to)
+            ) {
+                return false;
+            }
+            return true;
+        };
 
-        if (
-            filterCategories.date.from &&
-            filterCategories.date.to &&
-            (dataCreatedAtDate < new Date(filterCategories.date.from) ||
-                dataCreatedAtDate > new Date(filterCategories.date.to))
-        ) {
-            return false;
-        }
+        const filterBooleanField = (booleanField, array, condition) =>
+            booleanField ? array.find(condition) : true;
 
-        // Number of Comments Filtering
-        if (
-            filterCategories.numComments.from &&
-            !filterCategories.numComments.to &&
-            data.comments.length < filterCategories.numComments.from
-        ) {
-            return false;
-        }
-
-        if (
-            filterCategories.numComments.to &&
-            !filterCategories.numComments.from &&
-            data.comments.length > filterCategories.numComments.to
-        ) {
-            return false;
-        }
-
-        if (
-            filterCategories.numComments.from &&
-            filterCategories.numComments.to &&
-            (data.comments.length < filterCategories.numComments.from ||
-                data.comments.length > filterCategories.numComments.to)
-        ) {
-            return false;
-        }
-
-        // Number of Likes Filtering
-        if (
-            filterCategories.numLikes.from &&
-            !filterCategories.numLikes.to &&
-            data.likes < filterCategories.numLikes.from
-        ) {
-            return false;
-        }
-
-        if (
-            filterCategories.numLikes.to &&
-            !filterCategories.numLikes.from &&
-            data.likes > filterCategories.numLikes.to
-        ) {
-            return false;
-        }
-
-        if (
-            filterCategories.numLikes.from &&
-            filterCategories.numLikes.to &&
-            (data.likes < filterCategories.numLikes.from ||
-                data.likes > filterCategories.numLikes.to)
-        ) {
-            return false;
-        }
-
-        // Number of Comments Filtering
-        if (
-            filterCategories.numComments.from &&
-            !filterCategories.numComments.to &&
-            data.comments.length < filterCategories.numComments.from
-        ) {
-            return false;
-        }
-
-        if (
-            filterCategories.numComments.to &&
-            !filterCategories.numComments.from &&
-            data.comments.length > filterCategories.numComments.to
-        ) {
-            return false;
-        }
-
-        if (
-            filterCategories.numComments.from &&
-            filterCategories.numComments.to &&
-            (data.comments.length < filterCategories.numComments.from ||
-                data.comments.length > filterCategories.numComments.to)
-        ) {
-            return false;
-        }
-
-        // Filter Liked Blogs
-        if (
-            filterCategories.likedBlogs &&
-            !data.userLikes.find(likerId => likerId === loggedInUser.id)
-        ) {
-            return false;
-        }
-
-        // Filter Commented Blogs
-        if (
-            filterCategories.commentedBlogs &&
-            !data.comments.find(comment => comment.user.id === loggedInUser.id)
-        ) {
-            return false;
-        }
-
-        return true;
+        return (
+            filterStringField(filterCategories.author, data.author) &&
+            filterStringField(filterCategories.title, data.title) &&
+            filterStringField(filterCategories.url, data.url) &&
+            filterRangeField(
+                {
+                    from: filterCategories.date.from
+                        ? new Date(filterCategories.date.from)
+                        : null,
+                    to: filterCategories.date.to
+                        ? new Date(filterCategories.date.to)
+                        : null,
+                },
+                new Date(data.createdAt)
+            ) &&
+            filterRangeField(filterCategories.numLikes, data.likes) &&
+            filterRangeField(
+                filterCategories.numComments,
+                data.comments.length
+            ) &&
+            filterBooleanField(
+                filterCategories.likedBlogs,
+                data.userLikes,
+                likerId => likerId === loggedInUser.id
+            ) &&
+            filterBooleanField(
+                filterCategories.commentedBlogs,
+                data.comments,
+                comment => comment.user.id === loggedInUser.id
+            )
+        );
     };
     const filterFunction = data => {
         if (!filterCategoriesPresent(data)) {
