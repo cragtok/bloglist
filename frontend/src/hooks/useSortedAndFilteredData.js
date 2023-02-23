@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFormState, initialFilters } from "../reducers/formReducer";
-import {
-    filterStringField,
-    filterRangeField,
-    filterBooleanField,
-} from "../utils/filterFunctions";
+import filterBlogFields from "../utils/filterBlogFields";
 
 const useSortedAndFilteredData = page => {
     const [sortCategory, setSortCategory] = useState("");
@@ -99,46 +95,13 @@ const useSortedAndFilteredData = page => {
         return true;
     };
 
-    const filterBlogFields = data => {
-        return (
-            filterStringField(filterCategories.author, data.author) &&
-            filterStringField(filterCategories.title, data.title) &&
-            filterStringField(filterCategories.url, data.url) &&
-            filterRangeField(
-                {
-                    from: filterCategories.date.from
-                        ? new Date(filterCategories.date.from)
-                        : null,
-                    to: filterCategories.date.to
-                        ? new Date(filterCategories.date.to)
-                        : null,
-                },
-                new Date(data.createdAt)
-            ) &&
-            filterRangeField(filterCategories.numLikes, data.likes) &&
-            filterRangeField(
-                filterCategories.numComments,
-                data.comments.length
-            ) &&
-            filterBooleanField(
-                filterCategories.likedBlogs,
-                data.userLikes,
-                likerId => likerId === loggedInUser.id
-            ) &&
-            filterBooleanField(
-                filterCategories.commentedBlogs,
-                data.comments,
-                comment => comment.user.id === loggedInUser.id
-            )
-        );
-    };
     const filterFunction = data => {
         if (!filterCategoriesPresent(data)) {
             return true;
         }
         return page === "users"
             ? filterUserFields(data)
-            : filterBlogFields(data);
+            : filterBlogFields(data, filterCategories, loggedInUser.id);
     };
 
     useEffect(() => {
