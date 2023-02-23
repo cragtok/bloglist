@@ -174,10 +174,12 @@ blogsRouter.put("/:id", async (request, response, next) => {
                 name: 1,
                 userLikes: 1,
             })
-            .populate("comments", {
-                comment: 1,
-                user: 1,
-                createdAt: 1,
+            .populate({
+                path: "comments",
+                populate: {
+                    path: "user",
+                    select: { username: 1 },
+                },
             });
 
         response.json(updatedBlog);

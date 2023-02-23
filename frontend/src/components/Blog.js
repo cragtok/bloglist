@@ -96,7 +96,6 @@ const Blog = () => {
                 action,
             });
             dispatch(updateBlog(updatedBlog));
-
             const updateObj = {
                 userId: updatedBlog.user.id,
                 blogId: updatedBlog.id,
@@ -138,7 +137,7 @@ const Blog = () => {
             dispatch(displayNotification("Comment Deleted!", "success", 4));
         } catch (error) {
             dispatch(
-                displayNotification(error.response.data.error, "error", 4)
+                displayNotification("Error in deleting comment", "error", 4)
             );
         }
         setIsDeletingComment(false);
