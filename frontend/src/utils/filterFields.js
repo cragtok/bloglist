@@ -23,7 +23,7 @@ const filterRangeField = (rangeField, data) => {
 const filterBooleanField = (booleanField, array, condition) =>
     booleanField ? array.find(condition) : true;
 
-const filterBlogFields = (data, filterCategories, loggedInUserId) => {
+export const filterBlogFields = (data, filterCategories, loggedInUserId) => {
     return (
         filterStringField(filterCategories.author, data.author) &&
         filterStringField(filterCategories.title, data.title) &&
@@ -54,4 +54,8 @@ const filterBlogFields = (data, filterCategories, loggedInUserId) => {
     );
 };
 
-export default filterBlogFields;
+export const filterUserFields = (data, filterCategories) => {
+    data;
+    filterCategories;
+    return true;
+};

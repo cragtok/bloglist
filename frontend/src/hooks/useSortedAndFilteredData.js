@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFormState, initialFilters } from "../reducers/formReducer";
-import filterBlogFields from "../utils/filterBlogFields";
+import { filterBlogFields, filterUserFields } from "../utils/filterFields";
+import { sortBlogFields, sortUserFields } from "../utils/sortFields";
 
 const useSortedAndFilteredData = page => {
     const [sortCategory, setSortCategory] = useState("");
@@ -45,54 +46,11 @@ const useSortedAndFilteredData = page => {
         setFilterCategories(initialFilters);
     };
 
-    const compareValues = (a, b) => {
-        if (a === b) {
-            return 0;
-        }
-
-        if (sortMethod === "ascending") {
-            return a > b ? 1 : -1;
-        }
-
-        if (sortMethod === "descending") {
-            return a > b ? -1 : 1;
-        }
-    };
-
-    const sortBlogFields = (a, b) => {
-        if (sortCategory === "title" || sortCategory === "author") {
-            return compareValues(
-                a[sortCategory].toLowerCase(),
-                b[sortCategory].toLowerCase()
-            );
-        }
-
-        if (sortCategory === "comments") {
-            return compareValues(a.comments.length, b.comments.length);
-        }
-        return compareValues(a[sortCategory], b[sortCategory]);
-    };
-
-    const sortUserFields = (a, b) => {
-        if (sortCategory === "username")
-            return compareValues(
-                a.username.toLowerCase(),
-                b.username.toLowerCase()
-            );
-        if (sortCategory === "blogs")
-            return compareValues(a.blogs.length, b.blogs.length);
-
-        return compareValues(a[sortCategory], b[sortCategory]);
-    };
-
     const sortFunction = (a, b) => {
         if (!sortCategory) return 0;
-        return page === "users" ? sortUserFields(a, b) : sortBlogFields(a, b);
-    };
-
-    const filterUserFields = data => {
-        data;
-        return true;
+        return page === "users"
+            ? sortUserFields(a, b, sortCategory, sortMethod)
+            : sortBlogFields(a, b, sortCategory, sortMethod);
     };
 
     const filterFunction = data => {
@@ -100,7 +58,7 @@ const useSortedAndFilteredData = page => {
             return true;
         }
         return page === "users"
-            ? filterUserFields(data)
+            ? filterUserFields(data, filterCategories)
             : filterBlogFields(data, filterCategories, loggedInUser.id);
     };
 
