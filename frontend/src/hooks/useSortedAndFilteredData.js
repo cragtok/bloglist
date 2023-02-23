@@ -59,19 +59,19 @@ const useSortedAndFilteredData = page => {
     };
 
     const sortBlogFields = (a, b) => {
-        if (sortCategory === "title")
-            return compareValues(a.title.toLowerCase(), b.title.toLowerCase());
-        if (sortCategory === "author")
+        if (sortCategory === "title" || sortCategory === "author") {
             return compareValues(
-                a.author.toLowerCase(),
-                b.author.toLowerCase()
+                a[sortCategory].toLowerCase(),
+                b[sortCategory].toLowerCase()
             );
-        if (sortCategory === "createdAt")
-            return compareValues(a.createdAt, b.createdAt);
-        if (sortCategory === "likes") return compareValues(a.likes, b.likes);
-        if (sortCategory === "comments")
+        }
+
+        if (sortCategory === "comments") {
             return compareValues(a.comments.length, b.comments.length);
+        }
+        return compareValues(a[sortCategory], b[sortCategory]);
     };
+
     const sortUserFields = (a, b) => {
         if (sortCategory === "username")
             return compareValues(
