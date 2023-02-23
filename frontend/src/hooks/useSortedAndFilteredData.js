@@ -193,6 +193,32 @@ const useSortedAndFilteredData = page => {
             return false;
         }
 
+        // Number of Comments Filtering
+        if (
+            filterCategories.numComments.from &&
+            !filterCategories.numComments.to &&
+            data.comments.length < filterCategories.numComments.from
+        ) {
+            return false;
+        }
+
+        if (
+            filterCategories.numComments.to &&
+            !filterCategories.numComments.from &&
+            data.comments.length > filterCategories.numComments.to
+        ) {
+            return false;
+        }
+
+        if (
+            filterCategories.numComments.from &&
+            filterCategories.numComments.to &&
+            (data.comments.length < filterCategories.numComments.from ||
+                data.comments.length > filterCategories.numComments.to)
+        ) {
+            return false;
+        }
+
         // Filter Liked Blogs
         if (
             filterCategories.likedBlogs &&
