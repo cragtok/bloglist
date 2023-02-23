@@ -196,7 +196,7 @@ const useSortedAndFilteredData = page => {
         // Filter Liked Blogs
         if (
             filterCategories.likedBlogs &&
-            data.userLikes.indexOf(loggedInUser.id) === -1
+            !data.userLikes.find(likerId => likerId === loggedInUser.id)
         ) {
             return false;
         }
