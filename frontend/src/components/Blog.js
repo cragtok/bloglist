@@ -194,13 +194,14 @@ const Blog = () => {
                             <p className="subtitle is-6">
                                 added by{" "}
                                 <Link to={`/users/${blog.user.id}`}>
-                                    {blog.author}
+                                    {blog.user.username}
                                 </Link>
                             </p>
                         </div>
                     </div>
 
                     <div className="content">
+                        <p className="subtitle is-6">Author: {blog.author}</p>
                         <p className="subtitle is-6">Likes: {blog.likes}</p>
                         <a
                             className="blog-url subtitle"
