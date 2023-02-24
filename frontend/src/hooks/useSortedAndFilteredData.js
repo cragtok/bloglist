@@ -41,11 +41,12 @@ const useSortedAndFilteredData = page => {
     const userFiltersPresent = () =>
         filterCategories &&
         (filterCategories.username ||
-            filterCategories.blogs ||
-            filterCategories.totalLikes.from ||
-            filterCategories.totalLikes.to ||
-            filterCategories.totalComments.from ||
-            filterCategories.totalComments.to);
+            filterCategories.blogs.from ||
+            filterCategories.blogs.to ||
+            filterCategories.totalBlogLikes.from ||
+            filterCategories.totalBlogLikes.to ||
+            filterCategories.totalBlogComments.from ||
+            filterCategories.totalBlogComments.to);
 
     const filterCategoriesPresent = () =>
         page === "users" ? userFiltersPresent() : blogFiltersPresent();
@@ -56,7 +57,7 @@ const useSortedAndFilteredData = page => {
     };
 
     const resetFilterState = () => {
-        page === "user"
+        page === "users"
             ? setFilterCategories(initialUserFilters)
             : setFilterCategories(initialBlogFilters);
     };

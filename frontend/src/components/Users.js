@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 import SortingForm from "./SortingForm";
 import Togglable from "./Togglable";
+import FilterForm from "./FilterForm";
+import { userFilterFields } from "../utils/filterFieldData";
 
 import useData from "../hooks/useData";
 import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
@@ -14,6 +16,7 @@ import { setUsers } from "../reducers/usersReducer";
 const Users = () => {
     const dispatch = useDispatch();
     const sortingFormRef = useRef();
+    const filterFormRef = useRef();
 
     const users = useSelector(state => {
         return state.users.map(user => {
@@ -41,6 +44,10 @@ const Users = () => {
         modifiedData,
         resetSortState,
         setInitialData,
+        filterCategories,
+        setFilterCategories,
+        resetFilterState,
+        filterCategoriesPresent,
     } = useSortedAndFilteredData("users");
 
     useEffect(() => {
@@ -82,8 +89,18 @@ const Users = () => {
         }
     }, [sortCategory]);
 
+    useEffect(() => {
+        if (filterFormRef.current && !filterFormRef.current.visible) {
+            filterFormRef.current.setVisibility(filterCategoriesPresent());
+        }
+    }, [filterCategories]);
+
     if (!usersFetched) {
         return <p>Loading...</p>;
+    }
+
+    if (usersFetched && !users.length) {
+        return <p>No Users</p>;
     }
 
     return (
@@ -110,62 +127,68 @@ const Users = () => {
                 />
             </Togglable>
             <br />
-            {usersFetched && !users.length ? (
-                <p>No Users</p>
-            ) : (
-                <table className="table is-striped is-bordered is-hoverable is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th
-                                className={`${
-                                    sortCategory === "username"
-                                        ? "has-text-success"
-                                        : ""
-                                }`}
-                            >
-                                User
+            <Togglable title="" ref={filterFormRef} buttonLabel="Filter Users">
+                <FilterForm
+                    formTitle="Users"
+                    filterCategories={filterCategories}
+                    setFilterCategories={setFilterCategories}
+                    resetForm={resetFilterState}
+                    filterFields={userFilterFields}
+                />
+            </Togglable>
+            <br />
+            <table className="table is-striped is-bordered is-hoverable is-fullwidth mb-5">
+                <thead>
+                    <tr>
+                        <th
+                            className={`${
+                                sortCategory === "username"
+                                    ? "has-text-success"
+                                    : ""
+                            }`}
+                        >
+                            User
+                        </th>
+                        <th
+                            className={`${
+                                sortCategory === "blogs"
+                                    ? "has-text-success"
+                                    : ""
+                            }`}
+                        >
+                            Blogs
+                        </th>
+                        {sortCategory === "totalBlogLikes" && (
+                            <th className="has-text-success">
+                                Total Blog Likes
                             </th>
-                            <th
-                                className={`${
-                                    sortCategory === "blogs"
-                                        ? "has-text-success"
-                                        : ""
-                                }`}
-                            >
-                                Blogs
+                        )}
+                        {sortCategory === "totalBlogComments" && (
+                            <th className="has-text-success">
+                                Total Blog Comments
                             </th>
+                        )}
+                    </tr>
+                </thead>
+                <tbody>
+                    {modifiedData.map(user => (
+                        <tr key={user.id}>
+                            <td>
+                                <Link to={`/users/${user.id}`}>
+                                    {user.username}
+                                </Link>{" "}
+                            </td>
+                            <td>{user.blogs.length}</td>
                             {sortCategory === "totalBlogLikes" && (
-                                <th className="has-text-success">
-                                    Total Blog Likes
-                                </th>
+                                <td>{user.totalBlogLikes}</td>
                             )}
                             {sortCategory === "totalBlogComments" && (
-                                <th className="has-text-success">
-                                    Total Blog Comments
-                                </th>
+                                <td>{user.totalBlogComments}</td>
                             )}
                         </tr>
-                    </thead>
-                    <tbody>
-                        {(sortCategory ? modifiedData : users).map(user => (
-                            <tr key={user.id}>
-                                <td>
-                                    <Link to={`/users/${user.id}`}>
-                                        {user.username}
-                                    </Link>{" "}
-                                </td>
-                                <td>{user.blogs.length}</td>
-                                {sortCategory === "totalBlogLikes" && (
-                                    <td>{user.totalBlogLikes}</td>
-                                )}
-                                {sortCategory === "totalBlogComments" && (
-                                    <td>{user.totalBlogComments}</td>
-                                )}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };

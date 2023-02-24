@@ -13,9 +13,9 @@ export const initialBlogFilters = {
 
 export const initialUserFilters = {
     username: "",
-    blogs: 0,
-    totalLikes: { from: "", to: "" },
-    totalComments: { from: "", to: "" },
+    blogs: { from: 0, to: 0 },
+    totalBlogLikes: { from: 0, to: 0 },
+    totalBlogComments: { from: 0, to: 0 },
 };
 const initialState = {
     home: {

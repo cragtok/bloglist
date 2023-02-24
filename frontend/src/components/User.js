@@ -43,12 +43,6 @@ const User = () => {
     } = useSortedAndFilteredData("blogs");
 
     useEffect(() => {
-        if (filterFormRef.current && !filterFormRef.current.visible) {
-            filterFormRef.current.setVisibility(filterCategoriesPresent());
-        }
-    }, [filterCategories]);
-
-    useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         const fn = async () => {
             dispatch(setLoadingState(true));
@@ -70,6 +64,12 @@ const User = () => {
             setInitialData(user.blogs);
         }
     }, []);
+
+    useEffect(() => {
+        if (filterFormRef.current && !filterFormRef.current.visible) {
+            filterFormRef.current.setVisibility(filterCategoriesPresent());
+        }
+    }, [filterCategories]);
 
     useEffect(() => {
         if (sortCategory && !sortingFormRef.current.visible) {

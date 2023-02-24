@@ -58,7 +58,13 @@ export const filterUserFields = (data, filterCategories) => {
     return (
         filterStringField(filterCategories.username, data.username) &&
         filterRangeField(filterCategories.blogs, data.blogs.length) &&
-        filterRangeField(filterCategories.totalLikes, data.likes) &&
-        filterRangeField(filterCategories.totalComments, data.comments.length)
+        filterRangeField(
+            filterCategories.totalBlogLikes,
+            data.totalBlogLikes
+        ) &&
+        filterRangeField(
+            filterCategories.totalBlogComments,
+            data.totalBlogComments
+        )
     );
 };

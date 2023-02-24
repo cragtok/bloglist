@@ -35,3 +35,37 @@ export const blogFilterFields = [
     { name: "likedBlogs", type: "boolean", label: "Liked Blogs" },
     { name: "commentedBlogs", type: "boolean", label: "Commented Blogs" },
 ];
+
+export const userFilterFields = [
+    { name: "username", type: "text", label: "Username" },
+    {
+        name: "blogs",
+        type: "range",
+        rangeType: "number",
+        label: "Number of Blogs",
+        ranges: {
+            from: { name: "from", label: "Min", min: 0 },
+            to: { name: "to", label: "Max", min: 0 },
+        },
+    },
+    {
+        name: "totalBlogLikes",
+        type: "range",
+        rangeType: "number",
+        label: "Total Number of Likes",
+        ranges: {
+            from: { name: "from", label: "Min", min: 0 },
+            to: { name: "to", label: "Max", min: 0 },
+        },
+    },
+    {
+        name: "totalBlogComments",
+        type: "range",
+        rangeType: "number",
+        label: "Total Number of Comments",
+        ranges: {
+            from: { name: "from", label: "Min", min: 0 },
+            to: { name: "to", label: "Max", min: 0 },
+        },
+    },
+];
