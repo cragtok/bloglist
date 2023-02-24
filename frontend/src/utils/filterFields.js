@@ -55,7 +55,10 @@ export const filterBlogFields = (data, filterCategories, loggedInUserId) => {
 };
 
 export const filterUserFields = (data, filterCategories) => {
-    data;
-    filterCategories;
-    return true;
+    return (
+        filterStringField(filterCategories.username, data.username) &&
+        filterRangeField(filterCategories.blogs, data.blogs.length) &&
+        filterRangeField(filterCategories.totalLikes, data.likes) &&
+        filterRangeField(filterCategories.totalComments, data.comments.length)
+    );
 };
