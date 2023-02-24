@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const initialFilters = {
+export const initialBlogFilters = {
     author: "",
     title: "",
     url: "",
@@ -11,19 +11,25 @@ export const initialFilters = {
     commentedBlogs: false,
 };
 
+export const initialUserFilters = {
+    username: "",
+    blogs: 0,
+    totalLikes: { from: "", to: "" },
+    totalComments: { from: "", to: "" },
+};
 const initialState = {
     home: {
-        filterCategories: { ...initialFilters },
+        filterCategories: { ...initialBlogFilters },
         sortCategory: "",
         sortMethod: "descending",
     },
     blogs: {
-        filterCategories: { ...initialFilters },
+        filterCategories: { ...initialBlogFilters },
         sortCategory: "",
         sortMethod: "descending",
     },
     users: {
-        filterCategories: { ...initialFilters },
+        filterCategories: { ...initialUserFilters },
         sortCategory: "",
         sortMethod: "descending",
     },

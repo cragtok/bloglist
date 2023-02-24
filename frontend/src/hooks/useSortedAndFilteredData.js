@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFormState, initialFilters } from "../reducers/formReducer";
+import {
+    setFormState,
+    initialBlogFilters,
+    initialUserFilters,
+} from "../reducers/formReducer";
 import { filterBlogFields, filterUserFields } from "../utils/filterFields";
 import { sortBlogFields, sortUserFields } from "../utils/sortFields";
 
@@ -20,22 +24,31 @@ const useSortedAndFilteredData = page => {
 
     const dispatch = useDispatch();
 
-    const filterCategoriesPresent = () => {
-        return (
-            filterCategories &&
-            (filterCategories.author ||
-                filterCategories.title ||
-                filterCategories.url ||
-                filterCategories.date.from ||
-                filterCategories.date.to ||
-                filterCategories.numComments.from ||
-                filterCategories.numComments.to ||
-                filterCategories.numLikes.from ||
-                filterCategories.numLikes.to ||
-                filterCategories.likedBlogs ||
-                filterCategories.commentedBlogs)
-        );
-    };
+    const blogFiltersPresent = () =>
+        filterCategories &&
+        (filterCategories.author ||
+            filterCategories.title ||
+            filterCategories.url ||
+            filterCategories.date.from ||
+            filterCategories.date.to ||
+            filterCategories.numComments.from ||
+            filterCategories.numComments.to ||
+            filterCategories.numLikes.from ||
+            filterCategories.numLikes.to ||
+            filterCategories.likedBlogs ||
+            filterCategories.commentedBlogs);
+
+    const userFiltersPresent = () =>
+        filterCategories &&
+        (filterCategories.username ||
+            filterCategories.blogs ||
+            filterCategories.totalLikes.from ||
+            filterCategories.totalLikes.to ||
+            filterCategories.totalComments.from ||
+            filterCategories.totalComments.to);
+
+    const filterCategoriesPresent = () =>
+        page === "users" ? userFiltersPresent() : blogFiltersPresent();
 
     const resetSortState = () => {
         setSortCategory("");
@@ -43,7 +56,9 @@ const useSortedAndFilteredData = page => {
     };
 
     const resetFilterState = () => {
-        setFilterCategories(initialFilters);
+        page === "user"
+            ? setFilterCategories(initialUserFilters)
+            : setFilterCategories(initialBlogFilters);
     };
 
     const sortFunction = (a, b) => {
