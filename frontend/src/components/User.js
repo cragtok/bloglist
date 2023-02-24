@@ -6,6 +6,7 @@ import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
 import SortingForm from "./SortingForm";
 import FilterForm from "./FilterForm";
+import { blogFilterFields } from "../utils/filterFieldData";
 
 import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
@@ -130,6 +131,7 @@ const User = () => {
                     filterCategories={filterCategories}
                     setFilterCategories={setFilterCategories}
                     resetForm={resetFilterState}
+                    filterFields={blogFilterFields}
                 />
             </Togglable>
             <br />
