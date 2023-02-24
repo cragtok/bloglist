@@ -15,6 +15,8 @@ const FilterForm = ({
         setFilterCategories({ ...filterCategories, [field]: value });
     };
 
+    const activeClass = value => (value ? "is-primary" : "is-dark");
+
     const renderTextInput = fieldData => {
         return (
             <div className="field" key={fieldData.name}>
@@ -24,7 +26,9 @@ const FilterForm = ({
                     onChange={e =>
                         updateFormFields(fieldData.name, e.target.value)
                     }
-                    className="input is-info"
+                    className={`input ${activeClass(
+                        filterCategories[fieldData.name]
+                    )}`}
                     type={fieldData.type}
                     name={fieldData.name}
                 />
@@ -41,7 +45,9 @@ const FilterForm = ({
                     onChange={e =>
                         updateFormFields(fieldData.name, e.target.value)
                     }
-                    className="input is-info"
+                    className={`input ${activeClass(
+                        filterCategories[fieldData.name]
+                    )}`}
                     type={fieldData.type}
                     name={fieldData.name}
                     min={fieldData.min}
@@ -106,7 +112,11 @@ const FilterForm = ({
                                                     }
                                                 )
                                             }
-                                            className="is-primary input"
+                                            className={`input ${activeClass(
+                                                filterCategories[
+                                                    fieldData.name
+                                                ][rangeData.name]
+                                            )}`}
                                             type={fieldData.rangeType}
                                             min={rangeData.min || ""}
                                             name={`${fieldData.name}-${rangeData.name}`}
