@@ -6,6 +6,7 @@ import SortingForm from "./SortingForm";
 import Togglable from "./Togglable";
 import FilterForm from "./FilterForm";
 import { userFilterFields } from "../utils/filterFieldData";
+import { userSortFields } from "../utils/sortFieldData";
 
 import useData from "../hooks/useData";
 import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
@@ -115,15 +116,7 @@ const Users = () => {
                     setSortMethod={setSortMethod}
                     title="Sort Users"
                     resetForm={resetSortState}
-                    sortFields={[
-                        { name: "Username", value: "username" },
-                        { name: "Number of Blogs", value: "blogs" },
-                        { name: "Total Blog Likes", value: "totalBlogLikes" },
-                        {
-                            name: "Totel Blog Comments",
-                            value: "totalBlogComments",
-                        },
-                    ]}
+                    sortFields={userSortFields}
                 />
             </Togglable>
             <br />

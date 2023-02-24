@@ -14,6 +14,7 @@ import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
 import { setBlogs } from "../reducers/blogsReducer";
 import { setNotification } from "../reducers/notificationReducer";
 import { blogFilterFields } from "../utils/filterFieldData";
+import { blogSortFields } from "../utils/sortFieldData";
 
 const Home = () => {
     const blogFormRef = useRef();
@@ -113,13 +114,7 @@ const Home = () => {
                         setSortMethod={setSortMethod}
                         title="Sort Blogs"
                         resetForm={resetSortState}
-                        sortFields={[
-                            { name: "Title", value: "title" },
-                            { name: "Author", value: "author" },
-                            { name: "Date Created", value: "createdAt" },
-                            { name: "Number of Likes", value: "likes" },
-                            { name: "Number of Comments", value: "comments" },
-                        ]}
+                        sortFields={blogSortFields}
                     />
                 </Togglable>
                 <br />
