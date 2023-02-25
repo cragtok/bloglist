@@ -132,7 +132,11 @@ const Home = () => {
                     />
                 </Togglable>
                 <br />
-                <BlogList blogs={modifiedData} sortedField={sortCategory} />
+                <BlogList
+                    blogs={modifiedData}
+                    sortedField={sortCategory}
+                    filterCategories={filterCategories}
+                />
             </>
         </div>
     );

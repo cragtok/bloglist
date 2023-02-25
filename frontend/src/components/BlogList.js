@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import BlogLink from "./BlogLink";
 import { useSelector } from "react-redux";
-const BlogList = ({ blogs, sortedField }) => {
+const BlogList = ({ blogs, sortedField, filterCategories }) => {
     const { isLoading } = useSelector(state => state.loading);
 
     if (isLoading) {
@@ -18,6 +18,25 @@ const BlogList = ({ blogs, sortedField }) => {
         }
         return { field: sortedField, value: blog[sortedField] };
     };
+
+    const filters = Object.keys(filterCategories).filter(filterCategory => {
+        const isRangedFilter = ["date", "numComments", "numLikes"].includes(
+            filterCategory
+        );
+
+        const rangedFilterPresent =
+            isRangedFilter &&
+            (filterCategories[filterCategory].from ||
+                filterCategories[filterCategory].to);
+
+        const normalFilterPresent =
+            !isRangedFilter && filterCategories[filterCategory];
+
+        if (rangedFilterPresent || normalFilterPresent) {
+            return filterCategory;
+        }
+    });
+
     return (
         <div>
             {blogs.map(blog => (
@@ -25,6 +44,7 @@ const BlogList = ({ blogs, sortedField }) => {
                     key={blog.id}
                     blog={blog}
                     sortedField={getSortedField(blog)}
+                    filteredFields={filters}
                 />
             ))}
         </div>

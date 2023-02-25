@@ -133,7 +133,11 @@ const User = () => {
             {user.blogs.length < 1 ? (
                 <p className="subtitle mt-3">No blogs added by user</p>
             ) : (
-                <BlogList blogs={modifiedData} sortedField={sortCategory} />
+                <BlogList
+                    blogs={modifiedData}
+                    sortedField={sortCategory}
+                    filterCategories={filterCategories}
+                />
             )}
         </div>
     );
