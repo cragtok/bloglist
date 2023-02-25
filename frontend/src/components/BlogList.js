@@ -12,13 +12,6 @@ const BlogList = ({ blogs, sortedField, filterCategories }) => {
         return <div>No Blogs</div>;
     }
 
-    const getSortedField = blog => {
-        if (sortedField === "comments") {
-            return { field: "comments", value: blog.comments.length };
-        }
-        return { field: sortedField, value: blog[sortedField] };
-    };
-
     const filters = Object.keys(filterCategories).filter(filterCategory => {
         const isRangedFilter = ["date", "numComments", "numLikes"].includes(
             filterCategory
@@ -43,7 +36,7 @@ const BlogList = ({ blogs, sortedField, filterCategories }) => {
                 <BlogLink
                     key={blog.id}
                     blog={blog}
-                    sortedField={getSortedField(blog)}
+                    sortedField={sortedField}
                     filteredFields={filters}
                 />
             ))}

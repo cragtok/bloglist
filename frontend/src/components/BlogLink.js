@@ -14,7 +14,7 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
     const blogTime = new Date(createdAt).toLocaleTimeString();
 
     const setFieldColor = field =>
-        sortedField.field === field || filteredFields.includes(field)
+        sortedField === field || filteredFields.includes(field)
             ? "has-text-success"
             : "";
 
@@ -61,11 +61,13 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
                 </p>
                 <span className={setFieldColor("title")}>{title}</span> by{" "}
                 <span className={setFieldColor("author")}>{author}</span>
-                {(sortedField.field === "comments" ||
-                    sortedField.field === "likes") && (
+                {sortedField === "comments" && (
                     <p className="has-text-success">
-                        {sortedField.field}: {sortedField.value}
+                        Comments: {comments.length}
                     </p>
+                )}
+                {sortedField === "likes" && (
+                    <p className="has-text-success">Likes: {likes}</p>
                 )}
                 {filteredFields.length > 0 && <>{renderFilteredFields()}</>}
             </div>
