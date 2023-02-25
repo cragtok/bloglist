@@ -11,12 +11,13 @@ const blogStyle = {
 const BlogLink = ({ blog, sortedField, filteredFields }) => {
     const { id, title, author, createdAt, comments, likes, url } = blog;
 
-    const selectTextColor = field => {
+    const setTextStyle = field => {
+        let textClass = "";
         if (filteredFields.includes(field)) {
-            return "has-text-info";
+            textClass += "has-text-info";
         }
-        if (sortedField === field) return "has-text-success";
-        return "";
+        if (sortedField === field) textClass += " has-text-weight-bold";
+        return textClass;
     };
 
     const selectFilteredText = filteredField => {
@@ -47,7 +48,10 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
     const renderFilteredFields = () => {
         return filteredFields.map(filteredField => {
             return (
-                <p className="has-text-info" key={crypto.randomUUID()}>
+                <p
+                    className={setTextStyle(filteredField)}
+                    key={crypto.randomUUID()}
+                >
                     {selectFilteredText(filteredField)}
                 </p>
             );
@@ -71,7 +75,9 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
 
     const renderSortedField = () => {
         return (
-            <p className="has-text-success">{selectSortedText(sortedField)}</p>
+            <p className={setTextStyle(sortedField)}>
+                {selectSortedText(sortedField)}
+            </p>
         );
     };
 
@@ -83,13 +89,13 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
             <div style={blogStyle}>
                 <p
                     className={`subtitle-6 is-italic ${
-                        selectTextColor("date") || selectTextColor("createdAt")
+                        setTextStyle("date") || setTextStyle("createdAt")
                     }`}
                 >
                     {blogDate} {blogTime}
                 </p>
-                <span className={selectTextColor("title")}>{title}</span> by{" "}
-                <span className={selectTextColor("author")}>{author}</span>
+                <span className={setTextStyle("title")}>{title}</span> by{" "}
+                <span className={setTextStyle("author")}>{author}</span>
                 {sortedField && renderSortedField(sortedField)}
                 {filteredFields.length > 0 && renderFilteredFields()}
             </div>
