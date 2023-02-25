@@ -13,9 +13,11 @@ const BlogList = ({ blogs, sortedField, filterCategories }) => {
     }
 
     const filters = Object.keys(filterCategories).filter(filterCategory => {
-        const isRangedFilter = ["date", "numComments", "numLikes"].includes(
-            filterCategory
-        );
+        const isRangedFilter = [
+            "createdAt",
+            "numComments",
+            "numLikes",
+        ].includes(filterCategory);
 
         const rangedFilterPresent =
             isRangedFilter &&

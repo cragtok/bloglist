@@ -30,11 +30,11 @@ export const filterBlogFields = (data, filterCategories, loggedInUserId) => {
         filterStringField(filterCategories.url, data.url) &&
         filterRangeField(
             {
-                from: filterCategories.date.from
-                    ? new Date(filterCategories.date.from)
+                from: filterCategories.createdAt.from
+                    ? new Date(filterCategories.createdAt.from)
                     : null,
-                to: filterCategories.date.to
-                    ? new Date(filterCategories.date.to)
+                to: filterCategories.createdAt.to
+                    ? new Date(filterCategories.createdAt.to)
                     : null,
             },
             new Date(data.createdAt)

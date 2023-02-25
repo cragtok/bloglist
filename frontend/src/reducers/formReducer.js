@@ -4,7 +4,7 @@ export const initialBlogFilters = {
     author: "",
     title: "",
     url: "",
-    date: { from: "", to: "" },
+    createdAt: { from: "", to: "" },
     numComments: { from: 0, to: 0 },
     numLikes: { from: 0, to: 0 },
     likedBlogs: false,

@@ -29,8 +29,8 @@ const useSortedAndFilteredData = page => {
         (filterCategories.author ||
             filterCategories.title ||
             filterCategories.url ||
-            filterCategories.date.from ||
-            filterCategories.date.to ||
+            filterCategories.createdAt.from ||
+            filterCategories.createdAt.to ||
             filterCategories.numComments.from ||
             filterCategories.numComments.to ||
             filterCategories.numLikes.from ||

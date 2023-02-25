@@ -88,9 +88,9 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
         <Link to={`/blogs/${id}`}>
             <div style={blogStyle}>
                 <p
-                    className={`subtitle-6 is-italic ${
-                        setTextStyle("date") || setTextStyle("createdAt")
-                    }`}
+                    className={`subtitle-6 is-italic ${setTextStyle(
+                        "createdAt"
+                    )}`}
                 >
                     {blogDate} {blogTime}
                 </p>

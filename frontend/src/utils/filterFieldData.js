@@ -3,7 +3,7 @@ export const blogFilterFields = [
     { name: "title", type: "text", label: "Title" },
     { name: "url", type: "text", label: "URL" },
     {
-        name: "date",
+        name: "createdAt",
         type: "range",
         rangeType: "date",
         label: "Date Created",
