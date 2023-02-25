@@ -20,16 +20,10 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
         return textClass;
     };
 
-    const selectFilteredText = filteredField => {
+    const selectStyledText = filteredField => {
         /*eslint-disable indent */
         let filteredText;
         switch (filteredField) {
-            case "numComments":
-                filteredText = `Comments: ${comments.length}`;
-                break;
-            case "numLikes":
-                filteredText = `Likes: ${likes}`;
-                break;
             case "url":
                 filteredText = `URL: ${url}`;
                 break;
@@ -39,46 +33,26 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
             case "commentedBlogs":
                 filteredText = "Commented";
                 break;
+            case "numLikes":
+            case "likes":
+                filteredText = `Likes: ${likes}`;
+                break;
+            case "numComments":
+            case "comments":
+                filteredText = `Comments: ${comments.length}`;
+                break;
             default:
                 filteredText = "";
         }
         return filteredText;
     };
 
-    const renderFilteredFields = () => {
-        return filteredFields.map(filteredField => {
-            return (
-                <p
-                    className={setTextStyle(filteredField)}
-                    key={crypto.randomUUID()}
-                >
-                    {selectFilteredText(filteredField)}
-                </p>
-            );
-        });
-    };
-
-    const selectSortedText = sortedField => {
-        let sortedText = "";
-        switch (sortedField) {
-            case "likes":
-                sortedText = `Likes: ${likes}`;
-                break;
-            case "comments":
-                sortedText = `Comments: ${comments.length}`;
-                break;
-            default:
-                sortedText = "";
-        }
-        return sortedText;
-    };
-
-    const renderSortedField = () => {
-        return (
-            <p className={setTextStyle(sortedField)}>
-                {selectSortedText(sortedField)}
+    const renderStyledFields = () => {
+        return [...filteredFields, sortedField].map(field => (
+            <p key={crypto.randomUUID()} className={setTextStyle(field)}>
+                {selectStyledText(field)}
             </p>
-        );
+        ));
     };
 
     const blogDate = new Date(createdAt).toDateString().slice(4);
@@ -96,8 +70,9 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
                 </p>
                 <span className={setTextStyle("title")}>{title}</span> by{" "}
                 <span className={setTextStyle("author")}>{author}</span>
-                {sortedField && renderSortedField(sortedField)}
-                {filteredFields.length > 0 && renderFilteredFields()}
+                {filteredFields.length > 0 &&
+                    sortedField &&
+                    renderStyledFields()}
             </div>
         </Link>
     );
