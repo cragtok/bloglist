@@ -8,7 +8,8 @@ const blogStyle = {
     marginBottom: 10,
 };
 
-const BlogLink = ({ id, title, author, createdAt, sortedField }) => {
+const BlogLink = ({ blog, sortedField }) => {
+    const { id, title, author, createdAt } = blog;
     const blogDate = new Date(createdAt).toDateString().slice(4);
     const blogTime = new Date(createdAt).toLocaleTimeString();
 

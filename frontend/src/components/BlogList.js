@@ -23,10 +23,7 @@ const BlogList = ({ blogs, sortedField }) => {
             {blogs.map(blog => (
                 <BlogLink
                     key={blog.id}
-                    id={blog.id}
-                    title={blog.title}
-                    author={blog.author}
-                    createdAt={blog.createdAt}
+                    blog={blog}
                     sortedField={getSortedField(blog)}
                 />
             ))}
