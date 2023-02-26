@@ -129,7 +129,7 @@ const FilterForm = ({
                                                     <a
                                                         onClick={() =>
                                                             updateFormFields(
-                                                                "date",
+                                                                "createdAt",
                                                                 {
                                                                     ...filterCategories[
                                                                         fieldData

@@ -34,11 +34,9 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
                 filteredText = "Commented";
                 break;
             case "numLikes":
-            case "likes":
                 filteredText = `Likes: ${likes}`;
                 break;
             case "numComments":
-            case "comments":
                 filteredText = `Comments: ${comments.length}`;
                 break;
             default:
@@ -48,7 +46,11 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
     };
 
     const renderStyledFields = () => {
-        return [...filteredFields, sortedField].map(field => (
+        let styledFields = filteredFields.includes(sortedField)
+            ? [...filteredFields]
+            : [...filteredFields, sortedField];
+
+        return styledFields.map(field => (
             <p key={crypto.randomUUID()} className={setTextStyle(field)}>
                 {selectStyledText(field)}
             </p>
@@ -70,8 +72,7 @@ const BlogLink = ({ blog, sortedField, filteredFields }) => {
                 </p>
                 <span className={setTextStyle("title")}>{title}</span> by{" "}
                 <span className={setTextStyle("author")}>{author}</span>
-                {filteredFields.length > 0 &&
-                    sortedField &&
+                {(filteredFields.length > 0 || sortedField) &&
                     renderStyledFields()}
             </div>
         </Link>

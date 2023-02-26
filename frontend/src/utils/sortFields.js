@@ -21,8 +21,12 @@ export const sortBlogFields = (a, b, sortCategory, sortMethod) => {
         );
     }
 
-    if (sortCategory === "comments") {
+    if (sortCategory === "numComments") {
         return compareValues(a.comments.length, b.comments.length, sortMethod);
+    }
+
+    if (sortCategory === "numLikes") {
+        return compareValues(a.likes, b.likes, sortMethod);
     }
     return compareValues(a[sortCategory], b[sortCategory], sortMethod);
 };

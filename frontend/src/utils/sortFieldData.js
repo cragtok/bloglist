@@ -12,6 +12,6 @@ export const blogSortFields = [
     { name: "Title", value: "title" },
     { name: "Author", value: "author" },
     { name: "Date Created", value: "createdAt" },
-    { name: "Number of Likes", value: "likes" },
-    { name: "Number of Comments", value: "comments" },
+    { name: "Number of Likes", value: "numLikes" },
+    { name: "Number of Comments", value: "numComments" },
 ];
