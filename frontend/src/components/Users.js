@@ -96,8 +96,25 @@ const Users = () => {
         }
     }, [filterCategories]);
 
-    const getStyledClass = field =>
-        sortCategory === field ? "has-text-success" : "";
+    const getStyledClass = field => {
+        if (!filterCategories) {
+            return "";
+        }
+
+        let className =
+            sortCategory === field
+                ? "has-text-weight-bold"
+                : "has-text-weight-normal";
+
+        if (
+            (field === "username" && filterCategories[field]) ||
+            (field !== "username" &&
+                (filterCategories[field].from || filterCategories[field].to))
+        ) {
+            className += " has-text-primary";
+        }
+        return className;
+    };
 
     if (!usersFetched) {
         return <p>Loading...</p>;
