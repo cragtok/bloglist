@@ -156,7 +156,7 @@ const Blog = () => {
             dispatch(addComment({ blogId: id, comment: newComment }));
             dispatch(
                 addUserComment({
-                    userId: loggedInUser.id,
+                    userId: blog.user.id,
                     blogId: id,
                     comment: newComment,
                 })
