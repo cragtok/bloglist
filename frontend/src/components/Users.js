@@ -96,6 +96,9 @@ const Users = () => {
         }
     }, [filterCategories]);
 
+    const getStyledClass = field =>
+        sortCategory === field ? "has-text-success" : "";
+
     if (!usersFetched) {
         return <p>Loading...</p>;
     }
@@ -133,40 +136,12 @@ const Users = () => {
             <table className="table is-striped is-bordered is-hoverable is-fullwidth mb-5">
                 <thead>
                     <tr>
-                        <th
-                            className={`${
-                                sortCategory === "username"
-                                    ? "has-text-success"
-                                    : ""
-                            }`}
-                        >
-                            User
-                        </th>
-                        <th
-                            className={`${
-                                sortCategory === "blogs"
-                                    ? "has-text-success"
-                                    : ""
-                            }`}
-                        >
-                            Blogs
-                        </th>
-                        <th
-                            className={
-                                sortCategory === "totalBlogLikes"
-                                    ? "has-text-success"
-                                    : ""
-                            }
-                        >
+                        <th className={getStyledClass("username")}>User</th>
+                        <th className={getStyledClass("blogs")}>Blogs</th>
+                        <th className={getStyledClass("totalBlogLikes")}>
                             Total Blog Likes
                         </th>
-                        <th
-                            className={
-                                sortCategory === "totalBlogComments"
-                                    ? "has-text-success"
-                                    : ""
-                            }
-                        >
+                        <th className={getStyledClass("totalBlogComments")}>
                             Total Blog Comments
                         </th>
                     </tr>
