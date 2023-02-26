@@ -98,7 +98,7 @@ const FilterForm = ({
                                             value={
                                                 filterCategories[
                                                     fieldData.name
-                                                ][rangeData.name]
+                                                ][rangeData.name] || ""
                                             }
                                             onChange={e =>
                                                 updateFormFields(
@@ -118,7 +118,11 @@ const FilterForm = ({
                                                 ][rangeData.name]
                                             )}`}
                                             type={fieldData.rangeType}
-                                            min={rangeData.min || ""}
+                                            min={
+                                                fieldData.rangeType === "date"
+                                                    ? ""
+                                                    : rangeData.min
+                                            }
                                             name={`${fieldData.name}-${rangeData.name}`}
                                         />
                                         {fieldData.rangeType === "date" &&
