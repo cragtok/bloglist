@@ -151,16 +151,24 @@ const Users = () => {
                         >
                             Blogs
                         </th>
-                        {sortCategory === "totalBlogLikes" && (
-                            <th className="has-text-success">
-                                Total Blog Likes
-                            </th>
-                        )}
-                        {sortCategory === "totalBlogComments" && (
-                            <th className="has-text-success">
-                                Total Blog Comments
-                            </th>
-                        )}
+                        <th
+                            className={
+                                sortCategory === "totalBlogLikes"
+                                    ? "has-text-success"
+                                    : ""
+                            }
+                        >
+                            Total Blog Likes
+                        </th>
+                        <th
+                            className={
+                                sortCategory === "totalBlogComments"
+                                    ? "has-text-success"
+                                    : ""
+                            }
+                        >
+                            Total Blog Comments
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -172,12 +180,8 @@ const Users = () => {
                                 </Link>{" "}
                             </td>
                             <td>{user.blogs.length}</td>
-                            {sortCategory === "totalBlogLikes" && (
-                                <td>{user.totalBlogLikes}</td>
-                            )}
-                            {sortCategory === "totalBlogComments" && (
-                                <td>{user.totalBlogComments}</td>
-                            )}
+                            <td>{user.totalBlogLikes}</td>
+                            <td>{user.totalBlogComments}</td>
                         </tr>
                     ))}
                 </tbody>
