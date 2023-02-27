@@ -7,37 +7,49 @@ const useData = (baseUrl, serviceToken = null) => {
         token = `bearer ${newToken}`;
     };
 
+    const generateConfigObject = (timeout = 5000) => {
+        return {
+            signal: AbortSignal.timeout(timeout),
+            headers: { Authorization: token },
+        };
+    };
+
     const getAll = async () => {
-        const config = { headers: { Authorization: token } };
-        const response = await axios.get(baseUrl, config);
+        const response = await axios.get(baseUrl, generateConfigObject());
         return response.data;
     };
 
     const getOne = async id => {
-        const config = { headers: { Authorization: token } };
-        const response = await axios.get(`${baseUrl}/${id}`, config);
+        const response = await axios.get(
+            `${baseUrl}/${id}`,
+            generateConfigObject()
+        );
         return response.data;
     };
 
     const create = async newObject => {
-        const config = { headers: { Authorization: token } };
-        const response = await axios.post(baseUrl, newObject, config);
+        const response = await axios.post(
+            baseUrl,
+            newObject,
+            generateConfigObject()
+        );
         return response.data;
     };
 
     const update = async updatedObject => {
-        const config = { headers: { Authorization: token } };
         const response = await axios.put(
             `${baseUrl}/${updatedObject.id}`,
             updatedObject,
-            config
+            generateConfigObject()
         );
         return response.data;
     };
 
     const remove = async id => {
-        const config = { headers: { Authorization: token } };
-        const response = await axios.delete(`${baseUrl}/${id}`, config);
+        const response = await axios.delete(
+            `${baseUrl}/${id}`,
+            generateConfigObject()
+        );
         return response.data;
     };
 
