@@ -25,7 +25,9 @@ const LoginAndSignupForm = () => {
 
     return (
         <div>
-            <h2 className="title is-2">Log in to application</h2>
+            <h2 className="title is-2">
+                {location.pathname === "/login" ? "Log In" : "Register"}{" "}
+            </h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label className="label">Username:</label>

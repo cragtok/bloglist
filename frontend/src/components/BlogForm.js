@@ -42,9 +42,15 @@ const BlogForm = ({ toggleVisibility }) => {
             toggleVisibility();
             navigate(`/blogs/${newBlog.id}`);
         } catch (error) {
-            dispatch(
-                displayNotification(error.response.data.error, "error", 4)
-            );
+            let errorMsg;
+            if (error.name === "CanceledError") {
+                errorMsg = "Request Timed Out";
+            } else if (error.response.data.error) {
+                errorMsg = error.response.data.error;
+            } else {
+                errorMsg = "Error: Something Went Wrong!";
+            }
+            dispatch(displayNotification(errorMsg, "error", 4));
         }
         setIsSubmitting(false);
     };
