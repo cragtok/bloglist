@@ -13,6 +13,7 @@ import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
 
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import { setUsers } from "../reducers/usersReducer";
+import { displayNotification } from "../reducers/notificationReducer";
 
 const Users = () => {
     const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const Users = () => {
             };
         });
     });
-    const { usersFetched } = useSelector(state => state.loading);
+    const { isLoading, usersFetched } = useSelector(state => state.loading);
     const usersService = useData("/api/users");
 
     const {
@@ -57,24 +58,39 @@ const Users = () => {
             dispatch(setLoadingState(true));
             const loggedInUser = JSON.parse(loggedUserJSON);
             usersService.setServiceToken(loggedInUser.token);
-            const fetchedUsers = await usersService.getAll();
-            dispatch(setUsers(fetchedUsers));
-            setInitialData(
-                fetchedUsers.map(user => {
-                    return {
-                        ...user,
-                        totalBlogLikes: user.blogs.reduce(
-                            (acc, currValue) => acc + currValue.likes,
-                            0
-                        ),
-                        totalBlogComments: user.blogs.reduce(
-                            (acc, currValue) => acc + currValue.comments.length,
-                            0
-                        ),
-                    };
-                })
-            );
-            dispatch(setUsersFetched(true));
+
+            try {
+                const fetchedUsers = await usersService.getAll();
+                dispatch(setUsers(fetchedUsers));
+                setInitialData(
+                    fetchedUsers.map(user => {
+                        return {
+                            ...user,
+                            totalBlogLikes: user.blogs.reduce(
+                                (acc, currValue) => acc + currValue.likes,
+                                0
+                            ),
+                            totalBlogComments: user.blogs.reduce(
+                                (acc, currValue) =>
+                                    acc + currValue.comments.length,
+                                0
+                            ),
+                        };
+                    })
+                );
+                dispatch(setUsersFetched(true));
+            } catch (error) {
+                let errorMsg;
+                if (error.name === "CanceledError") {
+                    errorMsg = "Request Timed Out";
+                } else if (error.response.data.error) {
+                    errorMsg = error.response.data.error;
+                } else {
+                    errorMsg = "Error: Something Went Wrong!";
+                }
+                dispatch(displayNotification(errorMsg, "error", 4));
+            }
+
             dispatch(setLoadingState(false));
         };
         if (loggedUserJSON && !usersFetched) {
@@ -116,11 +132,11 @@ const Users = () => {
         return className;
     };
 
-    if (!usersFetched) {
+    if (isLoading) {
         return <p>Loading...</p>;
     }
 
-    if (usersFetched && !users.length) {
+    if (!isLoading && (!usersFetched || !users.length)) {
         return <p>No Users</p>;
     }
 

@@ -12,7 +12,7 @@ import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
 
 import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
 import { setBlogs } from "../reducers/blogsReducer";
-import { setNotification } from "../reducers/notificationReducer";
+import { displayNotification } from "../reducers/notificationReducer";
 import { blogFilterFields } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 
@@ -52,9 +52,15 @@ const Home = () => {
                 dispatch(setBlogsFetched(true));
                 setInitialData(blogs);
             } catch (error) {
-                dispatch(
-                    setNotification(error.response.data.error, "error", 4)
-                );
+                let errorMsg;
+                if (error.name === "CanceledError") {
+                    errorMsg = "Request Timed Out";
+                } else if (error.response.data.error) {
+                    errorMsg = error.response.data.error;
+                } else {
+                    errorMsg = "Error: Something Went Wrong!";
+                }
+                dispatch(displayNotification(errorMsg, "error", 4));
             }
             dispatch(setLoadingState(false));
         };
@@ -77,7 +83,7 @@ const Home = () => {
         }
     }, [filterCategories]);
 
-    if (isLoading || !blogsFetched) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 

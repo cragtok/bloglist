@@ -53,7 +53,15 @@ const Blog = () => {
                     dispatch(addBlog(foundBlog));
                 }
             } catch (error) {
-                console.error(error);
+                let errorMsg;
+                if (error.name === "CanceledError") {
+                    errorMsg = "Request Timed Out";
+                } else if (error.response.data.error) {
+                    errorMsg = error.response.data.error;
+                } else {
+                    errorMsg = "Error: Something Went Wrong!";
+                }
+                dispatch(displayNotification(errorMsg, "error", 4));
             }
             dispatch(setLoadingState(false));
         };

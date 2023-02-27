@@ -13,6 +13,7 @@ import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
+import { displayNotification } from "../reducers/notificationReducer";
 
 const User = () => {
     const id = useParams().id;
@@ -49,13 +50,25 @@ const User = () => {
             dispatch(setLoadingState(true));
             const loggedInUser = JSON.parse(loggedUserJSON);
             usersService.setServiceToken(loggedInUser.token);
-            const fetchedUsers = await usersService.getAll();
-            dispatch(setUsers(fetchedUsers));
-            const foundUser = fetchedUsers.filter(u => u.id === id)[0];
-            if (foundUser) {
-                setInitialData(foundUser.blogs);
+            try {
+                const fetchedUsers = await usersService.getAll();
+                dispatch(setUsers(fetchedUsers));
+                const foundUser = fetchedUsers.filter(u => u.id === id)[0];
+                if (foundUser) {
+                    setInitialData(foundUser.blogs);
+                }
+                dispatch(setUsersFetched(true));
+            } catch (error) {
+                let errorMsg;
+                if (error.name === "CanceledError") {
+                    errorMsg = "Request Timed Out";
+                } else if (error.response.data.error) {
+                    errorMsg = error.response.data.error;
+                } else {
+                    errorMsg = "Error: Something Went Wrong!";
+                }
+                dispatch(displayNotification(errorMsg, "error", 4));
             }
-            dispatch(setUsersFetched(true));
             dispatch(setLoadingState(false));
         };
 
@@ -78,11 +91,11 @@ const User = () => {
         }
     }, [sortCategory]);
 
-    if (isLoading || !usersFetched) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (!user) {
+    if (!isLoading && !usersFetched) {
         return <div>User not found</div>;
     }
 
