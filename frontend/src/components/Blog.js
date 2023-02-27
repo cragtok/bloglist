@@ -85,9 +85,15 @@ const Blog = () => {
             setIsSubmittingDelete(false);
             navigate("/");
         } catch (error) {
-            dispatch(
-                displayNotification(error.response.data.error, "error", 4)
-            );
+            let errorMsg;
+            if (error.name === "CanceledError") {
+                errorMsg = "Request Timed Out";
+            } else if (error.response.data.error) {
+                errorMsg = error.response.data.error;
+            } else {
+                errorMsg = "Error: Something Went Wrong!";
+            }
+            dispatch(displayNotification(errorMsg, "error", 4));
             setIsSubmittingDelete(false);
         }
     };
@@ -122,13 +128,15 @@ const Blog = () => {
                 )
             );
         } catch (error) {
-            dispatch(
-                displayNotification(
-                    error.response.data.error || "Unknown Error",
-                    "error",
-                    4
-                )
-            );
+            let errorMsg;
+            if (error.name === "CanceledError") {
+                errorMsg = "Request Timed Out";
+            } else if (error.response.data.error) {
+                errorMsg = error.response.data.error;
+            } else {
+                errorMsg = "Error: Something Went Wrong!";
+            }
+            dispatch(displayNotification(errorMsg, "error", 4));
         }
         setIsSubmittingLike(false);
     };
@@ -148,9 +156,15 @@ const Blog = () => {
             );
             dispatch(displayNotification("Comment Deleted!", "success", 4));
         } catch (error) {
-            dispatch(
-                displayNotification("Error in deleting comment", "error", 4)
-            );
+            let errorMsg;
+            if (error.name === "CanceledError") {
+                errorMsg = "Request Timed Out";
+            } else if (error.response.data.error) {
+                errorMsg = error.response.data.error;
+            } else {
+                errorMsg = "Error: Something Went Wrong!";
+            }
+            dispatch(displayNotification(errorMsg, "error", 4));
         }
         setIsDeletingComment(false);
     };
@@ -172,13 +186,15 @@ const Blog = () => {
             dispatch(displayNotification("Comment Added", "success", 2));
             success = true;
         } catch (error) {
-            dispatch(
-                displayNotification(
-                    error.response.data.error || "Unknown Error",
-                    "error",
-                    4
-                )
-            );
+            let errorMsg;
+            if (error.name === "CanceledError") {
+                errorMsg = "Request Timed Out";
+            } else if (error.response.data.error) {
+                errorMsg = error.response.data.error;
+            } else {
+                errorMsg = "Error: Something Went Wrong!";
+            }
+            dispatch(displayNotification(errorMsg, "error", 4));
         }
         setIsSubmittingComment(false);
         return success;

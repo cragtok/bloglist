@@ -7,7 +7,7 @@ const useData = (baseUrl, serviceToken = null) => {
         token = `bearer ${newToken}`;
     };
 
-    const generateConfigObject = (timeout = 5000) => {
+    const generateConfigObject = (timeout = 8000) => {
         return {
             signal: AbortSignal.timeout(timeout),
             headers: { Authorization: token },
