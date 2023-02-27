@@ -72,12 +72,12 @@ usersRouter.post("/", async (request, response, next) => {
     const { username, password, name } = request.body;
 
     if (password === undefined || password.length < 3) {
-        return response
-            .status(400)
-            .json({
-                error: "Password validation failed: Password must be at least 3 characters long.",
-            })
-            .end();
+        next({
+            name: "ValidationError",
+            message:
+                "Password validation failed: Password must be at least 3 characters long.",
+        });
+        return;
     }
     const saltRounds = 10;
     try {
