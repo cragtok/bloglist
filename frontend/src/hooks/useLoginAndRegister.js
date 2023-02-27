@@ -21,9 +21,15 @@ const useLoginAndRegister = () => {
             await userService.create({ username, name, password });
             await login(username, password);
         } catch (error) {
-            dispatch(
-                displayNotification(error.response.data.error, "error", 4)
-            );
+            let errorMsg;
+            if (error.name === "CanceledError") {
+                errorMsg = "Request Timed Out";
+            } else if (error.response.data.error) {
+                errorMsg = error.response.data.error;
+            } else {
+                errorMsg = "Error: Something Went Wrong!";
+            }
+            dispatch(displayNotification(errorMsg, "error", 4));
             dispatch(setLoadingState(false));
         }
     };
@@ -46,9 +52,15 @@ const useLoginAndRegister = () => {
             dispatch(displayNotification(`Welcome ${username}!`, "success", 4));
             navigate("/");
         } catch (error) {
-            dispatch(
-                displayNotification(error.response.data.error, "error", 4)
-            );
+            let errorMsg;
+            if (error.name === "CanceledError") {
+                errorMsg = "Request Timed Out";
+            } else if (error.response.data.error) {
+                errorMsg = error.response.data.error;
+            } else {
+                errorMsg = "Error: Something Went Wrong!";
+            }
+            dispatch(displayNotification(errorMsg, "error", 4));
         }
         dispatch(setLoadingState(false));
     };
