@@ -59,7 +59,10 @@ const FilterForm = ({
     const renderBooleanInput = fieldData => {
         return (
             <div className="field" key={fieldData.name}>
-                <label className="checkbox label is-normal">
+                <label
+                    className="checkbox label is-normal"
+                    style={{ width: "max-content" }}
+                >
                     <input
                         onChange={e =>
                             updateFormFields(fieldData.name, e.target.checked)
