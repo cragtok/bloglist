@@ -12,18 +12,34 @@ const requestLogger = (request, response, next) => {
 };
 
 const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: "unknown endpoint" });
+    response
+        .status(404)
+        .send({ name: "UnknownEndpointError", error: "Unknown endpoint" });
 };
 
 const errorHandler = (error, request, response, next) => {
     logger.error(error.message);
 
     if (error.name === "CastError") {
-        return response.status(400).send({ error: "Malformatted id" });
+        return response
+            .status(400)
+            .send({ name: error.name, error: "Malformatted id" });
     } else if (error.name === "ValidationError") {
-        return response.status(400).json({ error: error.message });
+        return response
+            .status(400)
+            .json({ name: error.name, error: error.message });
     } else if (error.name === "JsonWebTokenError") {
-        return response.status(401).json({ error: "Invalid token" });
+        return response
+            .status(401)
+            .json({ name: error.name, error: "Invalid or missing token" });
+    } else if (error.name === "NotFoundError") {
+        return response
+            .status(404)
+            .json({ name: error.name, error: error.message });
+    } else if (error.name === "AuthenticationError") {
+        return response
+            .status(401)
+            .json({ name: error.name, error: error.message });
     }
 
     next(error);

@@ -2,11 +2,11 @@ const bcrypt = require("bcrypt");
 const usersRouter = require("express").Router();
 const User = require("../models/user");
 
-usersRouter.get("/", async (request, response) => {
+usersRouter.get("/", async (request, response, next) => {
     const user = request.user;
 
     if (!user) {
-        return response.status(401).json({ error: "token missing or invalid" });
+        return next({ name: "JsonWebTokenError" });
     }
 
     const users = await User.find({}).populate({
@@ -35,7 +35,7 @@ usersRouter.get("/:id", async (request, response, next) => {
     const user = request.user;
 
     if (!user) {
-        return response.status(401).json({ error: "token missing or invalid" });
+        return next({ name: "JsonWebTokenError" });
     }
 
     try {
@@ -61,7 +61,10 @@ usersRouter.get("/:id", async (request, response, next) => {
         if (user) {
             response.json(user);
         } else {
-            response.status(404).end();
+            next({
+                name: "NotFoundError",
+                message: "User not found",
+            });
         }
     } catch (error) {
         next(error);
@@ -72,12 +75,11 @@ usersRouter.post("/", async (request, response, next) => {
     const { username, password, name } = request.body;
 
     if (password === undefined || password.length < 3) {
-        next({
+        return next({
             name: "ValidationError",
             message:
                 "Password validation failed: Password must be at least 3 characters long.",
         });
-        return;
     }
     const saltRounds = 10;
     try {

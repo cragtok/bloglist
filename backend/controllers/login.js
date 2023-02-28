@@ -6,16 +6,18 @@ const User = require("../models/user");
 loginRouter.post("/", async (request, response, next) => {
     const { username, password } = request.body;
     if (!username || !password) {
-        return response
-            .status(400)
-            .json({ error: "Username or password is missing" });
+        return next({
+            name: "ValidationError",
+            message: "Username or password is missing",
+        });
     }
     try {
         const user = await User.findOne({ username });
         if (!user) {
-            return response
-                .status(404)
-                .json({ error: "Username does not exist" });
+            return next({
+                name: "NotFoundError",
+                message: "Username does not exist",
+            });
         }
         const passwordCorrect =
             user === null
@@ -23,7 +25,10 @@ loginRouter.post("/", async (request, response, next) => {
                 : await bcrypt.compare(password, user.passwordHash);
 
         if (!(user && passwordCorrect)) {
-            return response.status(401).json({ error: "Invalid password" });
+            return next({
+                name: "AuthenticationError",
+                message: "Invalid Password",
+            });
         }
 
         const userForToken = {

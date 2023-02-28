@@ -38,7 +38,10 @@ blogsRouter.get("/:id", async (request, response, next) => {
         if (blog) {
             response.json(blog);
         } else {
-            response.status(404).end();
+            next({
+                name: "NotFoundError",
+                message: "Blog not found",
+            });
         }
     } catch (error) {
         next(error);
@@ -49,7 +52,7 @@ blogsRouter.post("/", async (request, response, next) => {
     const body = request.body;
     const user = request.user;
     if (!user) {
-        return response.status(401).json({ error: "token missing or invalid" });
+        return next({ name: "JsonWebTokenError" });
     }
     try {
         const blog = new Blog({
@@ -77,17 +80,21 @@ blogsRouter.delete("/:id", async (request, response, next) => {
     try {
         const user = request.user;
         if (!user) {
-            return response
-                .status(401)
-                .json({ error: "token missing or invalid" });
+            return next({ name: "JsonWebTokenError" });
         }
 
         const blog = await Blog.findById(request.params.id);
         if (!blog) {
-            return response.status(400).json({ error: "Blog not found" });
+            return next({
+                name: "NotFoundError",
+                message: "Blog does not exist or has already deleted",
+            });
         }
         if (blog.user.toString() !== user._id.toString()) {
-            return response.status(401).json({ error: "Authorization denied" });
+            return next({
+                name: "AuthenticationError",
+                message: "Authorization denied",
+            });
         }
         user.blogs = user.blogs.filter(
             blog => blog.id.toString() !== blog._id.toString()
@@ -105,19 +112,23 @@ blogsRouter.put("/:id", async (request, response, next) => {
 
     const user = request.user;
     if (!user) {
-        return response.status(401).json({ error: "token missing or invalid" });
+        return next({ name: "JsonWebTokenError" });
     }
 
     try {
         const blogToUpdate = await Blog.findById(request.params.id);
 
         if (!blogToUpdate) {
-            return response.status(404).json({ error: "Blog not found" });
+            return next({
+                name: "NotFoundError",
+                message: "Blog not found",
+            });
         }
 
         if (body.action !== "like" && body.action !== "unlike") {
-            return response.status(400).json({
-                error: "Blog update action must be 'like' or 'unlike'",
+            return next({
+                name: "ValidationError",
+                message: "Blog update action must be 'like' or 'unlike'",
             });
         }
         const userLikesId = blogToUpdate.userLikes.find(
@@ -125,15 +136,17 @@ blogsRouter.put("/:id", async (request, response, next) => {
         );
 
         if (userLikesId !== undefined && body.action === "like") {
-            return response
-                .status(400)
-                .json({ error: "You have already liked the blog" });
+            return next({
+                name: "ValidationError",
+                message: "You have already liked the blog",
+            });
         }
 
         if (!userLikesId && body.action === "unlike") {
-            return response
-                .status(400)
-                .json({ error: "You have not liked the blog" });
+            return next({
+                name: "ValidationError",
+                message: "You have not liked the blog",
+            });
         }
 
         let updatedLikes;
@@ -196,17 +209,17 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
     const user = request.user;
 
     if (!user) {
-        return response.status(401).json({ error: "token missing or invalid" });
+        return next({ name: "JsonWebTokenError" });
     }
 
     if (!comment || comment.length < 1) {
-        return response.status(400).json({ error: "Comment missing" });
+        return next({ name: "ValidationError", message: "Comment missing" });
     }
 
     try {
         const blog = await Blog.findById(request.params.id);
         if (!blog) {
-            return response.status(400).json({ error: "Blog not found" });
+            return next({ name: "NotFoundError", message: "Blog not found" });
         }
         const newComment = await new Comment({
             comment,
@@ -231,21 +244,23 @@ blogsRouter.delete(
         try {
             const user = request.user;
             if (!user) {
-                return response
-                    .status(401)
-                    .json({ error: "token missing or invalid" });
+                return next({ name: "JsonWebTokenError" });
             }
 
             const blog = await Blog.findById(request.params.blogid);
             if (!blog) {
-                return response.status(400).json({ error: "Blog not found" });
+                return next({
+                    name: "ValidationError",
+                    message: "Comment blog not found",
+                });
             }
 
             const comment = await Comment.findById(request.params.commentid);
             if (!comment) {
-                return response
-                    .status(400)
-                    .json({ error: "Comment not found" });
+                return next({
+                    name: "NotFoundError",
+                    message: "Comment not found",
+                });
             }
 
             // Comment can only be deleted by blog creator or comment author
@@ -253,9 +268,10 @@ blogsRouter.delete(
                 blog.user.toString() !== user._id.toString() &&
                 comment.user.toString() !== user._id.toString()
             ) {
-                return response
-                    .status(401)
-                    .json({ error: "Authorization denied" });
+                return next({
+                    name: "AuthenticationError",
+                    message: "Authoriization Denied",
+                });
             }
 
             blog.comments = blog.comments.filter(
