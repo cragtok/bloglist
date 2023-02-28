@@ -9,7 +9,7 @@ import { userFilterFields } from "../utils/filterFieldData";
 import { userSortFields } from "../utils/sortFieldData";
 
 import useData from "../hooks/useData";
-import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
+import useModifiedData from "../hooks/useModifiedData";
 
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import { setUsers } from "../reducers/usersReducer";
@@ -50,7 +50,7 @@ const Users = () => {
         setSortMethod,
         sortCategory,
         sortMethod,
-    } = useSortedAndFilteredData("users");
+    } = useModifiedData("users");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");

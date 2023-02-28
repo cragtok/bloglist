@@ -8,7 +8,7 @@ import SortingForm from "./SortingForm";
 import FilterForm from "./FilterForm";
 
 import useData from "../hooks/useData";
-import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
+import useModifiedData from "../hooks/useModifiedData";
 
 import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
 import { setBlogs } from "../reducers/blogsReducer";
@@ -38,7 +38,7 @@ const Home = () => {
         setSortMethod,
         sortCategory,
         sortMethod,
-    } = useSortedAndFilteredData("home");
+    } = useModifiedData("home");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");

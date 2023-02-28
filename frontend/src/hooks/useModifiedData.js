@@ -8,7 +8,7 @@ import {
 import { filterBlogFields, filterUserFields } from "../utils/filterFields";
 import { sortBlogFields, sortUserFields } from "../utils/sortFields";
 
-const useSortedAndFilteredData = page => {
+const useModifiedData = page => {
     const [sortCategory, setSortCategory] = useState("");
     const [sortMethod, setSortMethod] = useState("descending");
 
@@ -126,4 +126,4 @@ const useSortedAndFilteredData = page => {
     };
 };
 
-export default useSortedAndFilteredData;
+export default useModifiedData;

@@ -12,7 +12,7 @@ import { blogSortFields } from "../utils/sortFieldData";
 import useData from "../hooks/useData";
 import { setUsers } from "../reducers/usersReducer";
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
-import useSortedAndFilteredData from "../hooks/useSortedAndFilteredData";
+import useModifiedData from "../hooks/useModifiedData";
 import { displayNotification } from "../reducers/notificationReducer";
 
 const User = () => {
@@ -42,7 +42,7 @@ const User = () => {
         setSortMethod,
         sortCategory,
         sortMethod,
-    } = useSortedAndFilteredData("blogs");
+    } = useModifiedData("blogs");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
