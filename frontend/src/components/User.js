@@ -56,8 +56,8 @@ const User = () => {
                 const foundUser = fetchedUsers.filter(u => u.id === id)[0];
                 if (foundUser) {
                     setInitialData(foundUser.blogs);
+                    dispatch(setUsersFetched(true));
                 }
-                dispatch(setUsersFetched(true));
             } catch (error) {
                 let errorMsg;
                 if (error.name === "CanceledError") {

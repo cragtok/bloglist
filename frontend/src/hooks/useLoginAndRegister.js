@@ -24,7 +24,7 @@ const useLoginAndRegister = () => {
             let errorMsg;
             if (error.name === "CanceledError") {
                 errorMsg = "Request Timed Out";
-            } else if (error.response.data.error) {
+            } else if (error.response.data) {
                 errorMsg = error.response.data.error;
             } else {
                 errorMsg = "Error: Something Went Wrong!";

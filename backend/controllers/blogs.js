@@ -251,7 +251,7 @@ blogsRouter.delete(
             if (!blog) {
                 return next({
                     name: "ValidationError",
-                    message: "Comment blog not found",
+                    message: "Blog not found",
                 });
             }
 
@@ -259,7 +259,8 @@ blogsRouter.delete(
             if (!comment) {
                 return next({
                     name: "NotFoundError",
-                    message: "Comment not found",
+                    message:
+                        "Comment does not exist or has already been deleted",
                 });
             }
 
