@@ -39,17 +39,17 @@ const Users = () => {
     const usersService = useData("/api/users");
 
     const {
-        sortCategory,
-        sortMethod,
+        filterCategories,
+        filterCategoriesPresent,
+        modifiedData,
+        resetFilterState,
+        resetSortState,
+        setFilterCategories,
+        setInitialData,
         setSortCategory,
         setSortMethod,
-        modifiedData,
-        resetSortState,
-        setInitialData,
-        filterCategories,
-        setFilterCategories,
-        resetFilterState,
-        filterCategoriesPresent,
+        sortCategory,
+        sortMethod,
     } = useSortedAndFilteredData("users");
 
     useEffect(() => {

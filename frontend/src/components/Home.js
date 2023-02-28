@@ -27,17 +27,17 @@ const Home = () => {
     const blogs = useSelector(state => state.blogs);
     const { isLoading, blogsFetched } = useSelector(state => state.loading);
     const {
-        sortCategory,
-        sortMethod,
+        filterCategories,
+        filterCategoriesPresent,
+        modifiedData,
+        resetFilterState,
+        resetSortState,
+        setFilterCategories,
+        setInitialData,
         setSortCategory,
         setSortMethod,
-        modifiedData,
-        resetSortState,
-        resetFilterState,
-        filterCategories,
-        setFilterCategories,
-        filterCategoriesPresent,
-        setInitialData,
+        sortCategory,
+        sortMethod,
     } = useSortedAndFilteredData("home");
 
     useEffect(() => {

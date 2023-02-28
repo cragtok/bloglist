@@ -31,17 +31,17 @@ const User = () => {
     const user = useSelector(state => state.users.filter(u => u.id === id)[0]);
 
     const {
-        sortCategory,
-        sortMethod,
-        setSortCategory,
-        setSortMethod,
+        filterCategories,
+        filterCategoriesPresent,
         modifiedData,
         resetFilterState,
         resetSortState,
-        filterCategories,
         setFilterCategories,
-        filterCategoriesPresent,
         setInitialData,
+        setSortCategory,
+        setSortMethod,
+        sortCategory,
+        sortMethod,
     } = useSortedAndFilteredData("blogs");
 
     useEffect(() => {
