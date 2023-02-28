@@ -2,14 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../reducers/userReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
-import useData from "./useData";
+import useAPI from "./useAPI";
 import { useNavigate } from "react-router-dom";
 
 const useLoginAndRegister = () => {
     const dispatch = useDispatch();
 
-    const userService = useData("/api/users");
-    const loginService = useData("/api/login");
+    const userService = useAPI("/api/users");
+    const loginService = useAPI("/api/login");
 
     const navigate = useNavigate();
 

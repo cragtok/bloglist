@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const useData = (baseUrl, serviceToken = null) => {
+const useAPI = (baseUrl, serviceToken = null) => {
     let token = `bearer ${serviceToken}`;
 
     const setServiceToken = newToken => {
@@ -64,4 +64,4 @@ const useData = (baseUrl, serviceToken = null) => {
     return services;
 };
 
-export default useData;
+export default useAPI;

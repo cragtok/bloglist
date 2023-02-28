@@ -5,7 +5,7 @@ import { addBlog } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import { addUserBlog } from "../reducers/usersReducer";
 
-import useData from "../hooks/useData";
+import useAPI from "../hooks/useAPI";
 
 const BlogForm = ({ toggleVisibility }) => {
     const [title, setTitle] = useState("");
@@ -19,7 +19,7 @@ const BlogForm = ({ toggleVisibility }) => {
     const loggedInUser = useSelector(state => state.user);
     const notification = useSelector(state => state.notification);
 
-    const blogService = useData("/api/blogs");
+    const blogService = useAPI("/api/blogs");
 
     const createBlog = async e => {
         e.preventDefault();

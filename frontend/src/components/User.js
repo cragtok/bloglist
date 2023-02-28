@@ -9,7 +9,7 @@ import FilterForm from "./FilterForm";
 import { blogFilterFields } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 
-import useData from "../hooks/useData";
+import useAPI from "../hooks/useAPI";
 import { setUsers } from "../reducers/usersReducer";
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import useModifiedData from "../hooks/useModifiedData";
@@ -24,7 +24,7 @@ const User = () => {
 
     const dispatch = useDispatch();
 
-    const usersService = useData("/api/users");
+    const usersService = useAPI("/api/users");
 
     const { isLoading, usersFetched } = useSelector(state => state.loading);
 

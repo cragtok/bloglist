@@ -7,7 +7,7 @@ import Togglable from "./Togglable";
 import SortingForm from "./SortingForm";
 import FilterForm from "./FilterForm";
 
-import useData from "../hooks/useData";
+import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";
 
 import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
@@ -22,7 +22,7 @@ const Home = () => {
     const filterFormRef = useRef();
 
     const dispatch = useDispatch();
-    const blogService = useData("/api/blogs");
+    const blogService = useAPI("/api/blogs");
 
     const blogs = useSelector(state => state.blogs);
     const { isLoading, blogsFetched } = useSelector(state => state.loading);

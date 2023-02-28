@@ -8,7 +8,7 @@ import FilterForm from "./FilterForm";
 import { userFilterFields } from "../utils/filterFieldData";
 import { userSortFields } from "../utils/sortFieldData";
 
-import useData from "../hooks/useData";
+import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";
 
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
@@ -36,7 +36,7 @@ const Users = () => {
         });
     });
     const { isLoading, usersFetched } = useSelector(state => state.loading);
-    const usersService = useData("/api/users");
+    const usersService = useAPI("/api/users");
 
     const {
         filterCategories,

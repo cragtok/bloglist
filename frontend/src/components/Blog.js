@@ -19,7 +19,7 @@ import {
 import { displayNotification } from "../reducers/notificationReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
 
-import useData from "../hooks/useData";
+import useAPI from "../hooks/useAPI";
 
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
@@ -38,8 +38,8 @@ const Blog = () => {
     const [isDeletingComment, setIsDeletingComment] = useState(false);
 
     const loggedInUser = useSelector(state => state.user);
-    const blogService = useData("/api/blogs");
-    const commentService = useData(`/api/blogs/${id}/comments`);
+    const blogService = useAPI("/api/blogs");
+    const commentService = useAPI(`/api/blogs/${id}/comments`);
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
