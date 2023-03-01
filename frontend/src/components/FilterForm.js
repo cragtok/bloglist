@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const FilterForm = ({
     formTitle,
@@ -6,25 +6,38 @@ const FilterForm = ({
     setFilterCategories,
     resetForm,
     filterFields,
+    initialFilters,
 }) => {
     if (!filterCategories) {
         return null;
     }
 
-    const updateFormFields = (field, value) => {
-        setFilterCategories({ ...filterCategories, [field]: value });
+    const [formFilters, setFormFilters] = useState({ ...filterCategories });
+
+    const updateLocalFormFields = (field, value) => {
+        setFormFilters({ ...formFilters, [field]: value });
+    };
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        setFilterCategories({ ...formFilters });
+    };
+
+    const clearFilters = () => {
+        resetForm();
+        setFormFilters({ ...initialFilters });
     };
 
     const activeClass = value => (value ? "is-primary" : "is-dark");
 
-    const renderTextInput = fieldData => {
+    const renderTextInput = (fieldData, filterCategories) => {
         return (
             <div className="field" key={fieldData.name}>
                 <label className="label">{fieldData.label}:</label>
                 <input
                     value={filterCategories[fieldData.name]}
                     onChange={e =>
-                        updateFormFields(fieldData.name, e.target.value)
+                        updateLocalFormFields(fieldData.name, e.target.value)
                     }
                     className={`input ${activeClass(
                         filterCategories[fieldData.name]
@@ -36,14 +49,14 @@ const FilterForm = ({
         );
     };
 
-    const renderNumberInput = fieldData => {
+    const renderNumberInput = (fieldData, filterCategories) => {
         return (
             <div className="field" key={fieldData.name}>
                 <label className="label">{fieldData.label}:</label>
                 <input
                     value={filterCategories[fieldData.name]}
                     onChange={e =>
-                        updateFormFields(fieldData.name, e.target.value)
+                        updateLocalFormFields(fieldData.name, e.target.value)
                     }
                     className={`input ${activeClass(
                         filterCategories[fieldData.name]
@@ -56,7 +69,7 @@ const FilterForm = ({
         );
     };
 
-    const renderBooleanInput = fieldData => {
+    const renderBooleanInput = (fieldData, filterCategories) => {
         return (
             <div className="field" key={fieldData.name}>
                 <label
@@ -65,7 +78,10 @@ const FilterForm = ({
                 >
                     <input
                         onChange={e =>
-                            updateFormFields(fieldData.name, e.target.checked)
+                            updateLocalFormFields(
+                                fieldData.name,
+                                e.target.checked
+                            )
                         }
                         name={fieldData.name}
                         type="checkbox"
@@ -77,7 +93,7 @@ const FilterForm = ({
         );
     };
 
-    const renderRangeInput = fieldData => {
+    const renderRangeInput = (fieldData, filterCategories) => {
         /* eslint-disable indent */
         return (
             <div key={fieldData.name}>
@@ -85,8 +101,8 @@ const FilterForm = ({
                 <div className="field is-horizontal">
                     <div className="level field-body">
                         {[fieldData.ranges.from, fieldData.ranges.to].map(
-                            (rangeData, idx) => (
-                                <React.Fragment key={idx}>
+                            rangeData => (
+                                <React.Fragment key={crypto.randomUUID()}>
                                     <label className="label is-small mr-2">
                                         {rangeData.label}:
                                     </label>
@@ -104,7 +120,7 @@ const FilterForm = ({
                                                 ][rangeData.name] || ""
                                             }
                                             onChange={e =>
-                                                updateFormFields(
+                                                updateLocalFormFields(
                                                     fieldData.name,
                                                     {
                                                         ...filterCategories[
@@ -135,7 +151,7 @@ const FilterForm = ({
                                                 <div className="control">
                                                     <a
                                                         onClick={() =>
-                                                            updateFormFields(
+                                                            updateLocalFormFields(
                                                                 "createdAt",
                                                                 {
                                                                     ...filterCategories[
@@ -168,13 +184,13 @@ const FilterForm = ({
         /* eslint-disable indent */
         switch (fieldData.type) {
             case "text":
-                return renderTextInput(fieldData);
+                return renderTextInput(fieldData, formFilters);
             case "number":
-                return renderNumberInput(fieldData);
+                return renderNumberInput(fieldData, formFilters);
             case "boolean":
-                return renderBooleanInput(fieldData);
+                return renderBooleanInput(fieldData, formFilters);
             case "range":
-                return renderRangeInput(fieldData);
+                return renderRangeInput(fieldData, formFilters);
             default:
                 return null;
         }
@@ -184,11 +200,21 @@ const FilterForm = ({
         <div className="mb-5">
             <div className="title is-5">Filter {formTitle}</div>
             <br />
-            <div id="filterFormBody">{filterFields.map(renderFormElement)}</div>
+            <form id="filterFormBody">
+                {filterFields.map(renderFormElement)}
+                <br />
+                <button
+                    type="submit"
+                    onClick={handleSubmit}
+                    className="button is-primary"
+                >
+                    Filter
+                </button>{" "}
+                <button type="button" onClick={clearFilters} className="button">
+                    Clear Filters
+                </button>
+            </form>
             <br />
-            <button onClick={resetForm} className="button">
-                Clear Filters
-            </button>
         </div>
     );
 };

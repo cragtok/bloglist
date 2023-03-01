@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import SortingForm from "./SortingForm";
 import Togglable from "./Togglable";
 import FilterForm from "./FilterForm";
-import { userFilterFields } from "../utils/filterFieldData";
+import { userFilterFields, initialUserFilters } from "../utils/filterFieldData";
 import { userSortFields } from "../utils/sortFieldData";
 
 import useAPI from "../hooks/useAPI";
@@ -163,6 +163,7 @@ const Users = () => {
                     setFilterCategories={setFilterCategories}
                     resetForm={resetFilterState}
                     filterFields={userFilterFields}
+                    initialFilters={initialUserFilters}
                 />
             </Togglable>
             <br />

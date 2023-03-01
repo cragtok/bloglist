@@ -6,7 +6,7 @@ import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
 import SortingForm from "./SortingForm";
 import FilterForm from "./FilterForm";
-import { blogFilterFields } from "../utils/filterFieldData";
+import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 
 import useAPI from "../hooks/useAPI";
@@ -140,6 +140,7 @@ const User = () => {
                     setFilterCategories={setFilterCategories}
                     resetForm={resetFilterState}
                     filterFields={blogFilterFields}
+                    initialFilters={initialBlogFilters}
                 />
             </Togglable>
             <br />

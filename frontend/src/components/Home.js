@@ -13,7 +13,7 @@ import useModifiedData from "../hooks/useModifiedData";
 import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
 import { setBlogs } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
-import { blogFilterFields } from "../utils/filterFieldData";
+import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 
 const Home = () => {
@@ -135,6 +135,7 @@ const Home = () => {
                         setFilterCategories={setFilterCategories}
                         resetForm={resetFilterState}
                         filterFields={blogFilterFields}
+                        initialFilters={initialBlogFilters}
                     />
                 </Togglable>
                 <br />
