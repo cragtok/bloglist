@@ -5,8 +5,10 @@ import SortingForm from "./SortingForm";
 import Togglable from "./Togglable";
 import FilterForm from "./FilterForm";
 import UsersTable from "./UsersTable";
+
 import { userFilterFields, initialUserFilters } from "../utils/filterFieldData";
 import { userSortFields } from "../utils/sortFieldData";
+import generateErrorMessage from "../utils/generateErrorMessage";
 
 import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";
@@ -80,15 +82,9 @@ const Users = () => {
                 );
                 dispatch(setUsersFetched(true));
             } catch (error) {
-                let errorMsg;
-                if (error.name === "CanceledError") {
-                    errorMsg = "Request Timed Out";
-                } else if (error.response.data.error) {
-                    errorMsg = error.response.data.error;
-                } else {
-                    errorMsg = "Error: Something Went Wrong!";
-                }
-                dispatch(displayNotification(errorMsg, "error", 4));
+                dispatch(
+                    displayNotification(generateErrorMessage(error), "error", 4)
+                );
             }
 
             dispatch(setLoadingState(false));

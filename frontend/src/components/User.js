@@ -14,6 +14,7 @@ import { setUsers } from "../reducers/usersReducer";
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import useModifiedData from "../hooks/useModifiedData";
 import { displayNotification } from "../reducers/notificationReducer";
+import generateErrorMessage from "../utils/generateErrorMessage";
 
 const User = () => {
     const id = useParams().id;
@@ -59,15 +60,9 @@ const User = () => {
                     dispatch(setUsersFetched(true));
                 }
             } catch (error) {
-                let errorMsg;
-                if (error.name === "CanceledError") {
-                    errorMsg = "Request Timed Out";
-                } else if (error.response.data.error) {
-                    errorMsg = error.response.data.error;
-                } else {
-                    errorMsg = "Error: Something Went Wrong!";
-                }
-                dispatch(displayNotification(errorMsg, "error", 4));
+                dispatch(
+                    displayNotification(generateErrorMessage(error), "error", 4)
+                );
             }
             dispatch(setLoadingState(false));
         };

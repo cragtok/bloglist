@@ -15,6 +15,7 @@ import { setBlogs } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
+import generateErrorMessage from "../utils/generateErrorMessage";
 
 const Home = () => {
     const blogFormRef = useRef();
@@ -52,15 +53,9 @@ const Home = () => {
                 dispatch(setBlogsFetched(true));
                 setInitialData(blogs);
             } catch (error) {
-                let errorMsg;
-                if (error.name === "CanceledError") {
-                    errorMsg = "Request Timed Out";
-                } else if (error.response.data.error) {
-                    errorMsg = error.response.data.error;
-                } else {
-                    errorMsg = "Error: Something Went Wrong!";
-                }
-                dispatch(displayNotification(errorMsg, "error", 4));
+                dispatch(
+                    displayNotification(generateErrorMessage(error), "error", 4)
+                );
             }
             dispatch(setLoadingState(false));
         };

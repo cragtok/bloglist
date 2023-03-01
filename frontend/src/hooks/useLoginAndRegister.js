@@ -3,6 +3,7 @@ import { setUser } from "../reducers/userReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
 import useAPI from "./useAPI";
+import generateErrorMessage from "../utils/generateErrorMessage";
 import { useNavigate } from "react-router-dom";
 
 const useLoginAndRegister = () => {
@@ -21,15 +22,9 @@ const useLoginAndRegister = () => {
             await userService.create({ username, name, password });
             await login(username, password);
         } catch (error) {
-            let errorMsg;
-            if (error.name === "CanceledError") {
-                errorMsg = "Request Timed Out";
-            } else if (error.response.data) {
-                errorMsg = error.response.data.error;
-            } else {
-                errorMsg = "Error: Something Went Wrong!";
-            }
-            dispatch(displayNotification(errorMsg, "error", 4));
+            dispatch(
+                displayNotification(generateErrorMessage(error), "error", 4)
+            );
             dispatch(setLoadingState(false));
         }
     };
@@ -52,15 +47,9 @@ const useLoginAndRegister = () => {
             dispatch(displayNotification(`Welcome ${username}!`, "success", 4));
             navigate("/");
         } catch (error) {
-            let errorMsg;
-            if (error.name === "CanceledError") {
-                errorMsg = "Request Timed Out";
-            } else if (error.response.data.error) {
-                errorMsg = error.response.data.error;
-            } else {
-                errorMsg = "Error: Something Went Wrong!";
-            }
-            dispatch(displayNotification(errorMsg, "error", 4));
+            dispatch(
+                displayNotification(generateErrorMessage(error), "error", 4)
+            );
         }
         dispatch(setLoadingState(false));
     };
