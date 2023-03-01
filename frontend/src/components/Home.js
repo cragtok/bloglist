@@ -75,11 +75,21 @@ const Home = () => {
         if (sortCategory && !sortingFormRef.current.visible) {
             sortingFormRef.current.setVisibility(true);
         }
-    }, [sortCategory]);
+
+        const element = document.getElementById("bloglist");
+        if (sortCategory && element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [sortCategory, sortMethod]);
 
     useEffect(() => {
         if (filterFormRef.current && !filterFormRef.current.visible) {
             filterFormRef.current.setVisibility(filterCategoriesPresent());
+        }
+
+        const element = document.getElementById("bloglist");
+        if (filterCategoriesPresent() && element) {
+            element.scrollIntoView({ behavior: "smooth" });
         }
     }, [filterCategories]);
 

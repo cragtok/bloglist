@@ -33,7 +33,7 @@ const BlogList = ({ blogs, sortedField, filterCategories }) => {
     });
 
     return (
-        <div>
+        <div id="bloglist">
             {blogs.map(blog => (
                 <BlogLink
                     key={blog.id}

@@ -104,11 +104,21 @@ const Users = () => {
         if (sortCategory && !sortingFormRef.current.visible) {
             sortingFormRef.current.setVisibility(true);
         }
-    }, [sortCategory]);
+
+        const element = document.getElementById("userslist");
+        if (sortCategory && element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [sortCategory, sortMethod]);
 
     useEffect(() => {
         if (filterFormRef.current && !filterFormRef.current.visible) {
             filterFormRef.current.setVisibility(filterCategoriesPresent());
+        }
+
+        const element = document.getElementById("userslist");
+        if (filterCategoriesPresent() && element) {
+            element.scrollIntoView({ behavior: "smooth" });
         }
     }, [filterCategories]);
 
@@ -167,7 +177,10 @@ const Users = () => {
                 />
             </Togglable>
             <br />
-            <table className="table is-striped is-bordered is-hoverable is-fullwidth mb-5">
+            <table
+                id="userslist"
+                className="table is-striped is-bordered is-hoverable is-fullwidth mb-5"
+            >
                 <thead>
                     <tr>
                         <th className={getStyledClass("username")}>User</th>
