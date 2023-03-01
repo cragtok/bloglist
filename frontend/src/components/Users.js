@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import SortingForm from "./SortingForm";
 import Togglable from "./Togglable";
 import FilterForm from "./FilterForm";
+import UsersTable from "./UsersTable";
 import { userFilterFields, initialUserFilters } from "../utils/filterFieldData";
 import { userSortFields } from "../utils/sortFieldData";
 
@@ -122,26 +122,6 @@ const Users = () => {
         }
     }, [filterCategories]);
 
-    const getStyledClass = field => {
-        if (!filterCategories) {
-            return "";
-        }
-
-        let className =
-            sortCategory === field
-                ? "has-text-weight-bold"
-                : "has-text-weight-normal";
-
-        if (
-            (field === "username" && filterCategories[field]) ||
-            (field !== "username" &&
-                (filterCategories[field].from || filterCategories[field].to))
-        ) {
-            className += " has-text-primary";
-        }
-        return className;
-    };
-
     if (isLoading) {
         return <p>Loading...</p>;
     }
@@ -177,37 +157,11 @@ const Users = () => {
                 />
             </Togglable>
             <br />
-            <table
-                id="userslist"
-                className="table is-striped is-bordered is-hoverable is-fullwidth mb-5"
-            >
-                <thead>
-                    <tr>
-                        <th className={getStyledClass("username")}>User</th>
-                        <th className={getStyledClass("blogs")}>Blogs</th>
-                        <th className={getStyledClass("totalBlogLikes")}>
-                            Total Blog Likes
-                        </th>
-                        <th className={getStyledClass("totalBlogComments")}>
-                            Total Blog Comments
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {modifiedData.map(user => (
-                        <tr key={user.id}>
-                            <td>
-                                <Link to={`/users/${user.id}`}>
-                                    {user.username}
-                                </Link>{" "}
-                            </td>
-                            <td>{user.blogs.length}</td>
-                            <td>{user.totalBlogLikes}</td>
-                            <td>{user.totalBlogComments}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <UsersTable
+                users={modifiedData}
+                filterCategories={filterCategories}
+                sortCategory={sortCategory}
+            />
         </div>
     );
 };
