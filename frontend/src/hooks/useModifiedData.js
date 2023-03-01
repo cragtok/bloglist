@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setFormState } from "../reducers/formReducer";
+
 import {
-    setFormState,
     initialBlogFilters,
     initialUserFilters,
-} from "../reducers/formReducer";
+} from "../utils/filterFieldData";
+
 import { filterBlogFields, filterUserFields } from "../utils/filterFields";
 import { sortBlogFields, sortUserFields } from "../utils/sortFields";
 
