@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFormState } from "../reducers/formReducer";
+import {
+    setFormState,
+    setFilterCategories,
+    setSortCategory,
+    setSortMethod,
+} from "../reducers/formReducer";
 
 import {
     initialBlogFilters,
@@ -11,18 +16,14 @@ import { filterBlogFields, filterUserFields } from "../utils/filterFields";
 import { sortBlogFields, sortUserFields } from "../utils/sortFields";
 
 const useModifiedData = page => {
-    const [sortCategory, setSortCategory] = useState("");
-    const [sortMethod, setSortMethod] = useState("descending");
-
     const [firstRender, setFirstRender] = useState(true);
 
     const [modifiedData, setModifiedData] = useState([]);
     const [initialData, setInitialData] = useState([]);
 
-    const [filterCategories, setFilterCategories] = useState(null);
-
     const formData = useSelector(state => state.form[page]);
     const loggedInUser = useSelector(state => state.user);
+    const { sortCategory, sortMethod, filterCategories } = formData;
 
     const dispatch = useDispatch();
 
@@ -54,14 +55,14 @@ const useModifiedData = page => {
         page === "users" ? userFiltersPresent() : blogFiltersPresent();
 
     const resetSortState = () => {
-        setSortCategory("");
-        setSortMethod("descending");
+        dispatch(setSortCategory(""));
+        dispatch(setSortMethod("descending"));
     };
 
     const resetFilterState = () => {
         page === "users"
-            ? setFilterCategories(initialUserFilters)
-            : setFilterCategories(initialBlogFilters);
+            ? dispatch(setFilterCategories(initialUserFilters))
+            : dispatch(setFilterCategories(initialBlogFilters));
     };
 
     const sortFunction = (a, b) => {
@@ -81,9 +82,9 @@ const useModifiedData = page => {
     };
 
     useEffect(() => {
-        setSortCategory(formData.sortCategory);
-        setSortMethod(formData.sortMethod);
-        setFilterCategories({ ...formData.filterCategories });
+        dispatch(setSortCategory(formData.sortCategory));
+        dispatch(setSortMethod(formData.sortMethod));
+        dispatch(setFilterCategories({ ...formData.filterCategories }));
         setModifiedData(initialData.filter(filterFunction).sort(sortFunction));
         setFirstRender(false);
     }, []);

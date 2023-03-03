@@ -32,11 +32,8 @@ const Home = () => {
         filterCategoriesPresent,
         modifiedData,
         resetFilterState,
-        resetSortState,
         setFilterCategories,
         setInitialData,
-        setSortCategory,
-        setSortMethod,
         sortCategory,
         sortMethod,
     } = useModifiedData("home");
@@ -119,12 +116,8 @@ const Home = () => {
                     buttonLabel="Sort Blogs"
                 >
                     <SortingForm
-                        sortCategory={sortCategory}
-                        setSortCategory={setSortCategory}
-                        sortMethod={sortMethod}
-                        setSortMethod={setSortMethod}
+                        page="home"
                         title="Sort Blogs"
-                        resetForm={resetSortState}
                         sortFields={blogSortFields}
                     />
                 </Togglable>

@@ -45,11 +45,8 @@ const Users = () => {
         filterCategoriesPresent,
         modifiedData,
         resetFilterState,
-        resetSortState,
         setFilterCategories,
         setInitialData,
-        setSortCategory,
-        setSortMethod,
         sortCategory,
         sortMethod,
     } = useModifiedData("users");
@@ -132,12 +129,8 @@ const Users = () => {
             <br />
             <Togglable title="" ref={sortingFormRef} buttonLabel="Sort Users">
                 <SortingForm
-                    sortCategory={sortCategory}
-                    setSortCategory={setSortCategory}
-                    sortMethod={sortMethod}
-                    setSortMethod={setSortMethod}
+                    page="users"
                     title="Sort Users"
-                    resetForm={resetSortState}
                     sortFields={userSortFields}
                 />
             </Togglable>
