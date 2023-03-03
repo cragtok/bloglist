@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-    setFormState,
-    setFilterCategories,
-    setSortCategory,
-    setSortMethod,
-} from "../reducers/formReducer";
+import { useSelector } from "react-redux";
 
 import {
     blogFiltersPresent,
@@ -24,8 +18,6 @@ const useModifiedData = page => {
     const formData = useSelector(state => state.form[page]);
     const loggedInUser = useSelector(state => state.user);
     const { sortCategory, sortMethod, filterCategories } = formData;
-
-    const dispatch = useDispatch();
 
     const filterCategoriesPresent = () =>
         page === "users"
@@ -49,9 +41,6 @@ const useModifiedData = page => {
     };
 
     useEffect(() => {
-        dispatch(setSortCategory(formData.sortCategory));
-        dispatch(setSortMethod(formData.sortMethod));
-        dispatch(setFilterCategories({ ...formData.filterCategories }));
         setModifiedData(initialData.filter(filterFunction).sort(sortFunction));
         setFirstRender(false);
     }, []);
@@ -68,16 +57,6 @@ const useModifiedData = page => {
         if (!firstRender) {
             setModifiedData(
                 initialData.filter(filterFunction).sort(sortFunction)
-            );
-            dispatch(
-                setFormState({
-                    page,
-                    formState: {
-                        filterCategories,
-                        sortCategory,
-                        sortMethod,
-                    },
-                })
             );
         }
     }, [sortCategory, sortMethod, filterCategories]);
