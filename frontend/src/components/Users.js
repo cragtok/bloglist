@@ -40,14 +40,11 @@ const Users = () => {
     const { isLoading, usersFetched } = useSelector(state => state.loading);
     const usersService = useAPI("/api/users");
 
-    const {
-        filterCategories,
-        filterCategoriesPresent,
-        modifiedData,
-        setInitialData,
-        sortCategory,
-        sortMethod,
-    } = useModifiedData("users");
+    const { filterCategories, sortCategory, sortMethod } = useSelector(
+        state => state.form["users"]
+    );
+    const { filterCategoriesPresent, modifiedData, setInitialData } =
+        useModifiedData("users");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");

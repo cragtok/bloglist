@@ -27,14 +27,11 @@ const Home = () => {
 
     const blogs = useSelector(state => state.blogs);
     const { isLoading, blogsFetched } = useSelector(state => state.loading);
-    const {
-        filterCategories,
-        filterCategoriesPresent,
-        modifiedData,
-        setInitialData,
-        sortCategory,
-        sortMethod,
-    } = useModifiedData("home");
+    const { filterCategories, sortCategory, sortMethod } = useSelector(
+        state => state.form["home"]
+    );
+    const { filterCategoriesPresent, modifiedData, setInitialData } =
+        useModifiedData("home");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");

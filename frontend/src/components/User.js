@@ -31,14 +31,12 @@ const User = () => {
 
     const user = useSelector(state => state.users.filter(u => u.id === id)[0]);
 
-    const {
-        filterCategories,
-        filterCategoriesPresent,
-        modifiedData,
-        setInitialData,
-        sortCategory,
-        sortMethod,
-    } = useModifiedData("blogs");
+    const { filterCategories, sortCategory, sortMethod } = useSelector(
+        state => state.form["blogs"]
+    );
+
+    const { filterCategoriesPresent, modifiedData, setInitialData } =
+        useModifiedData("blogs");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
