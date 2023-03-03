@@ -10,8 +10,6 @@ import { filterBlogFields, filterUserFields } from "../utils/filterFields";
 import { sortBlogFields, sortUserFields } from "../utils/sortFields";
 
 const useModifiedData = page => {
-    const [firstRender, setFirstRender] = useState(true);
-
     const [modifiedData, setModifiedData] = useState([]);
     const [initialData, setInitialData] = useState([]);
 
@@ -41,11 +39,6 @@ const useModifiedData = page => {
     };
 
     useEffect(() => {
-        setModifiedData(initialData.filter(filterFunction).sort(sortFunction));
-        setFirstRender(false);
-    }, []);
-
-    useEffect(() => {
         if (!modifiedData.length) {
             setModifiedData(
                 [...initialData].filter(filterFunction).sort(sortFunction)
@@ -54,11 +47,7 @@ const useModifiedData = page => {
     }, [initialData]);
 
     useEffect(() => {
-        if (!firstRender) {
-            setModifiedData(
-                initialData.filter(filterFunction).sort(sortFunction)
-            );
-        }
+        setModifiedData(initialData.filter(filterFunction).sort(sortFunction));
     }, [sortCategory, sortMethod, filterCategories]);
 
     return {
