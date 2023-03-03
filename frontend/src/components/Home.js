@@ -13,6 +13,8 @@ import useModifiedData from "../hooks/useModifiedData";
 import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
 import { setBlogs } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
+
+import { blogFiltersPresent as filterCategoriesPresent } from "../utils/filtersPresent";
 import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
@@ -30,8 +32,7 @@ const Home = () => {
     const { filterCategories, sortCategory, sortMethod } = useSelector(
         state => state.form["home"]
     );
-    const { filterCategoriesPresent, modifiedData, setInitialData } =
-        useModifiedData("home");
+    const { modifiedData, setInitialData } = useModifiedData("home");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -71,11 +72,13 @@ const Home = () => {
 
     useEffect(() => {
         if (filterFormRef.current && !filterFormRef.current.visible) {
-            filterFormRef.current.setVisibility(filterCategoriesPresent());
+            filterFormRef.current.setVisibility(
+                filterCategoriesPresent(filterCategories)
+            );
         }
 
         const element = document.getElementById("bloglist");
-        if (filterCategoriesPresent() && element) {
+        if (filterCategoriesPresent(filterCategories) && element) {
             element.scrollIntoView({ behavior: "smooth" });
         }
     }, [filterCategories]);

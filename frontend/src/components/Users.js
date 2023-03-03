@@ -9,6 +9,7 @@ import UsersTable from "./UsersTable";
 import { userFilterFields, initialUserFilters } from "../utils/filterFieldData";
 import { userSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
+import { userFiltersPresent as filterCategoriesPresent } from "../utils/filtersPresent";
 
 import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";
@@ -43,8 +44,7 @@ const Users = () => {
     const { filterCategories, sortCategory, sortMethod } = useSelector(
         state => state.form["users"]
     );
-    const { filterCategoriesPresent, modifiedData, setInitialData } =
-        useModifiedData("users");
+    const { modifiedData, setInitialData } = useModifiedData("users");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -101,11 +101,13 @@ const Users = () => {
 
     useEffect(() => {
         if (filterFormRef.current && !filterFormRef.current.visible) {
-            filterFormRef.current.setVisibility(filterCategoriesPresent());
+            filterFormRef.current.setVisibility(
+                filterCategoriesPresent(filterCategories)
+            );
         }
 
         const element = document.getElementById("userslist");
-        if (filterCategoriesPresent() && element) {
+        if (filterCategoriesPresent(filterCategories) && element) {
             element.scrollIntoView({ behavior: "smooth" });
         }
     }, [filterCategories]);

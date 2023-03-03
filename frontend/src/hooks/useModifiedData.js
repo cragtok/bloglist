@@ -8,9 +8,9 @@ import {
 } from "../reducers/formReducer";
 
 import {
-    initialBlogFilters,
-    initialUserFilters,
-} from "../utils/filterFieldData";
+    blogFiltersPresent,
+    userFiltersPresent,
+} from "../utils/filtersPresent";
 
 import { filterBlogFields, filterUserFields } from "../utils/filterFields";
 import { sortBlogFields, sortUserFields } from "../utils/sortFields";
@@ -27,43 +27,10 @@ const useModifiedData = page => {
 
     const dispatch = useDispatch();
 
-    const blogFiltersPresent = () =>
-        filterCategories &&
-        (filterCategories.author ||
-            filterCategories.title ||
-            filterCategories.url ||
-            filterCategories.createdAt.from ||
-            filterCategories.createdAt.to ||
-            filterCategories.numComments.from ||
-            filterCategories.numComments.to ||
-            filterCategories.numLikes.from ||
-            filterCategories.numLikes.to ||
-            filterCategories.likedBlogs ||
-            filterCategories.commentedBlogs);
-
-    const userFiltersPresent = () =>
-        filterCategories &&
-        (filterCategories.username ||
-            filterCategories.blogs.from ||
-            filterCategories.blogs.to ||
-            filterCategories.totalBlogLikes.from ||
-            filterCategories.totalBlogLikes.to ||
-            filterCategories.totalBlogComments.from ||
-            filterCategories.totalBlogComments.to);
-
     const filterCategoriesPresent = () =>
-        page === "users" ? userFiltersPresent() : blogFiltersPresent();
-
-    const resetSortState = () => {
-        dispatch(setSortCategory(""));
-        dispatch(setSortMethod("descending"));
-    };
-
-    const resetFilterState = () => {
         page === "users"
-            ? dispatch(setFilterCategories(initialUserFilters))
-            : dispatch(setFilterCategories(initialBlogFilters));
-    };
+            ? userFiltersPresent(filterCategories)
+            : blogFiltersPresent(filterCategories);
 
     const sortFunction = (a, b) => {
         if (!sortCategory) return 0;
@@ -116,17 +83,7 @@ const useModifiedData = page => {
     }, [sortCategory, sortMethod, filterCategories]);
 
     return {
-        sortCategory,
-        setSortCategory,
-        sortMethod,
-        setSortMethod,
         modifiedData,
-        setModifiedData,
-        resetSortState,
-        resetFilterState,
-        filterCategories,
-        setFilterCategories,
-        filterCategoriesPresent,
         setInitialData,
     };
 };

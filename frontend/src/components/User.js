@@ -15,6 +15,7 @@ import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import useModifiedData from "../hooks/useModifiedData";
 import { displayNotification } from "../reducers/notificationReducer";
 import generateErrorMessage from "../utils/generateErrorMessage";
+import { blogFiltersPresent as filterCategoriesPresent } from "../utils/filtersPresent";
 
 const User = () => {
     const id = useParams().id;
@@ -35,8 +36,7 @@ const User = () => {
         state => state.form["blogs"]
     );
 
-    const { filterCategoriesPresent, modifiedData, setInitialData } =
-        useModifiedData("blogs");
+    const { modifiedData, setInitialData } = useModifiedData("blogs");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -69,11 +69,13 @@ const User = () => {
 
     useEffect(() => {
         if (filterFormRef.current && !filterFormRef.current.visible) {
-            filterFormRef.current.setVisibility(filterCategoriesPresent());
+            filterFormRef.current.setVisibility(
+                filterCategoriesPresent(filterCategories)
+            );
         }
 
         const element = document.getElementById("bloglist");
-        if (filterCategoriesPresent() && element) {
+        if (filterCategoriesPresent(filterCategories) && element) {
             element.scrollIntoView({ behavior: "smooth" });
         }
     }, [filterCategories]);
