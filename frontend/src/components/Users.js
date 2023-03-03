@@ -44,7 +44,7 @@ const Users = () => {
     const { filterCategories, sortCategory, sortMethod } = useSelector(
         state => state.form["users"]
     );
-    const { modifiedData, setInitialData } = useModifiedData("users");
+    const [modifiedData, initializeData] = useModifiedData("users");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -56,7 +56,7 @@ const Users = () => {
             try {
                 const fetchedUsers = await usersService.getAll();
                 dispatch(setUsers(fetchedUsers));
-                setInitialData(
+                initializeData(
                     fetchedUsers.map(user => {
                         return {
                             ...user,
@@ -84,7 +84,7 @@ const Users = () => {
         if (loggedUserJSON && !usersFetched) {
             fn();
         } else {
-            setInitialData(users);
+            initializeData(users);
         }
     }, []);
 

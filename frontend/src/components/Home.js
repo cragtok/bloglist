@@ -32,7 +32,7 @@ const Home = () => {
     const { filterCategories, sortCategory, sortMethod } = useSelector(
         state => state.form["home"]
     );
-    const { modifiedData, setInitialData } = useModifiedData("home");
+    const [modifiedData, initializeData] = useModifiedData("home");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -44,7 +44,7 @@ const Home = () => {
                 const blogs = await blogService.getAll();
                 dispatch(setBlogs(blogs));
                 dispatch(setBlogsFetched(true));
-                setInitialData(blogs);
+                initializeData(blogs);
             } catch (error) {
                 dispatch(
                     displayNotification(generateErrorMessage(error), "error", 4)
@@ -55,7 +55,7 @@ const Home = () => {
         if (loggedUserJSON && !blogsFetched) {
             fetchBlogs();
         } else {
-            setInitialData(blogs);
+            initializeData(blogs);
         }
     }, []);
 

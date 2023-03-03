@@ -17,6 +17,10 @@ const useModifiedData = page => {
     const loggedInUser = useSelector(state => state.user);
     const { sortCategory, sortMethod, filterCategories } = formData;
 
+    const initializeData = data => {
+        setInitialData(data);
+    };
+
     const filterCategoriesPresent = () =>
         page === "users"
             ? userFiltersPresent(filterCategories)
@@ -50,10 +54,7 @@ const useModifiedData = page => {
         setModifiedData(initialData.filter(filterFunction).sort(sortFunction));
     }, [sortCategory, sortMethod, filterCategories]);
 
-    return {
-        modifiedData,
-        setInitialData,
-    };
+    return [modifiedData, initializeData];
 };
 
 export default useModifiedData;

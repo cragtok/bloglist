@@ -36,7 +36,7 @@ const User = () => {
         state => state.form["blogs"]
     );
 
-    const { modifiedData, setInitialData } = useModifiedData("blogs");
+    const [modifiedData, initializeData] = useModifiedData("blogs");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -49,7 +49,7 @@ const User = () => {
                 dispatch(setUsers(fetchedUsers));
                 const foundUser = fetchedUsers.filter(u => u.id === id)[0];
                 if (foundUser) {
-                    setInitialData(foundUser.blogs);
+                    initializeData(foundUser.blogs);
                     dispatch(setUsersFetched(true));
                 }
             } catch (error) {
@@ -63,7 +63,7 @@ const User = () => {
         if (loggedUserJSON && !usersFetched) {
             fn();
         } else {
-            setInitialData(user.blogs);
+            initializeData(user.blogs);
         }
     }, []);
 
