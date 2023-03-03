@@ -1,30 +1,25 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilterCategories } from "../reducers/formReducer";
 
-const FilterForm = ({
-    formTitle,
-    filterCategories,
-    setFilterCategories,
-    resetForm,
-    filterFields,
-    initialFilters,
-}) => {
+const FilterForm = ({ page, formTitle, filterFields, initialFilters }) => {
+    const { filterCategories } = useSelector(state => state.form[page]);
+    const dispatch = useDispatch();
+
     if (!filterCategories) {
         return null;
     }
-
     const [formFilters, setFormFilters] = useState({ ...filterCategories });
-
-    const updateLocalFormFields = (field, value) => {
-        setFormFilters({ ...formFilters, [field]: value });
-    };
 
     const handleSubmit = e => {
         e.preventDefault();
-        setFilterCategories({ ...formFilters });
+        dispatch(setFilterCategories({ page, filterCategories: formFilters }));
     };
 
     const clearFilters = () => {
-        resetForm();
+        dispatch(
+            setFilterCategories({ page, filterCategories: initialFilters })
+        );
         setFormFilters({ ...initialFilters });
     };
 
@@ -37,7 +32,10 @@ const FilterForm = ({
                 <input
                     value={filterCategories[fieldData.name]}
                     onChange={e =>
-                        updateLocalFormFields(fieldData.name, e.target.value)
+                        setFormFilters({
+                            ...formFilters,
+                            [fieldData.name]: e.target.value,
+                        })
                     }
                     className={`input ${activeClass(
                         filterCategories[fieldData.name]
@@ -56,7 +54,10 @@ const FilterForm = ({
                 <input
                     value={filterCategories[fieldData.name]}
                     onChange={e =>
-                        updateLocalFormFields(fieldData.name, e.target.value)
+                        setFormFilters({
+                            ...formFilters,
+                            [fieldData.name]: e.target.value,
+                        })
                     }
                     className={`input ${activeClass(
                         filterCategories[fieldData.name]
@@ -77,12 +78,12 @@ const FilterForm = ({
                     style={{ width: "max-content" }}
                 >
                     <input
-                        onChange={e =>
-                            updateLocalFormFields(
-                                fieldData.name,
-                                e.target.checked
-                            )
-                        }
+                        onChange={e => {
+                            setFormFilters({
+                                ...formFilters,
+                                [fieldData.name]: e.target.checked,
+                            });
+                        }}
                         name={fieldData.name}
                         type="checkbox"
                         checked={filterCategories[fieldData.name]}
@@ -119,18 +120,18 @@ const FilterForm = ({
                                                     fieldData.name
                                                 ][rangeData.name] || ""
                                             }
-                                            onChange={e =>
-                                                updateLocalFormFields(
-                                                    fieldData.name,
-                                                    {
+                                            onChange={e => {
+                                                setFormFilters({
+                                                    ...formFilters,
+                                                    [fieldData.name]: {
                                                         ...filterCategories[
                                                             fieldData.name
                                                         ],
                                                         [rangeData.name]:
                                                             e.target.value,
-                                                    }
-                                                )
-                                            }
+                                                    },
+                                                });
+                                            }}
                                             className={`input ${activeClass(
                                                 filterCategories[
                                                     fieldData.name
@@ -150,19 +151,19 @@ const FilterForm = ({
                                             ] && (
                                                 <div className="control">
                                                     <a
-                                                        onClick={() =>
-                                                            updateLocalFormFields(
-                                                                "createdAt",
-                                                                {
+                                                        onClick={() => {
+                                                            setFormFilters({
+                                                                ...formFilters,
+                                                                createdAt: {
                                                                     ...filterCategories[
                                                                         fieldData
                                                                             .name
                                                                     ],
                                                                     [rangeData.name]:
                                                                         "",
-                                                                }
-                                                            )
-                                                        }
+                                                                },
+                                                            });
+                                                        }}
                                                         className="button is-primary"
                                                     >
                                                         Clear

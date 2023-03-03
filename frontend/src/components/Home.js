@@ -31,8 +31,6 @@ const Home = () => {
         filterCategories,
         filterCategoriesPresent,
         modifiedData,
-        resetFilterState,
-        setFilterCategories,
         setInitialData,
         sortCategory,
         sortMethod,
@@ -128,10 +126,8 @@ const Home = () => {
                     buttonLabel="Filter Blogs"
                 >
                     <FilterForm
+                        page="home"
                         formTitle="Blogs"
-                        filterCategories={filterCategories}
-                        setFilterCategories={setFilterCategories}
-                        resetForm={resetFilterState}
                         filterFields={blogFilterFields}
                         initialFilters={initialBlogFilters}
                     />

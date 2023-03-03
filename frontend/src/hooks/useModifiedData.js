@@ -91,7 +91,9 @@ const useModifiedData = page => {
 
     useEffect(() => {
         if (!modifiedData.length) {
-            setModifiedData([...initialData]);
+            setModifiedData(
+                [...initialData].filter(filterFunction).sort(sortFunction)
+            );
         }
     }, [initialData]);
 

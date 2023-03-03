@@ -44,8 +44,6 @@ const Users = () => {
         filterCategories,
         filterCategoriesPresent,
         modifiedData,
-        resetFilterState,
-        setFilterCategories,
         setInitialData,
         sortCategory,
         sortMethod,
@@ -138,9 +136,7 @@ const Users = () => {
             <Togglable title="" ref={filterFormRef} buttonLabel="Filter Users">
                 <FilterForm
                     formTitle="Users"
-                    filterCategories={filterCategories}
-                    setFilterCategories={setFilterCategories}
-                    resetForm={resetFilterState}
+                    page="users"
                     filterFields={userFilterFields}
                     initialFilters={initialUserFilters}
                 />
