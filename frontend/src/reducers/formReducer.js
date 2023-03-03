@@ -29,6 +29,36 @@ const formSlice = createSlice({
         resetFormState() {
             return { ...initialState };
         },
+        setFilterCategories(state, action) {
+            // payload: {page, filterCategories}
+            return {
+                ...state,
+                [action.payload.page]: {
+                    ...state[action.payload.page],
+                    filterCategories: { ...action.payload.filterCategories },
+                },
+            };
+        },
+        setSortCategory(state, action) {
+            // payload: {page, sortCategory}
+            return {
+                ...state,
+                [action.payload.page]: {
+                    ...state[action.payload.page],
+                    sortCategory: action.payload.sortCategory,
+                },
+            };
+        },
+        setSortMethod(state, action) {
+            // payload: {page, sortMethod}
+            return {
+                ...state,
+                [action.payload.page]: {
+                    ...state[action.payload.page],
+                    sortMethod: action.payload.sortMethod,
+                },
+            };
+        },
         setFormState(state, action) {
             // payload: {page, formState}
             return {
@@ -38,5 +68,11 @@ const formSlice = createSlice({
         },
     },
 });
-export const { setFormState, resetFormState } = formSlice.actions;
+export const {
+    setFormState,
+    resetFormState,
+    setFilterCategories,
+    setSortCategory,
+    setSortMethod,
+} = formSlice.actions;
 export default formSlice.reducer;
