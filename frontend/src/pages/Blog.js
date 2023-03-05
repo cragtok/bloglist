@@ -21,9 +21,9 @@ import { setLoadingState } from "../reducers/loadingReducer";
 
 import useAPI from "../hooks/useAPI";
 
-import Comment from "./Comment";
-import CommentForm from "./CommentForm";
-import Togglable from "./Togglable";
+import Comment from "../components/Comment";
+import CommentForm from "../components/CommentForm";
+import Togglable from "../components/Togglable";
 
 const Blog = () => {
     const dispatch = useDispatch();

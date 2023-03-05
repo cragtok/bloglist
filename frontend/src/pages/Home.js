@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import BlogList from "./BlogList";
-import BlogForm from "./BlogForm";
-import Togglable from "./Togglable";
-import SortingForm from "./SortingForm";
-import FilterForm from "./FilterForm";
+import BlogList from "../components/BlogList";
+import BlogForm from "../components/BlogForm";
+import Togglable from "../components/Togglable";
+import SortingForm from "../components/SortingForm";
+import FilterForm from "../components/FilterForm";
 
 import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";

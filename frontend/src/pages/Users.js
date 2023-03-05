@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import SortingForm from "./SortingForm";
-import Togglable from "./Togglable";
-import FilterForm from "./FilterForm";
-import UsersTable from "./UsersTable";
+import SortingForm from "../components/SortingForm";
+import Togglable from "../components/Togglable";
+import FilterForm from "../components/FilterForm";
+import UsersTable from "../components/UsersTable";
 
 import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";

@@ -2,14 +2,15 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import Home from "./components/Home";
-import Notification from "./components/Notification";
-import Users from "./components/Users";
-import LoginAndSignupForm from "./components/LoginAndSignupForm";
-import User from "./components/User";
-import Blog from "./components/Blog";
+import Home from "./pages/Home";
+import Users from "./pages/Users";
+import LoginAndSignupForm from "./pages/LoginAndSignupForm";
+import User from "./pages/User";
+import Blog from "./pages/Blog";
+import NotFound from "./pages/NotFound";
+
 import Navbar from "./components/Navbar";
-import NotFound from "./components/NotFound";
+import Notification from "./components/Notification";
 
 import { setUser } from "./reducers/userReducer";
 import "./App.css";
