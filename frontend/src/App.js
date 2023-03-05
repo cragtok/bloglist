@@ -14,7 +14,7 @@ import Notification from "./components/Notification";
 
 import { setUser } from "./reducers/userReducer";
 
-import isLoggedIn from "./utils/isLoggedIn";
+import { isLoggedIn } from "./utils/localStorageUtils";
 
 import "./App.css";
 
