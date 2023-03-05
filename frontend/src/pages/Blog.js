@@ -25,6 +25,8 @@ import Comment from "../components/Comment";
 import CommentForm from "../components/CommentForm";
 import Togglable from "../components/Togglable";
 
+import { getLocalStorageToken } from "../utils/localStorageUtils";
+
 const Blog = () => {
     const dispatch = useDispatch();
     const id = useParams().id;
@@ -42,11 +44,9 @@ const Blog = () => {
     const commentService = useAPI(`/api/blogs/${id}/comments`);
 
     useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
-        const fn = async () => {
+        const fetchData = async () => {
             dispatch(setLoadingState(true));
-            const loggedInUser = JSON.parse(loggedUserJSON);
-            blogService.setServiceToken(loggedInUser.token);
+            blogService.setServiceToken(getLocalStorageToken());
             try {
                 const foundBlog = await blogService.getOne(id);
                 if (foundBlog) {
@@ -65,8 +65,8 @@ const Blog = () => {
             }
             dispatch(setLoadingState(false));
         };
-        if (loggedUserJSON && !blog && !blogsFetched) {
-            fn();
+        if (!blog && !blogsFetched) {
+            fetchData();
         }
     }, []);
 

@@ -19,6 +19,7 @@ import { displayNotification } from "../reducers/notificationReducer";
 import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
+import { getLocalStorageToken } from "../utils/localStorageUtils";
 
 const User = () => {
     const id = useParams().id;
@@ -38,11 +39,9 @@ const User = () => {
     const [modifiedData, initializeData] = useModifiedData("blogs");
 
     useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         const fetchData = async () => {
             dispatch(setLoadingState(true));
-            const loggedInUser = JSON.parse(loggedUserJSON);
-            usersService.setServiceToken(loggedInUser.token);
+            usersService.setServiceToken(getLocalStorageToken());
             try {
                 const fetchedUsers = await usersService.getAll();
                 dispatch(setUsers(fetchedUsers));
@@ -59,11 +58,7 @@ const User = () => {
             dispatch(setLoadingState(false));
         };
 
-        if (loggedUserJSON && !usersFetched) {
-            fetchData();
-        } else {
-            initializeData(user.blogs);
-        }
+        !usersFetched ? fetchData() : initializeData(user.blogs);
     }, []);
 
     useFormListener(

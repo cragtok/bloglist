@@ -17,6 +17,7 @@ import { displayNotification } from "../reducers/notificationReducer";
 import { userFilterFields, initialUserFilters } from "../utils/filterFieldData";
 import { userSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
+import { getLocalStorageToken } from "../utils/localStorageUtils";
 
 const Users = () => {
     const sortingFormRef = useRef();
@@ -47,12 +48,9 @@ const Users = () => {
     const [modifiedData, initializeData] = useModifiedData("users");
 
     useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
         const fetchData = async () => {
             dispatch(setLoadingState(true));
-            const loggedInUser = JSON.parse(loggedUserJSON);
-            usersService.setServiceToken(loggedInUser.token);
-
+            usersService.setServiceToken(getLocalStorageToken());
             try {
                 const fetchedUsers = await usersService.getAll();
                 dispatch(setUsers(fetchedUsers));
@@ -78,14 +76,10 @@ const Users = () => {
                     displayNotification(generateErrorMessage(error), "error", 4)
                 );
             }
-
             dispatch(setLoadingState(false));
         };
-        if (loggedUserJSON && !usersFetched) {
-            fetchData();
-        } else {
-            initializeData(users);
-        }
+
+        !usersFetched ? fetchData() : initializeData(users);
     }, []);
 
     useFormListener(
