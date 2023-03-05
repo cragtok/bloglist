@@ -36,14 +36,17 @@ const Home = () => {
     const [modifiedData, initializeData] = useModifiedData("home");
 
     useEffect(() => {
+        let ignoreRequest = false;
         const fetchData = async () => {
             dispatch(setLoadingState(true));
             blogService.setServiceToken(getLocalStorageToken());
             try {
                 const blogs = await blogService.getAll();
-                dispatch(setBlogs(blogs));
-                dispatch(setBlogsFetched(true));
-                initializeData(blogs);
+                if (!ignoreRequest) {
+                    dispatch(setBlogs(blogs));
+                    dispatch(setBlogsFetched(true));
+                    initializeData(blogs);
+                }
             } catch (error) {
                 dispatch(
                     displayNotification(generateErrorMessage(error), "error", 4)
@@ -51,7 +54,12 @@ const Home = () => {
             }
             dispatch(setLoadingState(false));
         };
+
         !blogsFetched ? fetchData() : initializeData(blogs);
+
+        return () => {
+            ignoreRequest = true;
+        };
     }, []);
 
     useFormListener(

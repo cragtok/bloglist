@@ -45,11 +45,15 @@ const Blog = () => {
     const commentService = useAPI(`/api/blogs/${id}/comments`);
 
     useEffect(() => {
+        let ignoreRequest = false;
         const fetchData = async () => {
             dispatch(setLoadingState(true));
             blogService.setServiceToken(getLocalStorageToken());
             try {
                 const foundBlog = await blogService.getOne(id);
+                if (ignoreRequest) {
+                    return;
+                }
                 if (foundBlog) {
                     dispatch(addBlog(foundBlog));
                 }
@@ -63,6 +67,10 @@ const Blog = () => {
         if (!blog && !blogsFetched) {
             fetchData();
         }
+
+        return () => {
+            ignoreRequest = true;
+        };
     }, []);
 
     const handleRemove = async () => {

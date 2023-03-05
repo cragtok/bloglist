@@ -48,11 +48,15 @@ const Users = () => {
     const [modifiedData, initializeData] = useModifiedData("users");
 
     useEffect(() => {
+        let ignoreRequest = false;
         const fetchData = async () => {
             dispatch(setLoadingState(true));
             usersService.setServiceToken(getLocalStorageToken());
             try {
                 const fetchedUsers = await usersService.getAll();
+                if (ignoreRequest) {
+                    return;
+                }
                 dispatch(setUsers(fetchedUsers));
                 initializeData(
                     fetchedUsers.map(user => {
@@ -80,6 +84,10 @@ const Users = () => {
         };
 
         !usersFetched ? fetchData() : initializeData(users);
+
+        return () => {
+            ignoreRequest = true;
+        };
     }, []);
 
     useFormListener(

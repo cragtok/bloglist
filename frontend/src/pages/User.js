@@ -39,11 +39,15 @@ const User = () => {
     const [modifiedData, initializeData] = useModifiedData("blogs");
 
     useEffect(() => {
+        let ignoreRequest = false;
         const fetchData = async () => {
             dispatch(setLoadingState(true));
             usersService.setServiceToken(getLocalStorageToken());
             try {
                 const fetchedUsers = await usersService.getAll();
+                if (ignoreRequest) {
+                    return;
+                }
                 dispatch(setUsers(fetchedUsers));
                 const foundUser = fetchedUsers.filter(u => u.id === id)[0];
                 if (foundUser) {
@@ -59,6 +63,10 @@ const User = () => {
         };
 
         !usersFetched ? fetchData() : initializeData(user.blogs);
+
+        return () => {
+            ignoreRequest = true;
+        };
     }, []);
 
     useFormListener(
