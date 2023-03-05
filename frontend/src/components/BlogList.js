@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import BlogLink from "./BlogLink";
 import { useSelector } from "react-redux";
 const BlogList = ({ blogs, sortedField, filterCategories }) => {
@@ -46,7 +45,4 @@ const BlogList = ({ blogs, sortedField, filterCategories }) => {
     );
 };
 
-BlogList.propTypes = {
-    blogs: PropTypes.array.isRequired,
-};
 export default BlogList;
