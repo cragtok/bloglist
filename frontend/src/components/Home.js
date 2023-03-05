@@ -9,6 +9,7 @@ import FilterForm from "./FilterForm";
 
 import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";
+import useFormListener from "../hooks/useFormListener";
 
 import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
 import { setBlogs } from "../reducers/blogsReducer";
@@ -17,7 +18,6 @@ import { displayNotification } from "../reducers/notificationReducer";
 import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
-import useFormListener from "../hooks/useFormListener";
 
 const Home = () => {
     const blogFormRef = useRef();

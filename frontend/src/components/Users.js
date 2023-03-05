@@ -6,10 +6,6 @@ import Togglable from "./Togglable";
 import FilterForm from "./FilterForm";
 import UsersTable from "./UsersTable";
 
-import { userFilterFields, initialUserFilters } from "../utils/filterFieldData";
-import { userSortFields } from "../utils/sortFieldData";
-import generateErrorMessage from "../utils/generateErrorMessage";
-
 import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";
 import useFormListener from "../hooks/useFormListener";
@@ -17,6 +13,10 @@ import useFormListener from "../hooks/useFormListener";
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import { setUsers } from "../reducers/usersReducer";
 import { displayNotification } from "../reducers/notificationReducer";
+
+import { userFilterFields, initialUserFilters } from "../utils/filterFieldData";
+import { userSortFields } from "../utils/sortFieldData";
+import generateErrorMessage from "../utils/generateErrorMessage";
 
 const Users = () => {
     const sortingFormRef = useRef();

@@ -1,10 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import useAPI from "./useAPI";
+
 import { setUser } from "../reducers/userReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
-import useAPI from "./useAPI";
+
 import generateErrorMessage from "../utils/generateErrorMessage";
-import { useNavigate } from "react-router-dom";
 
 const useLoginAndRegister = () => {
     const dispatch = useDispatch();

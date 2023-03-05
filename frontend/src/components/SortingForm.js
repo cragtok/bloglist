@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { setSortCategory, setSortMethod } from "../reducers/formReducer";
+
 const SortingForm = ({ page, sortFields, title }) => {
     const { sortCategory, sortMethod } = useSelector(state => state.form[page]);
     const dispatch = useDispatch();

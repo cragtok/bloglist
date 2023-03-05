@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { removeNotification } from "../reducers/notificationReducer";
 
 import useLoginAndRegister from "../hooks/useLoginAndRegister";
+
+import { removeNotification } from "../reducers/notificationReducer";
 
 const LoginAndSignupForm = () => {
     const [username, setUsername] = useState("");

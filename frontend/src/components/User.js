@@ -1,21 +1,24 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+
 import BlogList from "./BlogList";
 import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
 import SortingForm from "./SortingForm";
 import FilterForm from "./FilterForm";
-import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
-import { blogSortFields } from "../utils/sortFieldData";
 
+import useFormListener from "../hooks/useFormListener";
+import useModifiedData from "../hooks/useModifiedData";
 import useAPI from "../hooks/useAPI";
+
 import { setUsers } from "../reducers/usersReducer";
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
-import useModifiedData from "../hooks/useModifiedData";
 import { displayNotification } from "../reducers/notificationReducer";
+
+import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
+import { blogSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
-import useFormListener from "../hooks/useFormListener";
 
 const User = () => {
     const id = useParams().id;
