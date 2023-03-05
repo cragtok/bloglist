@@ -13,6 +13,9 @@ import Navbar from "./components/Navbar";
 import Notification from "./components/Notification";
 
 import { setUser } from "./reducers/userReducer";
+
+import isLoggedIn from "./utils/isLoggedIn";
+
 import "./App.css";
 
 const App = () => {
@@ -27,12 +30,6 @@ const App = () => {
             dispatch(setUser(user));
         }
     }, []);
-
-    const isLoggedIn = () => {
-        return window.localStorage.getItem("loggedInUser") !== null
-            ? true
-            : false;
-    };
 
     return (
         <div className="container">
