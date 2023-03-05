@@ -9,6 +9,8 @@ import { removeNotification } from "../reducers/notificationReducer";
 import { resetFormState } from "../reducers/formReducer";
 import { resetLoadingState } from "../reducers/loadingReducer";
 
+import { clearLocalStorageToken } from "../utils/localStorageUtils";
+
 const styles = {
     navbarStart: {
         marginRight: "auto",
@@ -30,7 +32,7 @@ const Navbar = () => {
     const handleLogout = () => {
         dispatch(setUser(null));
         dispatch(removeNotification());
-        window.localStorage.removeItem("loggedInUser");
+        clearLocalStorageToken();
         dispatch(setBlogs([]));
         dispatch(setUsers([]));
         dispatch(resetFormState());
