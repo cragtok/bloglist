@@ -8,6 +8,14 @@ export const getLocalStorageToken = () => {
     return loggedInUserJSON.token;
 };
 
-export const clearLocalStorageToken = () => {
+export const setLocalStorageUser = loggedInUser => {
+    window.localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+};
+
+export const getLocalStorageUserJSON = () => {
+    return JSON.parse(window.localStorage.getItem("loggedInUser"));
+};
+
+export const clearLocalStorageUser = () => {
     window.localStorage.removeItem("loggedInUser");
 };

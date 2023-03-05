@@ -9,7 +9,7 @@ import { removeNotification } from "../reducers/notificationReducer";
 import { resetFormState } from "../reducers/formReducer";
 import { resetLoadingState } from "../reducers/loadingReducer";
 
-import { clearLocalStorageToken } from "../utils/localStorageUtils";
+import { clearLocalStorageUser } from "../utils/localStorageUtils";
 
 const styles = {
     navbarStart: {
@@ -32,7 +32,7 @@ const Navbar = () => {
     const handleLogout = () => {
         dispatch(setUser(null));
         dispatch(removeNotification());
-        clearLocalStorageToken();
+        clearLocalStorageUser();
         dispatch(setBlogs([]));
         dispatch(setUsers([]));
         dispatch(resetFormState());

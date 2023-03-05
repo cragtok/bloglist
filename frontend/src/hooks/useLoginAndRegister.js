@@ -8,6 +8,10 @@ import { displayNotification } from "../reducers/notificationReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
 
 import generateErrorMessage from "../utils/generateErrorMessage";
+import {
+    clearLocalStorageUser,
+    setLocalStorageUser,
+} from "../utils/localStorageUtils";
 
 const useLoginAndRegister = () => {
     const dispatch = useDispatch();
@@ -42,11 +46,8 @@ const useLoginAndRegister = () => {
                 password,
             });
             dispatch(setUser(loggedInUser));
-            window.localStorage.clear();
-            window.localStorage.setItem(
-                "loggedInUser",
-                JSON.stringify(loggedInUser)
-            );
+            clearLocalStorageUser();
+            setLocalStorageUser(loggedInUser);
             dispatch(displayNotification(`Welcome ${username}!`, "success", 4));
             navigate("/");
         } catch (error) {

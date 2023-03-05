@@ -14,7 +14,7 @@ import Notification from "./components/Notification";
 
 import { setUser } from "./reducers/userReducer";
 
-import { isLoggedIn } from "./utils/localStorageUtils";
+import { getLocalStorageUserJSON, isLoggedIn } from "./utils/localStorageUtils";
 
 import "./App.css";
 
@@ -24,10 +24,8 @@ const App = () => {
     const notification = useSelector(state => state.notification);
 
     useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem("loggedInUser");
-        if (loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON);
-            dispatch(setUser(user));
+        if (isLoggedIn()) {
+            dispatch(setUser(getLocalStorageUserJSON()));
         }
     }, []);
 
