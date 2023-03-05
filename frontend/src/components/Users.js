@@ -9,10 +9,10 @@ import UsersTable from "./UsersTable";
 import { userFilterFields, initialUserFilters } from "../utils/filterFieldData";
 import { userSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
-import { userFiltersPresent as filterCategoriesPresent } from "../utils/filtersPresent";
 
 import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";
+import useFormListener from "../hooks/useFormListener";
 
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import { setUsers } from "../reducers/usersReducer";
@@ -88,29 +88,14 @@ const Users = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (sortCategory && !sortingFormRef.current.visible) {
-            sortingFormRef.current.setVisibility(true);
-        }
-
-        const element = document.getElementById("userslist");
-        if (sortCategory && element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [sortCategory, sortMethod]);
-
-    useEffect(() => {
-        if (filterFormRef.current && !filterFormRef.current.visible) {
-            filterFormRef.current.setVisibility(
-                filterCategoriesPresent(filterCategories)
-            );
-        }
-
-        const element = document.getElementById("userslist");
-        if (filterCategoriesPresent(filterCategories) && element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [filterCategories]);
+    useFormListener(
+        sortCategory,
+        sortMethod,
+        filterCategories,
+        filterFormRef,
+        sortingFormRef,
+        "userslist"
+    );
 
     if (isLoading) {
         return <p>Loading...</p>;

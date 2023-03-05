@@ -15,7 +15,7 @@ import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import useModifiedData from "../hooks/useModifiedData";
 import { displayNotification } from "../reducers/notificationReducer";
 import generateErrorMessage from "../utils/generateErrorMessage";
-import { blogFiltersPresent as filterCategoriesPresent } from "../utils/filtersPresent";
+import useFormListener from "../hooks/useFormListener";
 
 const User = () => {
     const id = useParams().id;
@@ -63,29 +63,14 @@ const User = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (sortCategory && !sortingFormRef.current.visible) {
-            sortingFormRef.current.setVisibility(true);
-        }
-
-        const element = document.getElementById("bloglist");
-        if (sortCategory && element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [sortCategory, sortMethod]);
-
-    useEffect(() => {
-        if (filterFormRef.current && !filterFormRef.current.visible) {
-            filterFormRef.current.setVisibility(
-                filterCategoriesPresent(filterCategories)
-            );
-        }
-
-        const element = document.getElementById("bloglist");
-        if (filterCategoriesPresent(filterCategories) && element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [filterCategories]);
+    useFormListener(
+        sortCategory,
+        sortMethod,
+        filterCategories,
+        filterFormRef,
+        sortingFormRef,
+        "bloglist"
+    );
 
     if (isLoading) {
         return <div>Loading...</div>;

@@ -14,10 +14,10 @@ import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
 import { setBlogs } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 
-import { blogFiltersPresent as filterCategoriesPresent } from "../utils/filtersPresent";
 import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
+import useFormListener from "../hooks/useFormListener";
 
 const Home = () => {
     const blogFormRef = useRef();
@@ -59,29 +59,14 @@ const Home = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (sortCategory && !sortingFormRef.current.visible) {
-            sortingFormRef.current.setVisibility(true);
-        }
-
-        const element = document.getElementById("bloglist");
-        if (sortCategory && element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [sortCategory, sortMethod]);
-
-    useEffect(() => {
-        if (filterFormRef.current && !filterFormRef.current.visible) {
-            filterFormRef.current.setVisibility(
-                filterCategoriesPresent(filterCategories)
-            );
-        }
-
-        const element = document.getElementById("bloglist");
-        if (filterCategoriesPresent(filterCategories) && element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [filterCategories]);
+    useFormListener(
+        sortCategory,
+        sortMethod,
+        filterCategories,
+        filterFormRef,
+        sortingFormRef,
+        "bloglist"
+    );
 
     if (isLoading) {
         return <div>Loading...</div>;
