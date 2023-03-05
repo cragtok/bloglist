@@ -25,18 +25,18 @@ const Home = () => {
     const filterFormRef = useRef();
 
     const dispatch = useDispatch();
-    const blogService = useAPI("/api/blogs");
-
     const blogs = useSelector(state => state.blogs);
     const { isLoading, blogsFetched } = useSelector(state => state.loading);
     const { filterCategories, sortCategory, sortMethod } = useSelector(
         state => state.form["home"]
     );
+
+    const blogService = useAPI("/api/blogs");
     const [modifiedData, initializeData] = useModifiedData("home");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
-        const fetchBlogs = async () => {
+        const fetchData = async () => {
             dispatch(setLoadingState(true));
             const loggedInUser = JSON.parse(loggedUserJSON);
             blogService.setServiceToken(loggedInUser.token);
@@ -53,7 +53,7 @@ const Home = () => {
             dispatch(setLoadingState(false));
         };
         if (loggedUserJSON && !blogsFetched) {
-            fetchBlogs();
+            fetchData();
         } else {
             initializeData(blogs);
         }

@@ -19,10 +19,10 @@ import { setUsers } from "../reducers/usersReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 
 const Users = () => {
-    const dispatch = useDispatch();
     const sortingFormRef = useRef();
     const filterFormRef = useRef();
 
+    const dispatch = useDispatch();
     const users = useSelector(state => {
         return state.users.map(user => {
             return {
@@ -39,16 +39,16 @@ const Users = () => {
         });
     });
     const { isLoading, usersFetched } = useSelector(state => state.loading);
-    const usersService = useAPI("/api/users");
-
     const { filterCategories, sortCategory, sortMethod } = useSelector(
         state => state.form["users"]
     );
+
+    const usersService = useAPI("/api/users");
     const [modifiedData, initializeData] = useModifiedData("users");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
-        const fn = async () => {
+        const fetchData = async () => {
             dispatch(setLoadingState(true));
             const loggedInUser = JSON.parse(loggedUserJSON);
             usersService.setServiceToken(loggedInUser.token);
@@ -82,7 +82,7 @@ const Users = () => {
             dispatch(setLoadingState(false));
         };
         if (loggedUserJSON && !usersFetched) {
-            fn();
+            fetchData();
         } else {
             initializeData(users);
         }

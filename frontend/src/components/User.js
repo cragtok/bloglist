@@ -25,22 +25,18 @@ const User = () => {
     const filterFormRef = useRef();
 
     const dispatch = useDispatch();
-
-    const usersService = useAPI("/api/users");
-
     const { isLoading, usersFetched } = useSelector(state => state.loading);
-
     const user = useSelector(state => state.users.filter(u => u.id === id)[0]);
-
     const { filterCategories, sortCategory, sortMethod } = useSelector(
         state => state.form["blogs"]
     );
 
+    const usersService = useAPI("/api/users");
     const [modifiedData, initializeData] = useModifiedData("blogs");
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedInUser");
-        const fn = async () => {
+        const fetchData = async () => {
             dispatch(setLoadingState(true));
             const loggedInUser = JSON.parse(loggedUserJSON);
             usersService.setServiceToken(loggedInUser.token);
@@ -61,11 +57,22 @@ const User = () => {
         };
 
         if (loggedUserJSON && !usersFetched) {
-            fn();
+            fetchData();
         } else {
             initializeData(user.blogs);
         }
     }, []);
+
+    useEffect(() => {
+        if (sortCategory && !sortingFormRef.current.visible) {
+            sortingFormRef.current.setVisibility(true);
+        }
+
+        const element = document.getElementById("bloglist");
+        if (sortCategory && element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [sortCategory, sortMethod]);
 
     useEffect(() => {
         if (filterFormRef.current && !filterFormRef.current.visible) {
@@ -80,17 +87,6 @@ const User = () => {
         }
     }, [filterCategories]);
 
-    useEffect(() => {
-        if (sortCategory && !sortingFormRef.current.visible) {
-            sortingFormRef.current.setVisibility(true);
-        }
-
-        const element = document.getElementById("bloglist");
-        if (sortCategory && element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [sortCategory, sortMethod]);
-
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -103,23 +99,21 @@ const User = () => {
         <div>
             <h2 className="title is-2 mt-5">{user.name}</h2>
             <h4 className="title is-4">added blogs</h4>
-            {user.id && (
-                <Togglable
-                    title=""
-                    ref={blogFormRef}
-                    buttonLabel="Create New Post"
-                    style={{
-                        marginLeft: "1%",
-                        marginRight: "1%",
+            <Togglable
+                title=""
+                ref={blogFormRef}
+                buttonLabel="Create New Post"
+                style={{
+                    marginLeft: "1%",
+                    marginRight: "1%",
+                }}
+            >
+                <BlogForm
+                    toggleVisibility={() => {
+                        blogFormRef.current.toggleVisibility();
                     }}
-                >
-                    <BlogForm
-                        toggleVisibility={() => {
-                            blogFormRef.current.toggleVisibility();
-                        }}
-                    />
-                </Togglable>
-            )}
+                />
+            </Togglable>
             <br />
             <Togglable title="" ref={sortingFormRef} buttonLabel="Sort Blogs">
                 <SortingForm
