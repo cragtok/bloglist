@@ -19,7 +19,10 @@ import { displayNotification } from "../reducers/notificationReducer";
 import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
-import { getLocalStorageToken } from "../utils/localStorageUtils";
+import {
+    getLocalStorageToken,
+    getLocalStorageUserJSON,
+} from "../utils/localStorageUtils";
 
 const User = () => {
     const id = useParams().id;
@@ -90,22 +93,26 @@ const User = () => {
         <div>
             <h2 className="title is-2 mt-5">{user.name}</h2>
             <h4 className="title is-4">added blogs</h4>
-            <Togglable
-                title=""
-                ref={blogFormRef}
-                buttonLabel="Create New Post"
-                style={{
-                    marginLeft: "1%",
-                    marginRight: "1%",
-                }}
-            >
-                <BlogForm
-                    toggleVisibility={() => {
-                        blogFormRef.current.toggleVisibility();
-                    }}
-                />
-            </Togglable>
-            <br />
+            {getLocalStorageUserJSON().id === id && (
+                <>
+                    <Togglable
+                        title=""
+                        ref={blogFormRef}
+                        buttonLabel="Create New Post"
+                        style={{
+                            marginLeft: "1%",
+                            marginRight: "1%",
+                        }}
+                    >
+                        <BlogForm
+                            toggleVisibility={() => {
+                                blogFormRef.current.toggleVisibility();
+                            }}
+                        />
+                    </Togglable>
+                    <br />
+                </>
+            )}
             <Togglable title="" ref={sortingFormRef} buttonLabel="Sort Blogs">
                 <SortingForm
                     page="blogs"
