@@ -29,6 +29,13 @@ const formSlice = createSlice({
         resetFormState() {
             return { ...initialState };
         },
+        resetPageState(state, action) {
+            // payload: {page}
+            return {
+                ...state,
+                [action.payload.page]: { ...initialState[action.payload.page] },
+            };
+        },
         setFilterCategories(state, action) {
             // payload: {page, filterCategories}
             return {
@@ -71,6 +78,7 @@ const formSlice = createSlice({
 export const {
     setFormState,
     resetFormState,
+    resetPageState,
     setFilterCategories,
     setSortCategory,
     setSortMethod,
