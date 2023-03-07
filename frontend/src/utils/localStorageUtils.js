@@ -19,3 +19,15 @@ export const getLocalStorageUserJSON = () => {
 export const clearLocalStorageUser = () => {
     window.localStorage.removeItem("loggedInUser");
 };
+
+export const clearLocalStorage = () => {
+    window.localStorage.clear();
+};
+
+export const getCurrentUserPageId = () => {
+    return window.localStorage.getItem("currentUserPageId");
+};
+
+export const setCurrentUserPageId = id => {
+    window.localStorage.setItem("currentUserPageId", id);
+};
