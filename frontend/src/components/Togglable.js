@@ -37,7 +37,7 @@ const Togglable = forwardRef((props, refs) => {
             <div style={showWhenVisible}>
                 {props.children}
                 <button className="button mt-3" onClick={toggleVisibility}>
-                    Cancel
+                    Hide
                 </button>
             </div>
         </div>
