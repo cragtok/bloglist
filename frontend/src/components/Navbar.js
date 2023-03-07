@@ -9,7 +9,7 @@ import { removeNotification } from "../reducers/notificationReducer";
 import { resetFormState } from "../reducers/formReducer";
 import { resetLoadingState } from "../reducers/loadingReducer";
 
-import { clearLocalStorageUser } from "../utils/localStorageUtils";
+import { clearLocalStorage } from "../utils/localStorageUtils";
 
 const styles = {
     navbarStart: {
@@ -32,11 +32,11 @@ const Navbar = () => {
     const handleLogout = () => {
         dispatch(setUser(null));
         dispatch(removeNotification());
-        clearLocalStorageUser();
         dispatch(setBlogs([]));
         dispatch(setUsers([]));
         dispatch(resetFormState());
         dispatch(resetLoadingState());
+        clearLocalStorage();
         navigate("/");
     };
 

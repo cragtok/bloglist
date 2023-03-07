@@ -8,10 +8,7 @@ import { displayNotification } from "../reducers/notificationReducer";
 import { setLoadingState } from "../reducers/loadingReducer";
 
 import generateErrorMessage from "../utils/generateErrorMessage";
-import {
-    clearLocalStorageUser,
-    setLocalStorageUser,
-} from "../utils/localStorageUtils";
+import { setLocalStorageUser } from "../utils/localStorageUtils";
 
 const useLoginAndRegister = () => {
     const dispatch = useDispatch();
@@ -46,7 +43,6 @@ const useLoginAndRegister = () => {
                 password,
             });
             dispatch(setUser(loggedInUser));
-            clearLocalStorageUser();
             setLocalStorageUser(loggedInUser);
             dispatch(displayNotification(`Welcome ${username}!`, "success", 4));
             navigate("/");
