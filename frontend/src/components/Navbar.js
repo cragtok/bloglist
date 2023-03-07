@@ -40,6 +40,11 @@ const Navbar = () => {
         navigate("/");
     };
 
+    const generateTabClassName = pathname =>
+        location.pathname === pathname
+            ? "navbar-item is-active"
+            : "navbar-item";
+
     if (!user) {
         return null;
     }
@@ -68,28 +73,17 @@ const Navbar = () => {
                 className={!isActive ? "navbar-menu" : "navbar-menu is-active"}
             >
                 <div className="navbar-start" style={styles.navbarStart}>
-                    <Link
-                        className={`navbar-item ${
-                            location.pathname === "/" ? "is-active" : ""
-                        }`}
-                        to="/"
-                    >
+                    <Link className={generateTabClassName("/")} to="/">
                         Home
                     </Link>
                     <Link
-                        className={`navbar-item ${
-                            location.pathname === `/users/${user.id}`
-                                ? "is-active"
-                                : ""
-                        }`}
+                        className={generateTabClassName(`/users/${user.id}`)}
                         to={`/users/${user.id}`}
                     >
                         Blogs
                     </Link>
                     <Link
-                        className={`navbar-item ${
-                            location.pathname === "/users" ? "is-active" : ""
-                        }`}
+                        className={generateTabClassName("/users")}
                         to="/users"
                     >
                         Users
