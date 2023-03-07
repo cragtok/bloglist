@@ -18,15 +18,18 @@ const useFormListener = (
             ? userFiltersPresent
             : blogFiltersPresent;
 
+    const scrollToElementId = (elementId, scrollCondition) => {
+        const element = document.getElementById(elementId);
+        if (scrollCondition && element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     useEffect(() => {
         if (sortCategory && !sortingFormRef.current.visible) {
             sortingFormRef.current.setVisibility(true);
         }
-
-        const element = document.getElementById(scrolledElementId);
-        if (sortCategory && element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
+        scrollToElementId(scrolledElementId, sortCategory);
     }, [sortCategory, sortMethod]);
 
     useEffect(() => {
@@ -36,10 +39,10 @@ const useFormListener = (
             );
         }
 
-        const element = document.getElementById(scrolledElementId);
-        if (filterCategoriesPresent(filterCategories) && element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
+        scrollToElementId(
+            scrolledElementId,
+            filterCategoriesPresent(filterCategories)
+        );
     }, [filterCategories]);
 };
 
