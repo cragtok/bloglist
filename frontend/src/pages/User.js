@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -20,8 +20,10 @@ import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
 import { blogSortFields } from "../utils/sortFieldData";
 import generateErrorMessage from "../utils/generateErrorMessage";
 import {
+    getCurrentUserPageId,
     getLocalStorageToken,
     getLocalStorageUserJSON,
+    setCurrentUserPageId,
 } from "../utils/localStorageUtils";
 
 const User = () => {
@@ -37,8 +39,6 @@ const User = () => {
     const { filterCategories, sortCategory, sortMethod } = useSelector(
         state => state.form["blogs"]
     );
-
-    const [userFound, setUserFound] = useState(false);
 
     const usersService = useAPI("/api/users");
     const [modifiedData, initializeData] = useModifiedData("blogs");
@@ -58,7 +58,6 @@ const User = () => {
                 if (foundUser) {
                     initializeData(foundUser.blogs);
                     dispatch(setUsersFetched(true));
-                    setUserFound(true);
                 }
             } catch (error) {
                 dispatch(
@@ -68,15 +67,19 @@ const User = () => {
             dispatch(setLoadingState(false));
         };
 
-        !usersFetched ? fetchData() : initializeData(user.blogs);
-        setUserFound(true);
+        !usersFetched
+            ? fetchData()
+            : initializeData(user.blogs, getCurrentUserPageId() !== id);
+
+        setCurrentUserPageId(id);
         return () => {
             ignoreRequest = true;
         };
     }, []);
 
     useEffect(() => {
-        if (userFound) {
+        if (getCurrentUserPageId() !== id) {
+            setCurrentUserPageId(id);
             initializeData(user.blogs, true);
         }
     }, [id]);
