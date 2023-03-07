@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -38,6 +38,8 @@ const User = () => {
         state => state.form["blogs"]
     );
 
+    const [userFound, setUserFound] = useState(false);
+
     const usersService = useAPI("/api/users");
     const [modifiedData, initializeData] = useModifiedData("blogs");
 
@@ -56,6 +58,7 @@ const User = () => {
                 if (foundUser) {
                     initializeData(foundUser.blogs);
                     dispatch(setUsersFetched(true));
+                    setUserFound(true);
                 }
             } catch (error) {
                 dispatch(
@@ -66,11 +69,17 @@ const User = () => {
         };
 
         !usersFetched ? fetchData() : initializeData(user.blogs);
-
+        setUserFound(true);
         return () => {
             ignoreRequest = true;
         };
     }, []);
+
+    useEffect(() => {
+        if (userFound) {
+            initializeData(user.blogs, true);
+        }
+    }, [id]);
 
     useFormListener(
         sortCategory,
