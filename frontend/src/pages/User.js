@@ -16,8 +16,10 @@ import { setUsers } from "../reducers/usersReducer";
 import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 
-import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
-import { blogSortFields } from "../utils/sortFieldData";
+import { blogFilterFields } from "../constants/filterFormFields";
+import { initialBlogFilters } from "../constants/initialFilters";
+import { blogSortFields } from "../constants/sortFormFields";
+
 import generateErrorMessage from "../utils/generateErrorMessage";
 import {
     getCurrentUserPageId,

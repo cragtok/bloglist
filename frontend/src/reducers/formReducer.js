@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
     initialBlogFilters,
     initialUserFilters,
-} from "../utils/filterFieldData";
+} from "../constants/initialFilters";
 
 const initialState = {
     home: {

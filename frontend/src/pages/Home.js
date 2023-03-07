@@ -15,8 +15,10 @@ import { setLoadingState, setBlogsFetched } from "../reducers/loadingReducer";
 import { setBlogs } from "../reducers/blogsReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 
-import { blogFilterFields, initialBlogFilters } from "../utils/filterFieldData";
-import { blogSortFields } from "../utils/sortFieldData";
+import { blogFilterFields } from "../constants/filterFormFields";
+import { blogSortFields } from "../constants/sortFormFields";
+import { initialBlogFilters } from "../constants/initialFilters";
+
 import generateErrorMessage from "../utils/generateErrorMessage";
 import { getLocalStorageToken } from "../utils/localStorageUtils";
 

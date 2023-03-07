@@ -14,8 +14,10 @@ import { setLoadingState, setUsersFetched } from "../reducers/loadingReducer";
 import { setUsers } from "../reducers/usersReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 
-import { userFilterFields, initialUserFilters } from "../utils/filterFieldData";
-import { userSortFields } from "../utils/sortFieldData";
+import { userFilterFields } from "../constants/filterFormFields";
+import { userSortFields } from "../constants/sortFormFields";
+import { initialUserFilters } from "../constants/initialFilters";
+
 import generateErrorMessage from "../utils/generateErrorMessage";
 import { getLocalStorageToken } from "../utils/localStorageUtils";
 
