@@ -26,18 +26,27 @@ const useFormListener = (
     };
 
     useEffect(() => {
+        if (!sortingFormRef.current) {
+            return;
+        }
+
         if (sortCategory && !sortingFormRef.current.visible) {
             sortingFormRef.current.setVisibility(true);
+        } else if (!sortCategory) {
+            sortingFormRef.current.setVisibility(false);
         }
+
         scrollToElementId(scrolledElementId, sortCategory);
     }, [sortCategory, sortMethod]);
 
     useEffect(() => {
-        if (filterFormRef.current && !filterFormRef.current.visible) {
-            filterFormRef.current.setVisibility(
-                filterCategoriesPresent(filterCategories)
-            );
+        if (!filterFormRef.current) {
+            return;
         }
+
+        filterFormRef.current.setVisibility(
+            filterCategoriesPresent(filterCategories)
+        );
 
         scrollToElementId(
             scrolledElementId,

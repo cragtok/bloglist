@@ -139,6 +139,7 @@ const User = () => {
                     formTitle="Blogs"
                     filterFields={blogFilterFields}
                     initialFilters={initialBlogFilters}
+                    key={crypto.randomUUID()}
                 />
             </Togglable>
             <br />
