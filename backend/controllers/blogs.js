@@ -2,7 +2,12 @@ const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
 const Comment = require("../models/comment");
 
-blogsRouter.get("/", async (request, response) => {
+blogsRouter.get("/", async (request, response, next) => {
+    const user = request.user;
+    if (!user) {
+        return next({ name: "JsonWebTokenError" });
+    }
+
     const blogs = await Blog.find({})
         .populate("user", {
             username: 1,
@@ -20,6 +25,11 @@ blogsRouter.get("/", async (request, response) => {
 });
 
 blogsRouter.get("/:id", async (request, response, next) => {
+    const user = request.user;
+    if (!user) {
+        return next({ name: "JsonWebTokenError" });
+    }
+
     try {
         const blog = await Blog.findById(request.params.id)
             .populate("user", {
