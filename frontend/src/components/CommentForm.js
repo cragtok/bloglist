@@ -14,26 +14,32 @@ const CommentForm = ({ postComment, isSubmittingComment }) => {
                 }}
                 className="box"
             >
-                <div className="columns">
-                    <div className="column is-three-quarters">
-                        <input
-                            className="input"
-                            maxLength={150}
-                            value={comment}
-                            onChange={e => setComment(e.target.value)}
-                            placeholder="Add comment..."
-                        />
-                    </div>
-                    <div className="column">
-                        <button
-                            disabled={isSubmittingComment}
-                            className={`button is-fullwidth is-primary${
-                                isSubmittingComment ? " is-loading" : ""
+                {/*eslint-disable indent */}
+                <div
+                    className={`control
+                            ${
+                                isSubmittingComment
+                                    ? " is-loading is-large"
+                                    : ""
                             }`}
-                        >
-                            Add Comment
-                        </button>
-                    </div>
+                >
+                    <textarea
+                        value={comment}
+                        disabled={isSubmittingComment}
+                        className="textarea is-small"
+                        onChange={e => setComment(e.target.value)}
+                        maxLength={150}
+                        placeholder="Add comment..."
+                    ></textarea>
+                    <br />
+                    <button
+                        disabled={isSubmittingComment}
+                        className={`button is-primary${
+                            isSubmittingComment ? " is-loading" : ""
+                        }`}
+                    >
+                        Add Comment
+                    </button>
                 </div>
             </form>
         </div>
