@@ -7,6 +7,7 @@ import Togglable from "../components/Togglable";
 import BlogForm from "../components/BlogForm";
 import SortingForm from "../components/SortingForm";
 import FilterForm from "../components/FilterForm";
+import FilterAndSortedFieldIndicator from "../components/FilterAndSortedFieldIndicator";
 
 import useFormListener from "../hooks/useFormListener";
 import useModifiedData from "../hooks/useModifiedData";
@@ -19,6 +20,7 @@ import { displayNotification } from "../reducers/notificationReducer";
 import { blogFilterFields } from "../constants/filterFormFields";
 import { initialBlogFilters } from "../constants/initialFilters";
 import { blogSortFields } from "../constants/sortFormFields";
+import { blogFiltersPresent } from "../utils/filtersPresent";
 
 import generateErrorMessage from "../utils/generateErrorMessage";
 import {
@@ -145,6 +147,15 @@ const User = () => {
                 />
             </Togglable>
             <br />
+
+            {(blogFiltersPresent(filterCategories) || sortCategory) && (
+                <FilterAndSortedFieldIndicator
+                    filterStyle={"has-text-info"}
+                    filterText="Blue"
+                    sortedStyle={"has-text-weight-bold has-text-primary"}
+                    sortedText={"Bold"}
+                />
+            )}
             {user.blogs.length < 1 ? (
                 <p className="subtitle mt-3">No blogs added by user</p>
             ) : (

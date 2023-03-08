@@ -6,6 +6,7 @@ import BlogForm from "../components/BlogForm";
 import Togglable from "../components/Togglable";
 import SortingForm from "../components/SortingForm";
 import FilterForm from "../components/FilterForm";
+import FilterAndSortedFieldIndicator from "../components/FilterAndSortedFieldIndicator";
 
 import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";
@@ -21,6 +22,7 @@ import { initialBlogFilters } from "../constants/initialFilters";
 
 import generateErrorMessage from "../utils/generateErrorMessage";
 import { getLocalStorageToken } from "../utils/localStorageUtils";
+import { blogFiltersPresent } from "../utils/filtersPresent";
 
 const Home = () => {
     const blogFormRef = useRef();
@@ -123,6 +125,14 @@ const Home = () => {
                     />
                 </Togglable>
                 <br />
+                {(blogFiltersPresent(filterCategories) || sortCategory) && (
+                    <FilterAndSortedFieldIndicator
+                        filterStyle={"has-text-info"}
+                        filterText="Blue"
+                        sortedStyle={"has-text-weight-bold has-text-primary"}
+                        sortedText={"Bold"}
+                    />
+                )}
                 <BlogList
                     blogs={modifiedData}
                     sortedField={sortCategory}

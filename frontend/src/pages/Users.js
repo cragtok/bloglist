@@ -5,6 +5,7 @@ import SortingForm from "../components/SortingForm";
 import Togglable from "../components/Togglable";
 import FilterForm from "../components/FilterForm";
 import UsersTable from "../components/UsersTable";
+import FilterAndSortedFieldIndicator from "../components/FilterAndSortedFieldIndicator";
 
 import useAPI from "../hooks/useAPI";
 import useModifiedData from "../hooks/useModifiedData";
@@ -20,6 +21,7 @@ import { initialUserFilters } from "../constants/initialFilters";
 
 import generateErrorMessage from "../utils/generateErrorMessage";
 import { getLocalStorageToken } from "../utils/localStorageUtils";
+import { userFiltersPresent } from "../utils/filtersPresent";
 
 const Users = () => {
     const sortingFormRef = useRef();
@@ -130,6 +132,14 @@ const Users = () => {
                 />
             </Togglable>
             <br />
+            {(userFiltersPresent(filterCategories) || sortCategory) && (
+                <FilterAndSortedFieldIndicator
+                    filterStyle={"has-text-primary"}
+                    filterText="Green"
+                    sortedStyle={"has-text-weight-bold"}
+                    sortedText={"Bold"}
+                />
+            )}
             <UsersTable
                 users={modifiedData}
                 filterCategories={filterCategories}
