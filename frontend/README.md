@@ -1,2 +1,0 @@
-# bloglist-frontend
-
