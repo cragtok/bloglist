@@ -40,6 +40,10 @@ const Navbar = () => {
         navigate("/");
     };
 
+    const handleActiveTabClick = () => {
+        if (isActive) setIsActive(false);
+    };
+
     const generateTabClassName = pathname =>
         location.pathname === pathname
             ? "navbar-item is-active"
@@ -50,7 +54,7 @@ const Navbar = () => {
     }
     return (
         <nav
-            className="navbar is-primary has-shadow mb-4"
+            className="navbar is-primary has-shadow"
             role="navigation"
             aria-label="main navigation"
         >
@@ -73,16 +77,22 @@ const Navbar = () => {
                 className={!isActive ? "navbar-menu" : "navbar-menu is-active"}
             >
                 <div className="navbar-start" style={styles.navbarStart}>
-                    <Link className={generateTabClassName("/")} to="/">
+                    <Link
+                        onClick={handleActiveTabClick}
+                        className={generateTabClassName("/")}
+                        to="/"
+                    >
                         Home
                     </Link>
                     <Link
+                        onClick={handleActiveTabClick}
                         className={generateTabClassName(`/users/${user.id}`)}
                         to={`/users/${user.id}`}
                     >
                         Blogs
                     </Link>
                     <Link
+                        onClick={handleActiveTabClick}
                         className={generateTabClassName("/users")}
                         to="/users"
                     >
