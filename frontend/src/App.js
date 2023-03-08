@@ -32,7 +32,7 @@ const App = () => {
     return (
         <div className="container is-fluid">
             {isLoggedIn() && <Navbar />}
-
+            <br />
             {notification.message && notification.type && (
                 <Notification
                     message={notification.message}

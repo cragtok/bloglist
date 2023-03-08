@@ -54,7 +54,7 @@ const Navbar = () => {
     }
     return (
         <nav
-            className="navbar is-primary has-shadow"
+            className="navbar is-fixed-top is-primary has-shadow"
             role="navigation"
             aria-label="main navigation"
         >
