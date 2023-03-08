@@ -92,7 +92,13 @@ const Navbar = () => {
                 <div className="navbar-end" style={styles.navbarEnd}>
                     <div className="navbar-item">
                         <div className="navbar-item">
-                            <div className="tag is-primary is-medium">
+                            <div
+                                className={`tag ${
+                                    !isActive
+                                        ? "is-primary is-medium"
+                                        : "is-outlined"
+                                }`}
+                            >
                                 {`${user.name} logged in`}
                             </div>
                         </div>
@@ -101,7 +107,7 @@ const Navbar = () => {
                         buttons navbar-item"
                         >
                             <a
-                                className="button is-light is-responsive is-fullwidth"
+                                className="button is-responsive is-fullwidth"
                                 onClick={handleLogout}
                             >
                                 Log Out
