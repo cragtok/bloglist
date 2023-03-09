@@ -11,7 +11,6 @@ const middleware = require("./utils/middleware");
 app.use(cors());
 
 if (process.env.NODE_ENV === "production") {
-    console.log("HELLO");
     app.use(express.static("build"));
 }
 app.use(express.json());
