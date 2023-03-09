@@ -1,0 +1,19 @@
+{
+    "name": "bloglist-fullstack",
+    "version": "1.0.0",
+    "description": "Full Stack MERN Bloglist application",
+    "scripts": {
+        "start": "cd ./backend && npm start",
+        "build": "cd ./backend && npm run build:ui"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cragtok/bloglist.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/cragtok/bloglist/issues"
+    },
+    "homepage": "https://github.com/cragtok/bloglist#readme"
+}
