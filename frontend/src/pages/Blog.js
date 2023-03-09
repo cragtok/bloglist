@@ -198,32 +198,37 @@ const Blog = () => {
                 <div className="card-content">
                     <div className="media">
                         <div className="media-content">
-                            <p className="title is-3">{blog.title}</p>
+                            <p className="title is-3">
+                                <a
+                                    className=""
+                                    href={
+                                        blog.url.includes("http://")
+                                            ? blog.url
+                                            : `http://${blog.url}`
+                                    }
+                                >
+                                    {blog.title}
+                                </a>
+                            </p>
                             <p className="subtitle is-6 is-italic">
                                 {blogDate} {blogTime}
-                            </p>
-                            <p className="subtitle is-6">
-                                added by{" "}
-                                <Link to={`/users/${blog.user.id}`}>
-                                    {blog.user.username}
-                                </Link>
                             </p>
                         </div>
                     </div>
 
                     <div className="content">
-                        <p className="subtitle is-6">Author: {blog.author}</p>
-                        <p className="subtitle is-6">Likes: {blog.likes}</p>
-                        <a
-                            className="blog-url subtitle"
-                            href={
-                                blog.url.includes("http://")
-                                    ? blog.url
-                                    : `http://${blog.url}`
-                            }
-                        >
-                            {blog.url}
-                        </a>
+                        <span className="has-text-weight-bold">Author: </span>{" "}
+                        {blog.author}
+                        <br />
+                        <span className="has-text-weight-bold">Added by: </span>
+                        <Link to={`/users/${blog.user.id}`}>
+                            {blog.user.username}
+                        </Link>
+                        <br />
+                        <span className="has-text-weight-bold">
+                            Likes:
+                        </span>{" "}
+                        {blog.likes}
                     </div>
                 </div>
                 <footer className="card-footer">

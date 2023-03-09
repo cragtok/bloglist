@@ -11,6 +11,7 @@ a:visited {
 /* mouse over link */
 a:hover {
     font-weight: bold;
+    text-decoration: underline;
 }
 
 /* selected link */
