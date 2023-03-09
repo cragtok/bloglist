@@ -23,7 +23,11 @@ mongoose
     });
 
 app.use(cors());
-// app.use(express.static("build"));
+
+if (process.env.NODE_ENV === "production") {
+    console.log("HELLO");
+    app.use(express.static("build"));
+}
 app.use(express.json());
 app.use(middleware.requestLogger);
 app.use("/api/login", loginRouter);
