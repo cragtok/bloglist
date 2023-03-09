@@ -7,7 +7,7 @@ const blogSchema = new mongoose.Schema(
             unique: [true, "Blog title is already taken"],
             required: [true, "Blog title required"],
             minlength: [5, "Blog title must be at least 5 characters long"],
-            maxlength: [35, "Blog title must be shorter than 36 characters"],
+            maxlength: [120, "Blog title must be shorter than 36 characters"],
         },
         author: {
             type: String,
