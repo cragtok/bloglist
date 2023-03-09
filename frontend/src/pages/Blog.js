@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -29,6 +29,7 @@ import { getLocalStorageToken } from "../utils/localStorageUtils";
 import generateErrorMessage from "../utils/generateErrorMessage";
 
 const Blog = () => {
+    const bottomRef = useRef(null);
     const dispatch = useDispatch();
     const id = useParams().id;
     const navigate = useNavigate();
@@ -170,6 +171,7 @@ const Blog = () => {
             );
             dispatch(displayNotification("Comment Added", "success", 2));
             success = true;
+            bottomRef.current.scrollIntoView({ behaviour: "smooth" });
         } catch (error) {
             dispatch(
                 displayNotification(generateErrorMessage(error), "error", 4)
@@ -288,6 +290,7 @@ const Blog = () => {
                                 isDeletingComment={isDeletingComment}
                             />
                         ))}
+                    <div ref={bottomRef}></div>
                 </div>
             </div>
         </div>
