@@ -31,79 +31,96 @@ const App = () => {
 
     return (
         <div className="container is-fluid">
-            {isLoggedIn() && <Navbar />}
+            <Navbar />
             <br />
             {notification.message && notification.type && (
-                <Notification
-                    message={notification.message}
-                    type={notification.type}
-                />
+                <div
+                    style={{
+                        position: "fixed",
+                        zIndex: 1,
+                        left: "2%",
+                        right: "2%",
+                    }}
+                >
+                    <Notification
+                        message={notification.message}
+                        type={notification.type}
+                    />
+                </div>
             )}
-
-            <Routes>
-                <Route
-                    path="/users/:id"
-                    element={
-                        isLoggedIn() ? (
-                            <User />
-                        ) : (
-                            <Navigate replace to="/login" />
-                        )
-                    }
-                />
-                <Route
-                    path="/users"
-                    element={
-                        isLoggedIn() ? (
-                            <Users />
-                        ) : (
-                            <Navigate replace to="/login" />
-                        )
-                    }
-                />
-                <Route
-                    path="/blogs/:id"
-                    element={
-                        isLoggedIn() ? (
-                            <Blog />
-                        ) : (
-                            <Navigate replace to="/login" />
-                        )
-                    }
-                />
-                <Route
-                    path="/login"
-                    element={
-                        isLoggedIn() ? (
-                            <Navigate replace to="/" />
-                        ) : (
-                            <LoginAndSignupForm />
-                        )
-                    }
-                />
-                <Route
-                    path="/register"
-                    element={
-                        isLoggedIn() ? (
-                            <Navigate replace to="/" />
-                        ) : (
-                            <LoginAndSignupForm />
-                        )
-                    }
-                />
-                <Route
-                    exact
-                    path="/"
-                    element={
-                        isLoggedIn() ? (
-                            <Home />
-                        ) : (
-                            <Navigate replace to="/login" />
-                        )
-                    }
-                />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
+            <div
+                style={{
+                    marginTop:
+                        notification.message && notification.type
+                            ? "100px"
+                            : "37px",
+                }}
+            >
+                <Routes>
+                    <Route
+                        path="/users/:id"
+                        element={
+                            isLoggedIn() ? (
+                                <User />
+                            ) : (
+                                <Navigate replace to="/login" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/users"
+                        element={
+                            isLoggedIn() ? (
+                                <Users />
+                            ) : (
+                                <Navigate replace to="/login" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/blogs/:id"
+                        element={
+                            isLoggedIn() ? (
+                                <Blog />
+                            ) : (
+                                <Navigate replace to="/login" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/login"
+                        element={
+                            isLoggedIn() ? (
+                                <Navigate replace to="/" />
+                            ) : (
+                                <LoginAndSignupForm />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/register"
+                        element={
+                            isLoggedIn() ? (
+                                <Navigate replace to="/" />
+                            ) : (
+                                <LoginAndSignupForm />
+                            )
+                        }
+                    />
+                    <Route
+                        exact
+                        path="/"
+                        element={
+                            isLoggedIn() ? (
+                                <Home />
+                            ) : (
+                                <Navigate replace to="/login" />
+                            )
+                        }
+                    />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </div>
         </div>
     );
 };

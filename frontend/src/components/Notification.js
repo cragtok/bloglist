@@ -3,7 +3,10 @@ import React from "react";
 const Notification = ({ message, type }) => {
     return (
         <article
-            className={`message mt-2 ${
+            style={{
+                width: "100%",
+            }}
+            className={`message  mt-2 ${
                 type === "error" ? "is-danger" : "is-success"
             }`}
         >

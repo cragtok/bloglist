@@ -49,84 +49,112 @@ const Navbar = () => {
             ? "navbar-item is-active"
             : "navbar-item";
 
-    if (!user) {
-        return null;
-    }
     return (
-        <nav
-            className="navbar is-fixed-top is-primary has-shadow"
-            role="navigation"
-            aria-label="main navigation"
-        >
-            <div className="navbar-brand">
-                <a
-                    role="button"
-                    onClick={() => setIsActive(!isActive)}
-                    className="navbar-burger"
-                    aria-label="menu"
-                    aria-expanded="false"
-                    data-target="navbarBasicExample"
-                >
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-            </div>
-
-            <div
-                className={!isActive ? "navbar-menu" : "navbar-menu is-active"}
+        <>
+            <nav
+                className="navbar is-fixed-top is-primary has-shadow"
+                role="navigation"
+                aria-label="main navigation"
             >
-                <div className="navbar-start" style={styles.navbarStart}>
-                    <Link
-                        onClick={handleActiveTabClick}
-                        className={generateTabClassName("/")}
-                        to="/"
+                <div className="navbar-brand">
+                    <a
+                        role="button"
+                        onClick={() => setIsActive(!isActive)}
+                        className="navbar-burger"
+                        aria-label="menu"
+                        aria-expanded="false"
+                        data-target="navbarBasicExample"
                     >
-                        Home
-                    </Link>
-                    <Link
-                        onClick={handleActiveTabClick}
-                        className={generateTabClassName(`/users/${user.id}`)}
-                        to={`/users/${user.id}`}
-                    >
-                        Blogs
-                    </Link>
-                    <Link
-                        onClick={handleActiveTabClick}
-                        className={generateTabClassName("/users")}
-                        to="/users"
-                    >
-                        Users
-                    </Link>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
                 </div>
-                <div className="navbar-end" style={styles.navbarEnd}>
-                    <div className="navbar-item">
-                        <div className="navbar-item">
-                            <div
-                                className={`tag ${
-                                    !isActive
-                                        ? "is-primary is-medium"
-                                        : "is-outlined"
-                                }`}
-                            >
-                                {`${user.name} logged in`}
+
+                <div
+                    className={
+                        !isActive ? "navbar-menu" : "navbar-menu is-active"
+                    }
+                >
+                    <div className="navbar-start" style={styles.navbarStart}>
+                        {user ? (
+                            <>
+                                <Link
+                                    onClick={handleActiveTabClick}
+                                    className={generateTabClassName("/")}
+                                    to="/"
+                                >
+                                    Home
+                                </Link>
+                                <Link
+                                    onClick={handleActiveTabClick}
+                                    className={generateTabClassName(
+                                        `/users/${user.id}`
+                                    )}
+                                    to={`/users/${user.id}`}
+                                >
+                                    Blogs
+                                </Link>
+                                <Link
+                                    onClick={handleActiveTabClick}
+                                    className={generateTabClassName("/users")}
+                                    to="/users"
+                                >
+                                    Users
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    onClick={handleActiveTabClick}
+                                    className={generateTabClassName("/login")}
+                                    to={"/login"}
+                                >
+                                    Login
+                                </Link>
+                                <Link
+                                    onClick={handleActiveTabClick}
+                                    className={generateTabClassName(
+                                        "/register"
+                                    )}
+                                    to={"/register"}
+                                >
+                                    Register
+                                </Link>
+                            </>
+                        )}
+                    </div>
+                    {user && (
+                        <div className="navbar-end" style={styles.navbarEnd}>
+                            <div className="navbar-item">
+                                <div className="navbar-item">
+                                    <div
+                                        className={`tag ${
+                                            !isActive
+                                                ? "is-primary is-medium"
+                                                : "is-outlined"
+                                        }`}
+                                    >
+                                        {`${user.name} logged in`}
+                                    </div>
+                                </div>
+                                <div
+                                    className="
+                        buttons navbar-item"
+                                >
+                                    <a
+                                        className="button is-responsive is-fullwidth"
+                                        onClick={handleLogout}
+                                    >
+                                        Log Out
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div
-                            className="
-                        buttons navbar-item"
-                        >
-                            <a
-                                className="button is-responsive is-fullwidth"
-                                onClick={handleLogout}
-                            >
-                                Log Out
-                            </a>
-                        </div>
-                    </div>
+                    )}
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </>
     );
 };
 
