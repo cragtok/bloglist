@@ -2,12 +2,7 @@ const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
 const Comment = require("../models/comment");
 
-blogsRouter.get("/", async (request, response, next) => {
-    const user = request.user;
-    if (!user) {
-        return next({ name: "JsonWebTokenError" });
-    }
-
+blogsRouter.get("/", async (request, response) => {
     const blogs = await Blog.find({})
         .populate("user", {
             username: 1,
@@ -25,11 +20,6 @@ blogsRouter.get("/", async (request, response, next) => {
 });
 
 blogsRouter.get("/:id", async (request, response, next) => {
-    const user = request.user;
-    if (!user) {
-        return next({ name: "JsonWebTokenError" });
-    }
-
     try {
         const blog = await Blog.findById(request.params.id)
             .populate("user", {
@@ -61,9 +51,7 @@ blogsRouter.get("/:id", async (request, response, next) => {
 blogsRouter.post("/", async (request, response, next) => {
     const body = request.body;
     const user = request.user;
-    if (!user) {
-        return next({ name: "JsonWebTokenError" });
-    }
+
     try {
         const blog = new Blog({
             title: body.title,
@@ -89,9 +77,6 @@ blogsRouter.post("/", async (request, response, next) => {
 blogsRouter.delete("/:id", async (request, response, next) => {
     try {
         const user = request.user;
-        if (!user) {
-            return next({ name: "JsonWebTokenError" });
-        }
 
         const blog = await Blog.findById(request.params.id);
         if (!blog) {
@@ -119,11 +104,7 @@ blogsRouter.delete("/:id", async (request, response, next) => {
 
 blogsRouter.put("/:id", async (request, response, next) => {
     const body = request.body;
-
     const user = request.user;
-    if (!user) {
-        return next({ name: "JsonWebTokenError" });
-    }
 
     try {
         const blogToUpdate = await Blog.findById(request.params.id);
@@ -218,10 +199,6 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
     const comment = body.comment;
     const user = request.user;
 
-    if (!user) {
-        return next({ name: "JsonWebTokenError" });
-    }
-
     if (!comment || comment.length < 1) {
         return next({ name: "ValidationError", message: "Comment missing" });
     }
@@ -251,12 +228,8 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
 blogsRouter.delete(
     "/:blogid/comments/:commentid",
     async (request, response, next) => {
+        const user = request.user;
         try {
-            const user = request.user;
-            if (!user) {
-                return next({ name: "JsonWebTokenError" });
-            }
-
             const blog = await Blog.findById(request.params.blogid);
             if (!blog) {
                 return next({

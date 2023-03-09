@@ -47,26 +47,30 @@ const errorHandler = (error, request, response, next) => {
 
 const userExtractor = async (request, response, next) => {
     if (request.url === "/api/users" && request.method === "POST") {
-        next();
-        return;
+        return next();
     }
 
     const authorization = request.get("authorization");
-    if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-        const token = authorization.substring(7);
-        try {
-            const decodedToken = jwt.verify(token, process.env.SECRET);
-            if (decodedToken.id) {
-                const user = await User.findById(decodedToken.id);
-                if (user) {
-                    request.user = user;
-                }
-            }
-        } catch (error) {
-            next(error);
-        }
+
+    if (!authorization || !authorization.toLowerCase().startsWith("bearer ")) {
+        return next({ name: "JsonWebTokenError" });
     }
-    next();
+
+    const token = authorization.substring(7);
+    try {
+        const decodedToken = jwt.verify(token, process.env.SECRET);
+
+        if (decodedToken.id) {
+            const user = await User.findById(decodedToken.id);
+            if (user) {
+                request.user = user;
+                return next();
+            }
+        }
+    } catch (error) {
+        next(error);
+    }
+    return next({ name: "JsonWebTokenError" });
 };
 
 module.exports = {

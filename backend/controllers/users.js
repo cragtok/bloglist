@@ -2,13 +2,7 @@ const bcrypt = require("bcrypt");
 const usersRouter = require("express").Router();
 const User = require("../models/user");
 
-usersRouter.get("/", async (request, response, next) => {
-    const user = request.user;
-
-    if (!user) {
-        return next({ name: "JsonWebTokenError" });
-    }
-
+usersRouter.get("/", async (request, response) => {
     const users = await User.find({}).populate({
         path: "blogs",
         select: {
@@ -32,12 +26,6 @@ usersRouter.get("/", async (request, response, next) => {
 });
 
 usersRouter.get("/:id", async (request, response, next) => {
-    const user = request.user;
-
-    if (!user) {
-        return next({ name: "JsonWebTokenError" });
-    }
-
     try {
         const user = await User.findById(request.params.id).populate({
             path: "blogs",
