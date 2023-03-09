@@ -4,8 +4,9 @@ const config = require("./utils/config");
 const logger = require("./utils/logger");
 
 const server = http.createServer(app);
-server.listen(config.PORT, () => {
+const port = config.PORT || 3003;
+server.listen(port, () => {
     logger.info(
-        `Server running on port ${config.PORT} in ${process.env.NODE_ENV} mode`
+        `Server running on port ${port} in ${process.env.NODE_ENV} mode`
     );
 });
