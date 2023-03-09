@@ -2,10 +2,10 @@
     "name": "bloglist",
     "version": "1.0.0",
     "description": "bloglist app for full-stack open ",
-    "main": "index.js",
+    "main": "server.js",
     "scripts": {
-        "start": "NODE_ENV=production node index.js",
-        "dev": "NODE_ENV=development nodemon index.js",
+        "start": "NODE_ENV=production node server.js",
+        "dev": "NODE_ENV=development nodemon server.js",
         "lint": "eslint .",
         "build:ui": "rm -rf build && cd ../frontend && npm run build && cp -r build ../backend"
     },
