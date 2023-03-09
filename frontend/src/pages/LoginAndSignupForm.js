@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,6 +23,12 @@ const LoginAndSignupForm = () => {
             ? await loginAndRegisterService.login(username, password)
             : await loginAndRegisterService.register(username, name, password);
     };
+
+    useEffect(() => {
+        setUsername("");
+        setPassword("");
+        setName("");
+    }, [location.pathname]);
 
     return (
         <div>
