@@ -1,13 +1,26 @@
 import React from "react";
 
-const Notification = ({ message, type }) => {
+const Notification = ({ message, type, removeNotification }) => {
     return (
         <div
-            className={`notification mt-2 ${
-                type === "error" ? "is-danger" : "is-success"
-            }`}
+            style={{
+                position: "fixed",
+                zIndex: 1,
+                left: "2%",
+                right: "2%",
+            }}
         >
-            {message}
+            <div
+                className={`notification mt-2 ${
+                    type === "error" ? "is-danger" : "is-success"
+                }`}
+            >
+                <button
+                    className="delete"
+                    onClick={removeNotification}
+                ></button>
+                {message}
+            </div>
         </div>
     );
 };

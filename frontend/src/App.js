@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar";
 import Notification from "./components/Notification";
 
 import { setUser } from "./reducers/userReducer";
+import { removeNotification } from "./reducers/notificationReducer";
 
 import { getLocalStorageUserJSON, isLoggedIn } from "./utils/localStorageUtils";
 
@@ -34,19 +35,11 @@ const App = () => {
             <Navbar />
             <br />
             {notification.message && notification.type && (
-                <div
-                    style={{
-                        position: "fixed",
-                        zIndex: 1,
-                        left: "2%",
-                        right: "2%",
-                    }}
-                >
-                    <Notification
-                        message={notification.message}
-                        type={notification.type}
-                    />
-                </div>
+                <Notification
+                    removeNotification={() => dispatch(removeNotification())}
+                    message={notification.message}
+                    type={notification.type}
+                />
             )}
             <div
                 style={{
