@@ -8,13 +8,13 @@ const Comment = ({
 }) => {
     const commentDate = new Date(comment.createdAt).toDateString().slice(4);
     const commentTime = new Date(comment.createdAt).toLocaleTimeString();
-
     return (
         <article
             className="message is-success"
             style={{
                 border: "1px solid #48c78e",
                 borderLeft: "0",
+                whiteSpace: "pre-wrap",
             }}
         >
             <div className="message-body">
