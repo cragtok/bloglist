@@ -203,8 +203,11 @@ const Blog = () => {
                             <p className="title is-3">
                                 <a
                                     className=""
+                                    target="_blank"
+                                    rel="noreferrer"
                                     href={
-                                        blog.url.includes("http://")
+                                        blog.url.startsWith("http://") ||
+                                        blog.url.startsWith("https://")
                                             ? blog.url
                                             : `http://${blog.url}`
                                     }
