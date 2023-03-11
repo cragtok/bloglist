@@ -7,7 +7,7 @@
         "start": "NODE_ENV=production node server.js",
         "dev": "NODE_ENV=development nodemon server.js",
         "lint": "eslint .",
-        "build:ui": "rm -rf build && cd ../frontend && npm run build && cp -r build ../backend"
+        "build:ui": "rm -rf build && cd ../frontend && npm install && npm run build && cp -r build ../backend && cd ../backend && npm install"
     },
     "author": "",
     "license": "ISC",
