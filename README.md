@@ -87,4 +87,4 @@ For deploying, you can run the scripts which are specified on the root `package.
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 - see the [COPYING.txt](./COPYING.txt) file for more information.
+This project is licensed under the GNU Affero General Public License v3.0 - see the [COPYING.txt](./COPYING.txt) file for more information.
